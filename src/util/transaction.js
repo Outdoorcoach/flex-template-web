@@ -37,11 +37,20 @@ export const TRANSITION_DECLINE = 'transition/decline';
 // The backend automatically expire the transaction.
 export const TRANSITION_EXPIRE = 'transition/expire';
 
-// Admin can also cancel the transition.
-export const TRANSITION_CANCEL = 'transition/cancel';
+// Different parties can cancel the booking:
+export const TRANSITION_CANCEL_BY_OPERATOR = 'transition/cancel-by-operator';
+export const TRANSITION_CANCEL_BY_PROVIDER = 'transition/cancel-by-provider';
+
+// the customer can also cancel, but receives no refund if cancel is made within 24 hours of booking
+export const TRANSITION_CANCEL_BY_CUSTOMER = 'transition/cancel-by-customer';
+export const TRANSITION_CANCEL_BY_CUSTOMER_NO_REFUND = 'transition/cancel-by-customer-no-refund';
 
 // The backend will mark the transaction completed.
 export const TRANSITION_COMPLETE = 'transition/complete';
+
+export const TRANSITION_DISPUTE = 'transition/dispute';
+
+export const TRANSITION_MARK_DELIVERED = 'transition/mark-delivered';
 
 // Reviews are given through transaction transitions. Review 1 can be
 // by provider or customer, and review 2 will be the other party of
@@ -90,6 +99,8 @@ const STATE_PREAUTHORIZED = 'preauthorized';
 const STATE_DECLINED = 'declined';
 const STATE_ACCEPTED = 'accepted';
 const STATE_CANCELED = 'canceled';
+const STATE_COMPLETED = 'completed';
+const STATE_DISPUTED = 'disputed';
 const STATE_DELIVERED = 'delivered';
 const STATE_REVIEWED = 'reviewed';
 const STATE_REVIEWED_BY_CUSTOMER = 'reviewed-by-customer';
@@ -108,7 +119,7 @@ const stateDescription = {
   // id is defined only to support Xstate format.
   // However if you have multiple transaction processes defined,
   // it is best to keep them in sync with transaction process aliases.
-  id: 'preauth-with-nightly-booking/release-1',
+  id: 'sca-preauth-unit-time-booking/outdoorcoach-release-1',
 
   // This 'initial' state is a starting point for new transaction
   initial: STATE_INITIAL,
@@ -146,12 +157,21 @@ const stateDescription = {
     [STATE_DECLINED]: {},
     [STATE_ACCEPTED]: {
       on: {
-        [TRANSITION_CANCEL]: STATE_CANCELED,
-        [TRANSITION_COMPLETE]: STATE_DELIVERED,
+        [TRANSITION_CANCEL_BY_OPERATOR]: STATE_CANCELED,
+        [TRANSITION_CANCEL_BY_PROVIDER]: STATE_CANCELED,
+        [TRANSITION_CANCEL_BY_CUSTOMER]: STATE_CANCELED,
+        [TRANSITION_CANCEL_BY_CUSTOMER_NO_REFUND]: STATE_CANCELED,
+        [TRANSITION_COMPLETE]: STATE_COMPLETED,
       },
     },
 
     [STATE_CANCELED]: {},
+    [STATE_COMPLETED]: {
+      on: {
+        [TRANSITION_DISPUTE]: STATE_DISPUTED,
+        [TRANSITION_MARK_DELIVERED]: STATE_DELIVERED,
+      },
+    },
     [STATE_DELIVERED]: {
       on: {
         [TRANSITION_EXPIRE_REVIEW_PERIOD]: STATE_REVIEWED,
@@ -240,8 +260,14 @@ export const txIsAccepted = tx =>
 export const txIsDeclined = tx =>
   getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
 
+export const txIsDisputed = tx =>
+  getTransitionsToState(STATE_DISPUTED).includes(txLastTransition(tx));
+
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
+
+export const txIsCompleted = tx =>
+  getTransitionsToState(STATE_COMPLETED).includes(txLastTransition(tx));
 
 export const txIsDelivered = tx =>
   getTransitionsToState(STATE_DELIVERED).includes(txLastTransition(tx));
@@ -273,6 +299,7 @@ const hasPassedStateFn = state => tx =>
   getTransitionsToState(state).filter(t => hasPassedTransition(t, tx)).length > 0;
 
 export const txHasBeenAccepted = hasPassedStateFn(STATE_ACCEPTED);
+export const txHasBeenCompleted = hasPassedStateFn(STATE_COMPLETED);
 export const txHasBeenDelivered = hasPassedStateFn(STATE_DELIVERED);
 
 /**
@@ -299,11 +326,16 @@ export const getReview2Transition = isCustomer =>
 export const isRelevantPastTransition = transition => {
   return [
     TRANSITION_ACCEPT,
-    TRANSITION_CANCEL,
+    TRANSITION_CANCEL_BY_CUSTOMER,
+    TRANSITION_CANCEL_BY_CUSTOMER_NO_REFUND,
+    TRANSITION_CANCEL_BY_OPERATOR,
+    TRANSITION_CANCEL_BY_PROVIDER,
     TRANSITION_COMPLETE,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_DECLINE,
+    TRANSITION_DISPUTE,
     TRANSITION_EXPIRE,
+    TRANSITION_MARK_DELIVERED,
     TRANSITION_REVIEW_1_BY_CUSTOMER,
     TRANSITION_REVIEW_1_BY_PROVIDER,
     TRANSITION_REVIEW_2_BY_CUSTOMER,
