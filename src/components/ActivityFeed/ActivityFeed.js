@@ -8,16 +8,22 @@ import { formatDate } from '../../util/dates';
 import { ensureTransaction, ensureUser, ensureListing } from '../../util/data';
 import {
   TRANSITION_ACCEPT,
-  TRANSITION_CANCEL,
+  TRANSITION_CANCEL_BY_CUSTOMER,
+  TRANSITION_CANCEL_BY_CUSTOMER_NO_REFUND,
+  TRANSITION_CANCEL_BY_OPERATOR,
+  TRANSITION_CANCEL_BY_PROVIDER,
   TRANSITION_COMPLETE,
   TRANSITION_DECLINE,
+  TRANSITION_DISPUTE,
   TRANSITION_EXPIRE,
+  TRANSITION_MARK_DELIVERED,
   TRANSITION_CONFIRM_PAYMENT,
   TRANSITION_REVIEW_1_BY_CUSTOMER,
   TRANSITION_REVIEW_1_BY_PROVIDER,
   TRANSITION_REVIEW_2_BY_CUSTOMER,
   TRANSITION_REVIEW_2_BY_PROVIDER,
   transitionIsReviewed,
+  txIsCompleted,
   txIsDelivered,
   txIsInFirstReviewBy,
   txIsReviewed,
@@ -129,11 +135,19 @@ const resolveTransitionMessage = (
       ) : (
         <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
       );
+    case TRANSITION_COMPLETE:
+      return <FormattedMessage id="ActivityFeed.transitionComplete" />;
     case TRANSITION_DECLINE:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionDecline" />
       ) : (
         <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName }} />
+      );
+    case TRANSITION_DISPUTE:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionDispute" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionDispute" values={{ displayName }} />
       );
     case TRANSITION_EXPIRE:
       return txRoleIsProvider(ownRole) ? (
@@ -141,11 +155,17 @@ const resolveTransitionMessage = (
       ) : (
         <FormattedMessage id="ActivityFeed.transitionExpire" values={{ displayName }} />
       );
-    case TRANSITION_CANCEL:
-      return <FormattedMessage id="ActivityFeed.transitionCancel" />;
-    case TRANSITION_COMPLETE:
+    case TRANSITION_CANCEL_BY_CUSTOMER:
+      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+    case TRANSITION_CANCEL_BY_CUSTOMER_NO_REFUND:
+      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+    case TRANSITION_CANCEL_BY_OPERATOR:
+      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+    case TRANSITION_CANCEL_BY_PROVIDER:
+      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+    case TRANSITION_MARK_DELIVERED:
       // Show the leave a review link if the state is delivered and if the current user is the first to leave a review
-      const reviewPeriodJustStarted = txIsDelivered(transaction);
+      /*const reviewPeriodJustStarted = txIsDelivered(transaction);
 
       const reviewAsFirstLink = reviewPeriodJustStarted ? (
         <InlineTextButton onClick={onOpenReviewModal}>
@@ -158,6 +178,11 @@ const resolveTransitionMessage = (
           id="ActivityFeed.transitionComplete"
           values={{ reviewLink: reviewAsFirstLink }}
         />
+      );*/
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionMarkDelivered" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionDelivered" values={{ displayName }} />
       );
 
     case TRANSITION_REVIEW_1_BY_PROVIDER:
