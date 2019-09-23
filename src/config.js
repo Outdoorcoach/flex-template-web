@@ -40,7 +40,7 @@ const bookingProcessAlias = 'sca-preauth-unit-time-booking/outdoorcoach-release-
 //
 // Note: translations will use different translation keys for night, day or unit
 // depending on the value chosen.
-const bookingUnitType = 'line-item/day';
+const bookingUnitType = 'line-item/units';
 
 // Should the application fetch available time slots (currently defined as
 // start and end dates) to be shown on listing page.

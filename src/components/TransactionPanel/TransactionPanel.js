@@ -6,7 +6,10 @@ import {
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
   txIsAccepted,
   txIsCanceled,
+  txIsCompleted,
+  txIsDelivered,
   txIsDeclined,
+  txIsDisputed,
   txIsEnquired,
   txIsPaymentExpired,
   txIsPaymentPending,
@@ -46,7 +49,9 @@ import PanelHeading, {
   HEADING_REQUESTED,
   HEADING_ACCEPTED,
   HEADING_DECLINED,
+  HEADING_DISPUTED,
   HEADING_CANCELED,
+  HEADING_COMPLETED,
   HEADING_DELIVERED,
 } from './PanelHeading';
 
@@ -244,9 +249,19 @@ export class TransactionPanelComponent extends Component {
           showDetailCardHeadings: isCustomer,
           showAddress: isCustomer,
         };
+      } else if (txIsCompleted(tx)) {
+        return {
+          headingState: HEADING_COMPLETED,
+          showDetailCardHeadings: isCustomer,// TODO: add paramaters here
+        };
       } else if (txIsDeclined(tx)) {
         return {
           headingState: HEADING_DECLINED,
+          showDetailCardHeadings: isCustomer,
+        };
+      } else if (txIsDisputed(tx)) {
+        return {
+          headingState: HEADING_DISPUTED,
           showDetailCardHeadings: isCustomer,
         };
       } else if (txIsCanceled(tx)) {

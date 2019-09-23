@@ -235,12 +235,18 @@ propTypes.ownListing = shape({
 
 export const BOOKING_STATE_PENDING = 'pending';
 export const BOOKING_STATE_ACCEPTED = 'accepted';
+export const BOOKING_STATE_COMPLETED = 'completed';
 export const BOOKING_STATE_DECLINED = 'declined';
+export const BOOKING_STATE_DISPUTED = 'disputed';
+export const BOOKING_STATE_DELIVERED = 'delivered';
 export const BOOKING_STATE_CANCELLED = 'cancelled';
 export const BOOKING_STATES = [
   BOOKING_STATE_PENDING,
   BOOKING_STATE_ACCEPTED,
+  BOOKING_STATE_COMPLETED,
   BOOKING_STATE_DECLINED,
+  BOOKING_STATE_DELIVERED,
+  BOOKING_STATE_DISPUTED,
   BOOKING_STATE_CANCELLED,
 ];
 
