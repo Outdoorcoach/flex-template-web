@@ -7,7 +7,9 @@ import classNames from 'classnames';
 import {
   txIsAccepted,
   txIsCanceled,
+  txIsCompleted,
   txIsDeclined,
+  txIsDisputed,
   txIsEnquired,
   txIsRequested,
   txHasBeenDelivered,
@@ -128,7 +130,17 @@ export const txState = (intl, tx, type) => {
         id: 'InboxPage.stateAccepted',
       }),
     };
-  } else if (txIsCanceled(tx)) {
+  } else if (txIsCompleted(tx)) {
+    return {
+      nameClassName: css.nameNotEmphasized,
+      bookingClassName: css.bookingNoActionNeeded,
+      lastTransitionedAtClassName: css.lastTransitionedAtNotEmphasized,
+      stateClassName: css.stateNoActionNeeded,
+      state: intl.formatMessage({
+        id: 'InboxPage.stateCompleted',
+      }),
+    };
+  }else if (txIsCanceled(tx)) {
     return {
       nameClassName: css.nameNotEmphasized,
       bookingClassName: css.bookingNoActionNeeded,
@@ -146,6 +158,16 @@ export const txState = (intl, tx, type) => {
       stateClassName: css.stateNoActionNeeded,
       state: intl.formatMessage({
         id: 'InboxPage.stateDelivered',
+      }),
+    };
+  } else if (txIsDisputed(tx)) {
+    return {
+      nameClassName: css.nameNotEmphasized,
+      bookingClassName: css.bookingNoActionNeeded,
+      lastTransitionedAtClassName: css.lastTransitionedAtNotEmphasized,
+      stateClassName: css.stateActionNeeded,
+      state: intl.formatMessage({
+        id: 'InboxPage.stateDisputed',
       }),
     };
   } else {
