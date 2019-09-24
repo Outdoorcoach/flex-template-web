@@ -29,7 +29,7 @@ import React from 'react';
 import moment from 'moment';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { dateFromLocalToAPI, nightsBetween, daysBetween } from '../../util/dates';
+import { dateFromLocalToAPI, nightsBetween, daysBetween, hoursBetween } from '../../util/dates';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
 import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATE } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';

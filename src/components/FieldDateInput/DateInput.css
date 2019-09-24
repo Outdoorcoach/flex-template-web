@@ -47,6 +47,7 @@
   & :global(.DateInput_input) {
     @apply --marketplaceDefaultFontStyles;
     @apply --marketplaceInputStyles;
+    font-weight: 300;
     border-bottom-style: solid;
     border-bottom-width: 2px;
     border-bottom-color: var(--attentionColor);
