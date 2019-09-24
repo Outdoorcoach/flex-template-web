@@ -185,6 +185,8 @@ const AVAILABILITY_PLAN_DAY = 'availability-plan/day';
 const AVAILABILITY_PLAN_TIME = 'availability-plan/time';
 export const DAYS_OF_WEEK = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
+
+// describes the availability plan object
 const availabilityPlan = shape({
   type: oneOf([AVAILABILITY_PLAN_DAY, AVAILABILITY_PLAN_TIME]).isRequired,
   timezone: string,

@@ -132,6 +132,23 @@ export const minutesBetween = (startDate, endDate) => {
 };
 
 /**
+ * Calculate the number of hours between the given dates
+ *
+ * @param {Date} startDate start of the time period
+ * @param {Date} endDate end of the time period.
+ *
+ * @throws Will throw if the end date is before the start date
+ * @returns {Number} number of hours between the given Date objects
+ */
+export const hoursBetween = (startDate, endDate) => {
+  const hours = moment(endDate).diff(startDate, 'hours');
+  if (hours < 0) {
+    throw new Error('End Date cannot be before start Date');
+  }
+  return hours;
+};
+
+/**
  * Format the given date to month id/string
  *
  * @param {Date} date to be formatted
