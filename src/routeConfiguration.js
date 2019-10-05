@@ -12,6 +12,7 @@ import {
   LandingPage,
   ListingPage,
   ManageListingsPage,
+  NewsPage,
   NotFoundPage,
   PasswordChangePage,
   PasswordRecoveryPage,
@@ -72,6 +73,18 @@ const routeConfiguration = () => {
       name: 'FaqPage',
       component: props => <FaqPage {...props} />,
     },
+    {
+      path: '/articles',
+      name: 'NewsPage',
+      component: props => <NewsPage {...props} />,
+      loadData: NewsPage.loadData,
+    },/*
+    {
+      path: '/articles/:slug',
+      name: 'ArticlePage',
+      component: props => <ArticlePage {...props} />,
+      loadData: ArticlePage.loadData,
+    },*/
     {
       path: '/s',
       name: 'SearchPage',

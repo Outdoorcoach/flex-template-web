@@ -11,6 +11,7 @@ import EnterprisePage from './EnterprisePage/EnterprisePage.duck';
 import InboxPage from './InboxPage/InboxPage.duck';
 import ListingPage from './ListingPage/ListingPage.duck';
 import ManageListingsPage from './ManageListingsPage/ManageListingsPage.duck';
+import NewsPage from './NewsPage/NewsPage.duck';
 import PasswordChangePage from './PasswordChangePage/PasswordChangePage.duck';
 import PasswordRecoveryPage from './PasswordRecoveryPage/PasswordRecoveryPage.duck';
 import PasswordResetPage from './PasswordResetPage/PasswordResetPage.duck';
@@ -33,6 +34,7 @@ export {
   InboxPage,
   ListingPage,
   ManageListingsPage,
+  NewsPage,
   PasswordChangePage,
   PasswordRecoveryPage,
   PasswordResetPage,
