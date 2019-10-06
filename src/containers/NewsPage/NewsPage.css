@@ -18,6 +18,8 @@
   width: 100%;
   flex-grow: 1;
   display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
   @media (--viewportMedium) {
     position: relative;
@@ -44,5 +46,68 @@
   @media (--viewportLarge) {
     flex-basis: 62.5%;
     padding: 23px 0 0 0;
+  }
+}
+
+
+.postCard {
+  margin-bottom: 36px;
+  flex-basis: 100%;
+
+  @media (--viewportMedium) {
+    /**
+      * resultPanelWidthRatio = 0.625 aka 62.5%
+
+      resultPanel: 62.5vw from 1024px = 640px
+      panelPaddings: - 2*36px = 72px
+
+      columnCount: 2
+      guttersBetweenColumns: 24px
+
+      (resultPanel - (panelPaddings + guttersBetweenColumns)) / columnCount = listingCardWidth
+      ergo => listingCardWidth: 272px
+
+    * flex-basis: calc((100%/columnCount) - (guttersBetweenColumns / columnCount))
+    */
+    flex-basis: calc(50% - 12px);
+    
+  }
+
+  @media (--viewportLarge) {
+    /**
+     * resultPanelWidthRatio = 0.625 aka 62.5%
+
+      resultPanel: 62.5vw from 1920px = 1200px
+      panelPaddings: - 2*36px = 72px
+
+      columnCount: 3
+      guttersBetweenColumns: 2*24px = 48px
+
+      (resultPanel - (panelPaddings + guttersBetweenColumns)) / columnCount = listingCardWidth
+      ergo => listingCardWidth: 360px
+
+     * flex-basis: calc((100%/columnCount) - (guttersBetweenColumns / columnCount))
+     */
+
+    flex-basis: calc(33.33% - 16px);
+    
+  }
+}
+
+/**
+ * Remove margin-right from listingCards on the last column
+ * This is a special case in the world of breakpoints. Nth-of-type effects every nth item.
+ * Here we take margin-right away, but we don't want it affect the next column breakpoint.
+ */
+
+.postCard:nth-of-type(2n) {
+  @media screen and (min-width: 1024px) and (max-width: 1920px) {
+    margin-right: 0;
+  }
+}
+
+.postCard:nth-of-type(3n) {
+  @media (--viewportXLarge) {
+    margin-right: 0;
   }
 }

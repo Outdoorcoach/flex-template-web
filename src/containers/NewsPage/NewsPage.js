@@ -19,6 +19,7 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
+  PostCard,
 } from '../../components';
 
 import { } from './NewsPage.duck';
@@ -37,19 +38,26 @@ export class NewsPageComponent extends Component {
 
     this.state = {
     };
+    // Panel width relative to the viewport
+    
     this.renderPosts = this.renderPosts.bind(this);
-  }
+    }
 
   renderPosts(postsData) {
-    return postsData.map((post) =>
-      <div key={post.sys.id}>{post.fields.title}</div>
-    )
+    return 
   }
 
   render() {
     const articles = this.props.posts;
 
-    let renderedPosts = this.renderPosts(articles);
+    const panelMediumWidth = 50;
+    const panelLargeWidth = 62.5;
+    const cardRenderSizes = [
+    '(max-width: 767px) 100vw',
+    `(max-width: 1023px) ${panelMediumWidth}vw`,
+    `(max-width: 1920px) ${panelLargeWidth / 2}vw`,
+    `${panelLargeWidth / 3}vw`,
+    ].join(', ');
     
     const isWindowDefined = typeof window !== 'undefined';
 
@@ -70,9 +78,16 @@ export class NewsPageComponent extends Component {
           </LayoutWrapperTopbar>
 
           <LayoutWrapperMain className={css.staticPageWrapper}>
-            <div className={css.contentWrapper}>
+            <div className={css.container}>
              
-              {renderedPosts}
+              {articles.map((p) =>
+                <PostCard 
+                  className={css.postCard}
+                  renderSizes={cardRenderSizes}
+                  key={p.sys.id}
+                  post={p}
+                />
+              )}
             </div>
           </LayoutWrapperMain>
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { string } from 'prop-types';
-import { FormattedMessage } from '../../util/reactIntl';
+import { FormattedMessage, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { lazyLoadWithDimensions } from '../../util/contextHelpers';
 import { propTypes } from '../../util/types';
@@ -18,16 +18,35 @@ class PostImage extends Component {
 const LazyImage = lazyLoadWithDimensions(PostImage, { loadAfterInitialRendering: 3000 });
 
 export const PostCardComponent = props => {
-  const { className, rootClassName, article, renderSizes} = props;
+  const { className, rootClassName, post, renderSizes} = props;
   const classes = classNames(rootClassName || css.root, className);
+  const id = post.sys.id;
+  const title = post.fields.title;
   
-  const slug = createSlug(title);
+  const convertImage = (rawImage) => {
+    return {
+      attributes: {
+        variants: {
+          default : {
+            name: "default",
+            width: 720,
+            height: 540,
+            url: rawImage.fields.file.url.replace('//', 'http://') + "?w=720&h=540"
+          }
+        }
+      },
+      type: "image",
+      id: rawImage.sys.id
+    }
+    
+  };
+  //const slug = createSlug(post.title);
   //const author = ensureUser(article.author); 
   //const authorName = author.attributes.profile.displayName;
-  const articleImage = article.mainImage;
+  const articleImage = convertImage(post.fields.heroImage);
 
   return (
-    <NamedLink className={classes} name="ArticlePage" params={{ id, slug }}>
+    <NamedLink className={classes} name="AboutPage" >
       <div
         className={css.threeToTwoWrapper}
       >
@@ -35,8 +54,8 @@ export const PostCardComponent = props => {
           <LazyImage
             rootClassName={css.rootForImage}
             alt={title}
-            image={firstImage}
-            variants={['landscape-crop', 'landscape-crop2x']}
+            image={articleImage}
+            variants={['default']}
             sizes={renderSizes}
           />
         </div>
@@ -47,7 +66,7 @@ export const PostCardComponent = props => {
             {title}
           </div>
           <div className={css.authorInfo}>
-            <FormattedMessage id="PostCard.byAuthorText" values={{ authorName }} />
+            {/*<FormattedMessage id="PostCard.byAuthorText" values={{ authorName }} />*/}
           </div>
         </div>
       </div>
@@ -64,10 +83,9 @@ PostCardComponent.defaultProps = {
 PostCardComponent.propTypes = {
   className: string,
   rootClassName: string,
-  article: propTypes.article.isRequired,
 
   // Responsive image sizes hint
   renderSizes: string,
 };
 
-export default PostCardComponent;
+export default injectIntl(PostCardComponent);
