@@ -19,10 +19,6 @@
   position: relative;
   transition: var(--transitionStyleButton);
 
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: var(--boxShadowListingCard);
-  }
 }
 /* Firefox doesn't support image aspect ratio inside flexbox */
 .aspectWrapper {
@@ -90,7 +86,7 @@
   /* Layout */
   display: flex;
   flex-direction: row;
-  padding: 16px 0 2px 0;
+  padding: 8px 0 2px 0;
 }
 
 .mainInfo {
@@ -100,8 +96,10 @@
 
 .title {
   /* Font */
-  @apply --marketplaceH3FontStyles;
-  color: var(--matterColor);
+  @apply --marketplaceH2FontStyles;
+  font-weight: 500;
+  color: #828282;
+  
 
   /* Remove default margins from font */
   margin-top: 0;
