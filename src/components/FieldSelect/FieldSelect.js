@@ -7,7 +7,7 @@ import { ValidationError } from '../../components';
 import css from './FieldSelect.css';
 
 const FieldSelectComponent = props => {
-  const { rootClassName, className, id, label, input, meta, children, ...rest } = props;
+  const { rootClassName, className, id, label, input, meta, children, useMobileMargins, ...rest } = props;
 
   if (label && !id) {
     throw new Error('id required when a label is given');
@@ -25,7 +25,9 @@ const FieldSelectComponent = props => {
   });
   const selectProps = { className: selectClasses, id, ...input, ...rest };
 
-  const classes = classNames(rootClassName || css.root, className);
+  const classes = classNames(rootClassName || css.root, className, {
+    [css.mobileMargins]: useMobileMargins,
+  });
   return (
     <div className={classes}>
       {label ? <label htmlFor={id}>{label}</label> : null}

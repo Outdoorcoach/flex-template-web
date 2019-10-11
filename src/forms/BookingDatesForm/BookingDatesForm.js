@@ -22,6 +22,7 @@ export class BookingDatesFormComponent extends Component {
     this.state = { focusedInput: null };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.onFocusedInputChange = this.onFocusedInputChange.bind(this);
+    this.formatBookingDates = this.formatBookingDates.bind(this);
     this.renderHourOptions = this.renderHourOptions.bind(this);
   }
 
@@ -30,6 +31,20 @@ export class BookingDatesFormComponent extends Component {
   // focused input changes.
   onFocusedInputChange(focusedInput) {
     this.setState({ focusedInput });
+  }
+
+  formatBookingDates(date, starthour, endhour) {
+      let startDate = moment(date.date);
+      let endDate = moment(date.date);
+      startDate.hours(starthour);
+      endDate.hours(endhour);
+      console.log(startDate.toLocaleString());
+      return {
+        bookingStart: startDate,
+        bookingEnd: endDate
+      }
+    
+    
   }
 
   renderHourOptions() {
@@ -62,6 +77,15 @@ export class BookingDatesFormComponent extends Component {
   render() {
     const { rootClassName, className, price: unitPrice, ...rest } = this.props;
     const classes = classNames(rootClassName || css.root, className);
+
+    const seats = [
+      1,
+      2,
+      3,
+      4,
+      5,
+    ]
+    
 
     if (!unitPrice) {
       return (
@@ -102,8 +126,16 @@ export class BookingDatesFormComponent extends Component {
             timeSlots,
             fetchTimeSlotsError,
           } = fieldRenderProps;
-          const { startDate, endDate } = values && values.bookingDates ? values.bookingDates : {};
-
+          //const { startDate, endDate } = values && values.bookingDate ? values.bookingDate : {};  // old code
+          const startDate = values.bookingDate ? values.bookingDate : {};
+          const endDate = startDate ? startDate : {};
+          const startHour = values && values.startHour ? values.startHour : {};
+          const endHour = startHour && values.endHour ? values.endHour : {};
+          const nrSeats = endHour ? values.numberSeats : {};
+          //const quantity = 
+          const showFields = (values && values.bookingDate);
+          console.log(nrSeats);
+          
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingDatesForm.bookingStartTitle',
           });
@@ -113,7 +145,10 @@ export class BookingDatesFormComponent extends Component {
           const endHourLabel = intl.formatMessage({
             id: 'BookingDatesForm.endHourTitle',
           });
-          const bookingEndLabel = intl.formatMessage({ id: 'BookingDatesForm.bookingEndTitle' });
+          const seatsLabel = intl.formatMessage({
+            id: 'BookingDatesForm.seatsTitle',
+          });
+          
           const requiredMessage = intl.formatMessage({ id: 'BookingDatesForm.requiredDate' });
           const startDateErrorMessage = intl.formatMessage({
             id: 'FieldDateRangeInput.invalidStartDate',
@@ -127,22 +162,26 @@ export class BookingDatesFormComponent extends Component {
             </p>
           ) : null;
 
+
+          const {bookingStart, bookingEnd} = values.endHour ? this.formatBookingDates(startDate, startHour, endHour): {};
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
           // for customized payment processes.
+          
           const bookingData =
-            startDate && endDate
+            startDate && startHour & endHour
               ? {
                   unitType,
                   unitPrice,
-                  startDate,
-                  endDate,
+                  bookingStart,
+                  bookingEnd,
 
                   // NOTE: If unitType is `line-item/units`, a new picker
                   // for the quantity should be added to the form.
                   quantity: 1,
                 }
               : null;
+          
           const bookingInfo = bookingData ? (
             <div className={css.priceBreakdownContainer}>
               <h3 className={css.priceBreakdownTitle}>
@@ -154,6 +193,11 @@ export class BookingDatesFormComponent extends Component {
 
           const dayHours = this.renderHourOptions().map(function(item, i) {
             return <option key={i} value={i}>{item}</option>
+          })
+
+
+          const seatsOptions = seats.map(function(item, i) {
+            return <option key={i+1} value={i+1}>{item}</option>
           })
 
           const dateFormatOptions = {
@@ -168,6 +212,7 @@ export class BookingDatesFormComponent extends Component {
             .startOf('day')
             .add(1, 'days')
             .toDate();
+            
           const startDatePlaceholderText =
             startDatePlaceholder || intl.formatDate(tomorrow, dateFormatOptions);
           const endDatePlaceholderText =
@@ -176,16 +221,18 @@ export class BookingDatesFormComponent extends Component {
             submitButtonWrapperClassName || css.submitButtonWrapper
           );
 
+          const requiredmessage = required('Du måste välja ett klockslag');
+          const requiredseatsmessage = required('Du måste välja ett klockslag');
+
           return (
             <Form onSubmit={handleSubmit} className={classes}>
               {timeSlotsError}
               <FieldDateInput
                 className={css.bookingDates}
                 name="bookingDate"
-                unitType={unitType}
                 id={`${formId}.bookingDate`}
                 label={bookingStartLabel}
-                placeHolderText={startDatePlaceholderText}
+                placeholderText={startDatePlaceholderText}
                 format={identity}
                 timeSlots={timeSlots}
                 useMobileMargins
@@ -194,20 +241,33 @@ export class BookingDatesFormComponent extends Component {
                   bookingDateRequired(startDateErrorMessage, endDateErrorMessage)
                 )}
                 />
-              <FieldSelect 
+                {showFields ? <React.Fragment>
+                  <FieldSelect 
                 id={`${formId}.bookingStartHour`}
                 name="startHour" 
                 label={startHourLabel} 
-                validate={required}>
+                validate={requiredmessage}
+                useMobileMargins>
                 {dayHours}
               </FieldSelect>
               <FieldSelect 
                 id={`${formId}.bookingEndHour`}
                 name="endHour" 
                 label={endHourLabel} 
-                validate={required}>
+                validate={requiredmessage}
+                useMobileMargins>
                 {dayHours}
               </FieldSelect>
+              <FieldSelect 
+                id={`${formId}.bookingNumberSeats`}
+                name="numberSeats" 
+                label={seatsLabel} 
+                validate={requiredseatsmessage}
+                useMobileMargins>
+                {seatsOptions}
+              </FieldSelect>
+                </React.Fragment>: ""}
+              
               {bookingInfo}
               <p className={css.smallPrint}>
                 <FormattedMessage

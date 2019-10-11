@@ -31,7 +31,7 @@ import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import { dateFromLocalToAPI, nightsBetween, daysBetween, hoursBetween } from '../../util/dates';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
-import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATE } from '../../util/types';
+import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { BookingBreakdown } from '../../components';
 
@@ -39,22 +39,30 @@ import css from './BookingDatesForm.css';
 
 const { Money, UUID } = sdkTypes;
 
+/* calculate total price based on Outdoorcoach hour*/
 const estimatedTotalPrice = (unitPrice, unitCount) => {
-  const numericPrice = convertMoneyToNumber(unitPrice);
-  const numericTotalPrice = new Decimal(numericPrice).times(unitCount).toNumber();
-  return new Money(
-    convertUnitToSubUnit(numericTotalPrice, unitDivisor(unitPrice.currency)),
-    unitPrice.currency
-  );
+  const numericTotalPrice = new Decimal(unitPrice).times(unitCount).toNumber();
+  return numericTotalPrice;
+};
+
+const estimatedPeopleDiscountMaybe = (unitPrice, extraPeople) => {
+    const numericDiscount = new Decimal(unitPrice).times(extraPeople).times(0.5).toNumber();
+    return numericDiscount; 
+};
+
+const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
+    const numericDiscount = new Decimal(unitPrice).times(extraHours).times(0.6).toNumber();
+    return numericDiscount; 
 };
 
 // When we cannot speculatively initiate a transaction (i.e. logged
 // out), we must estimate the booking breakdown. This function creates
 // an estimated transaction object for that use case.
-const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity) => {
+const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, extraPeople) => {
   const now = new Date();
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
+  const unitPriceInNumbers = convertMoneyToNumber(unitPrice);
 
   const unitCount = isNightly
     ? nightsBetween(bookingStart, bookingEnd)
@@ -62,7 +70,22 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? daysBetween(bookingStart, bookingEnd)
     : quantity;
 
-  const totalPrice = estimatedTotalPrice(unitPrice, unitCount);
+  const subtotalPrice = estimatedTotalPrice(unitPriceInNumbers, unitCount);
+
+  const hoursDiscount = extraHours 
+    ? estimatedHoursDiscountMaybe(unitPriceInNumbers, extraHours)
+    : 0;
+  const peopleDiscount =  extraPeople
+    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers, extraPeople)
+    : 0;
+
+  const withDiscounts = subtotalPrice-hoursDiscount-peopleDiscount;
+  
+  const totalPrice = new Money(
+    convertUnitToSubUnit(withDiscounts, unitDivisor(unitPrice.currency)),
+    unitPrice.currency
+  );
+
 
   // bookingStart: "Fri Mar 30 2018 12:00:00 GMT-1100 (SST)" aka "Fri Mar 30 2018 23:00:00 GMT+0000 (UTC)"
   // Server normalizes night/day bookings to start from 00:00 UTC aka "Thu Mar 29 2018 13:00:00 GMT-1100 (SST)"
@@ -71,14 +94,54 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   // local noon -> startOf('day') => 00:00 local => remove timezoneoffset => 00:00 API (UTC)
   const serverDayStart = dateFromLocalToAPI(
     moment(bookingStart)
-      .startOf('day')
-      .toDate()
   );
   const serverDayEnd = dateFromLocalToAPI(
     moment(bookingEnd)
-      .startOf('day')
-      .toDate()
   );
+
+  const extraHoursQuantity = extraHours 
+  ? extraHours 
+  : 0;
+  const hoursDiscountLineItem = {
+    code: LINE_ITEM_HOURS_DISCOUNT,
+    includeFor: ['customer', 'provider'],
+    unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.6, unitDivisor(unitPrice.currency)), unitPrice.currency),
+    quantity: new Decimal(extraHoursQuantity),
+    lineTotal: hoursDiscount,
+    reversal: false,
+  };
+  const hoursDiscountLineItemMaybe = extraHours 
+    ? [hoursDiscountLineItem] 
+    : [];
+
+  const extraPeopleQuantity = extraPeople 
+  ? extraPeople 
+  : 0;
+  const peopleDiscountLineItem = {
+    code: LINE_ITEM_PEOPLE_DISCOUNT,
+    includeFor: ['customer', 'provider'],
+    unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.5, unitDivisor(unitPrice.currency)), unitPrice.currency),
+    quantity: new Decimal(extraPeopleQuantity),
+    lineTotal: peopleDiscount,
+    reversal: false,
+  };
+  const peopleDiscountLineItemMaybe = extraPeople 
+    ? [peopleDiscountLineItem] 
+    : [];
+
+
+  const lineItemsArray = [
+    ...hoursDiscountLineItemMaybe,
+    ...peopleDiscountLineItemMaybe,
+    {
+      code: unitType,
+      includeFor: ['customer', 'provider'],
+      unitPrice: unitPrice,
+      quantity: new Decimal(unitCount),
+      lineTotal: totalPrice,
+      reversal: false,
+    }
+  ]
 
   return {
     id: new UUID('estimated-transaction'),
@@ -89,16 +152,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
       lastTransition: TRANSITION_REQUEST_PAYMENT,
       payinTotal: totalPrice,
       payoutTotal: totalPrice,
-      lineItems: [
-        {
-          code: unitType,
-          includeFor: ['customer', 'provider'],
-          unitPrice: unitPrice,
-          quantity: new Decimal(unitCount),
-          lineTotal: totalPrice,
-          reversal: false,
-        },
-      ],
+      lineItems: lineItemsArray,
       transitions: [
         {
           createdAt: now,
@@ -111,23 +165,22 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
       id: new UUID('estimated-booking'),
       type: 'booking',
       attributes: {
-        start: serverDayStart,
-        end: serverDayEnd,
+        start: bookingStart,
+        end: bookingEnd,
       },
     },
   };
 };
 
 const EstimatedBreakdownMaybe = props => {
-  const { unitType, unitPrice, startDate, endDate, quantity } = props.bookingData;
+  const { unitType, unitPrice, startDate, endDate, quantity, extraHours, extraPeople } = props.bookingData;
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
   const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits;
   if (!canEstimatePrice) {
     return null;
   }
-
-  const tx = estimatedTransaction(unitType, startDate, endDate, unitPrice, quantity);
+  const tx = estimatedTransaction(unitType, startDate, endDate, unitPrice, quantity, extraHours, extraPeople);
 
   return (
     <BookingBreakdown
@@ -136,7 +189,7 @@ const EstimatedBreakdownMaybe = props => {
       unitType={unitType}
       transaction={tx}
       booking={tx.booking}
-      dateType={DATE_TYPE_DATE}
+      dateType={DATE_TYPE_DATETIME}
     />
   );
 };

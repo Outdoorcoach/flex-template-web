@@ -7,7 +7,7 @@
 
 .bookingDates {
   flex-shrink: 0;
-  margin-bottom: 38px;
+  margin-bottom: 12px;
 
   /* Ensure that calendar dropdown gets some stacking context relative to other form items below */
   z-index: 1;
@@ -61,16 +61,16 @@
   @apply --marketplaceTinyFontStyles;
   color: var(--matterColorAnti);
   text-align: center;
-  margin: auto 24px 20px 24px;
+  margin: 24 24px 20px 24px;
   flex-shrink: 0;
 
   @media (--viewportMedium) {
-    margin-top: auto;
+    margin-top: 12px;
     margin-bottom: 20px;
   }
 
   @media (--viewportLarge) {
-    margin-top: 4px;
+    margin-top: 24px;
     margin-bottom: 21px;
   }
 }

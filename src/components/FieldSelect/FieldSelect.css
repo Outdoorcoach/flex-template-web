@@ -7,6 +7,7 @@
   color: var(--matterColorAnti);
   border-bottom-color: var(--attentionColor);
   padding-right: 20px;
+  font-weight: 300;
 
   & > option {
     color: var(--matterColor);
@@ -23,4 +24,14 @@
 
 .selectError {
   border-bottom-color: var(--failColor);
+}
+
+.mobileMargins {
+  width: calc(100% - 48px);
+  margin: 12px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    width: 100%;
+    margin: 12px 0 0 0;
+  }
 }
