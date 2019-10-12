@@ -46,13 +46,13 @@ const estimatedTotalPrice = (unitPrice, unitCount) => {
 };
 
 const estimatedPeopleDiscountMaybe = (unitPrice, extraPeople) => {
-    const numericDiscount = new Decimal(unitPrice).times(extraPeople).times(0.5).toNumber();
-    return numericDiscount; 
+  const numericDiscount = new Decimal(unitPrice).times(extraPeople).times(0.5).toNumber();
+  return numericDiscount;
 };
 
 const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
-    const numericDiscount = new Decimal(unitPrice).times(extraHours).times(0.6).toNumber();
-    return numericDiscount; 
+  const numericDiscount = new Decimal(unitPrice).times(extraHours).times(0.6).toNumber();
+  return numericDiscount;
 };
 
 // When we cannot speculatively initiate a transaction (i.e. logged
@@ -60,6 +60,8 @@ const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
 // an estimated transaction object for that use case.
 const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, extraPeople) => {
   const now = new Date();
+  console.log(bookingStart)
+  console.log(bookingEnd)
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const unitPriceInNumbers = convertMoneyToNumber(unitPrice);
@@ -67,20 +69,20 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const unitCount = isNightly
     ? nightsBetween(bookingStart, bookingEnd)
     : isDaily
-    ? daysBetween(bookingStart, bookingEnd)
-    : quantity;
+      ? daysBetween(bookingStart, bookingEnd)
+      : quantity;
 
   const subtotalPrice = estimatedTotalPrice(unitPriceInNumbers, unitCount);
 
-  const hoursDiscount = extraHours 
+  const hoursDiscount = extraHours
     ? estimatedHoursDiscountMaybe(unitPriceInNumbers, extraHours)
     : 0;
-  const peopleDiscount =  extraPeople
+  const peopleDiscount = extraPeople
     ? estimatedPeopleDiscountMaybe(unitPriceInNumbers, extraPeople)
     : 0;
 
-  const withDiscounts = subtotalPrice-hoursDiscount-peopleDiscount;
-  
+  const withDiscounts = subtotalPrice - hoursDiscount - peopleDiscount;
+
   const totalPrice = new Money(
     convertUnitToSubUnit(withDiscounts, unitDivisor(unitPrice.currency)),
     unitPrice.currency
@@ -99,9 +101,9 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     moment(bookingEnd)
   );
 
-  const extraHoursQuantity = extraHours 
-  ? extraHours 
-  : 0;
+  const extraHoursQuantity = extraHours
+    ? extraHours
+    : 0;
   const hoursDiscountLineItem = {
     code: LINE_ITEM_HOURS_DISCOUNT,
     includeFor: ['customer', 'provider'],
@@ -110,13 +112,13 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     lineTotal: hoursDiscount,
     reversal: false,
   };
-  const hoursDiscountLineItemMaybe = extraHours 
-    ? [hoursDiscountLineItem] 
+  const hoursDiscountLineItemMaybe = extraHours
+    ? [hoursDiscountLineItem]
     : [];
 
-  const extraPeopleQuantity = extraPeople 
-  ? extraPeople 
-  : 0;
+  const extraPeopleQuantity = extraPeople
+    ? extraPeople
+    : 0;
   const peopleDiscountLineItem = {
     code: LINE_ITEM_PEOPLE_DISCOUNT,
     includeFor: ['customer', 'provider'],
@@ -125,8 +127,8 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     lineTotal: peopleDiscount,
     reversal: false,
   };
-  const peopleDiscountLineItemMaybe = extraPeople 
-    ? [peopleDiscountLineItem] 
+  const peopleDiscountLineItemMaybe = extraPeople
+    ? [peopleDiscountLineItem]
     : [];
 
 
@@ -173,15 +175,18 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 };
 
 const EstimatedBreakdownMaybe = props => {
-  const { unitType, unitPrice, startDate, endDate, quantity, extraHours, extraPeople } = props.bookingData;
+
+  const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, extraPeople } = props.bookingData;
+  console.log("end: " + bookingEnd)
+  console.log("start: " + bookingStart)
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
-  const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits;
+  const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;
+  console.log(canEstimatePrice)
   if (!canEstimatePrice) {
     return null;
   }
-  const tx = estimatedTransaction(unitType, startDate, endDate, unitPrice, quantity, extraHours, extraPeople);
-
+  const tx = estimatedTransaction(unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, extraPeople);
   return (
     <BookingBreakdown
       className={css.receipt}

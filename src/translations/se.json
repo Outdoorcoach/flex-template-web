@@ -41,6 +41,8 @@
   "AuthenticationPage.verifyEmailTitle": "{name}, Kika i din inkorg för att bekräfta din e-postadress",
   "Avatar.bannedUserDisplayName": "Avstängd användare",
   "Avatar.deletedUserDisplayName": "Borttagen användare",
+  "BookingBreakdown.bookingStart": "Starttid",
+  "BookingBreakdown.bookingEnd": "Sluttid",
   "BookingBreakdown.bookingPeriod": "{bookingStart} – {bookingEnd}",
   "BookingBreakdown.commission": "Kommision*",
   "BookingBreakdown.commissionFeeNote": "* Avgiften hjälper oss att hålla igång plattformen och att ge dig bästa tänkbara service.",
