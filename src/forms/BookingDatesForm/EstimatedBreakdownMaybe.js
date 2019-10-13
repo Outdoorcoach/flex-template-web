@@ -52,7 +52,7 @@ const estimatedPeopleDiscountMaybe = (unitPrice, extraparticipants, nrHours) => 
 };
 
 const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraHours).toNumber();
+  const numericDiscount = new Decimal(unitPrice).times(extraHours).times(-1).toNumber();
   return numericDiscount;
 };
 
@@ -76,7 +76,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const subtotalPrice = estimatedTotalPrice(unitPriceInNumbers, unitCount);
 
   const hoursDiscount = extraHours
-    ? estimatedHoursDiscountMaybe(unitPriceInNumbers, extraHours)
+    ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.6, extraHours)
     : 0;
   const peopleDiscount = participants > 1
     ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants-1, bookingLength)
@@ -110,7 +110,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   );
 
   const extraHoursQuantity = extraHours
-    ? (extraHours * -1)
+    ? (extraHours)
     : 0;
   const hoursDiscountLineItem = {
     code: LINE_ITEM_HOURS_DISCOUNT,
