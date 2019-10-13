@@ -76,7 +76,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const subtotalPrice = estimatedTotalPrice(unitPriceInNumbers, unitCount);
 
   const hoursDiscount = extraHours
-    ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.6, extraHours)
+    ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours)
     : 0;
   const peopleDiscount = participants > 1
     ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants-1, bookingLength)
@@ -91,6 +91,11 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     unitPrice.currency
   );
 
+  const totalwithdiscounts = subtotalPrice + hoursDiscount + peopleDiscount;
+  const totalwithdiscountsMoney = new Money(
+    convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
+    unitPrice.currency
+  )
   const totalPrice = new Money(
     convertUnitToSubUnit(subtotalPrice, unitDivisor(unitPrice.currency)),
     unitPrice.currency
@@ -115,7 +120,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const hoursDiscountLineItem = {
     code: LINE_ITEM_HOURS_DISCOUNT,
     includeFor: ['customer'],
-    unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.6, unitDivisor(unitPrice.currency)), unitPrice.currency),
+    unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.4, unitDivisor(unitPrice.currency)), unitPrice.currency),
     quantity: new Decimal(extraHoursQuantity),
     lineTotal: hoursDiscountTotal,
     reversal: false,
@@ -161,8 +166,8 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
       createdAt: now,
       lastTransitionedAt: now,
       lastTransition: TRANSITION_REQUEST_PAYMENT,
-      payinTotal: totalPrice,
-      payoutTotal: totalPrice,
+      payinTotal: totalwithdiscountsMoney,
+      payoutTotal: totalwithdiscountsMoney,
       lineItems: lineItemsArray,
       transitions: [
         {
