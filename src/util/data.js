@@ -239,6 +239,16 @@ export const ensureDayAvailabilityPlan = availabilityPlan => {
  *
  * @param {Object} availability exception entity object, which is to be ensured against null values
  */
+export const ensureTimeAvailabilityPlan = availabilityPlan => {
+  const empty = { type: 'availability-plan/time', entries: [] };
+  return { ...empty, ...availabilityPlan };
+};
+
+/**
+ * Create shell objects to ensure that attributes etc. exists.
+ *
+ * @param {Object} availability exception entity object, which is to be ensured against null values
+ */
 export const ensureAvailabilityException = availabilityException => {
   const empty = { id: null, type: 'availabilityException', attributes: {} };
   return { ...empty, ...availabilityException };
