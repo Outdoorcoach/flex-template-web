@@ -228,7 +228,7 @@ export class BookingDatesFormComponent extends Component {
           );
 
           const requiredmessage = required('Du måste välja ett klockslag');
-          const requiredseatsmessage = required('Du måste välja ett klockslag');
+          const requiredseatsmessage = required('Du måste välja antal personer!');
 
           return (
             <Form onSubmit={handleSubmit} className={classes}>
