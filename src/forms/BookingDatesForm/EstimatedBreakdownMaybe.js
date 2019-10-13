@@ -79,7 +79,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours)
     : 0;
   const peopleDiscount = participants > 1
-    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants-1, bookingLength)
+    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants - 1, bookingLength)
     : 0;
 
   const hoursDiscountTotal = new Money(
@@ -144,7 +144,6 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? [peopleDiscountLineItem]
     : [];
 
-  console.log(peopleDiscountLineItemMaybe);
 
   const lineItemsArray = [
     ...hoursDiscountLineItemMaybe,
@@ -192,7 +191,6 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 const EstimatedBreakdownMaybe = props => {
 
   const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants } = props.bookingData;
-  console.log(participants);
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
   const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;

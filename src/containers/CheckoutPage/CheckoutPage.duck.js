@@ -36,6 +36,7 @@ const initialState = {
   listing: null,
   bookingData: null,
   bookingDates: null,
+  lineItems: null,
   speculateTransactionInProgress: false,
   speculateTransactionError: null,
   speculatedTransaction: null,
@@ -47,6 +48,7 @@ const initialState = {
 
 export default function checkoutPageReducer(state = initialState, action = {}) {
   const { type, payload } = action;
+
   switch (type) {
     case SET_INITAL_VALUES:
       return { ...initialState, ...payload };
@@ -105,10 +107,13 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
 
 // ================ Action creators ================ //
 
-export const setInitialValues = initialValues => ({
-  type: SET_INITAL_VALUES,
-  payload: pick(initialValues, Object.keys(initialState)),
-});
+export const setInitialValues = (initialValues) => {
+  console.log(initialValues)
+  return ({
+    type: SET_INITAL_VALUES,
+    payload: pick(initialValues, Object.keys(initialState)),
+  })
+}
 
 const initiateOrderRequest = () => ({ type: INITIATE_ORDER_REQUEST });
 
@@ -163,15 +168,15 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   dispatch(initiateOrderRequest());
   const bodyParams = transactionId
     ? {
-        id: transactionId,
-        transition: TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
-        params: orderParams,
-      }
+      id: transactionId,
+      transition: TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
+      params: orderParams,
+    }
     : {
-        processAlias: config.bookingProcessAlias,
-        transition: TRANSITION_REQUEST_PAYMENT,
-        params: orderParams,
-      };
+      processAlias: config.bookingProcessAlias,
+      transition: TRANSITION_REQUEST_PAYMENT,
+      params: orderParams,
+    };
   const queryParams = {
     include: ['booking', 'provider'],
     expand: true,
@@ -265,9 +270,9 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
     transition: TRANSITION_REQUEST_PAYMENT,
     processAlias: config.bookingProcessAlias,
     params: {
-      ...params,
-      cardToken: 'CheckoutPage_speculative_card_token',
-    },
+      ...params
+    }
+
   };
   console.log(bodyParams);
   const queryParams = {
@@ -285,11 +290,9 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
       dispatch(speculateTransactionSuccess(tx));
     })
     .catch(e => {
-      const { listingId, bookingStart, bookingEnd } = params;
+
       log.error(e, 'speculate-transaction-failed', {
-        listingId: listingId.uuid,
-        bookingStart,
-        bookingEnd,
+        ...params
       });
       return dispatch(speculateTransactionError(storableError(e)));
     });
