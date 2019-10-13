@@ -126,12 +126,11 @@ export class BookingDatesFormComponent extends Component {
             timeSlots,
             fetchTimeSlotsError,
           } = fieldRenderProps;
-          //const { startDate, endDate } = values && values.bookingDate ? values.bookingDate : {};  // old code
+
           const startDate = values && values.bookingDate ? values.bookingDate : {};
-          //const endDate = startDate ? startDate : {};
           const startHour = values && values.startHour ? values.startHour : {};
           const endHour = values && values.endHour ? values.endHour : {};
-          // const nrSeats = endHour ? values.numberSeats : {};
+          const participants = values && values.participants ? values.participants : 1;
           const showFields = (values && values.bookingDate);
 
 
@@ -144,8 +143,8 @@ export class BookingDatesFormComponent extends Component {
           const endHourLabel = intl.formatMessage({
             id: 'BookingDatesForm.endHourTitle',
           });
-          const seatsLabel = intl.formatMessage({
-            id: 'BookingDatesForm.seatsTitle',
+          const participantsLabel = intl.formatMessage({
+            id: 'BookingDatesForm.nrOfParticpantsTitle',
           });
 
           const requiredMessage = intl.formatMessage({ id: 'BookingDatesForm.requiredDate' });
@@ -174,6 +173,7 @@ export class BookingDatesFormComponent extends Component {
                 unitPrice,
                 bookingStart,
                 bookingEnd,
+                participants,
 
                 // NOTE: If unitType is `line-item/units`, a new picker
                 // for the quantity should be added to the form.
@@ -220,8 +220,6 @@ export class BookingDatesFormComponent extends Component {
 
           const requiredmessage = required('Du måste välja ett klockslag');
           const requiredseatsmessage = required('Du måste välja ett klockslag');
-          console.log("bokingdata: " + bookingData)
-          console.log("starthour: " + startHour)
 
           return (
             <Form onSubmit={handleSubmit} className={classes}>
@@ -258,9 +256,9 @@ export class BookingDatesFormComponent extends Component {
                   {dayHours}
                 </FieldSelect>
                 <FieldSelect
-                  id={`${formId}.bookingNumberSeats`}
-                  name="numberSeats"
-                  label={seatsLabel}
+                  id={`${formId}.bookingParticipants`}
+                  name="participants"
+                  label={participantsLabel}
                   validate={requiredseatsmessage}
                   useMobileMargins>
                   {seatsOptions}

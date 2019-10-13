@@ -41,14 +41,13 @@ export const BookingBreakdownComponent = props => {
   const isCustomer = userRole === 'customer';
   const isProvider = userRole === 'provider';
 
-  console.log(booking);
 
   const hasCommissionLineItem = transaction.attributes.lineItems.find(item => {
     const hasCustomerCommission = isCustomer && item.code === LINE_ITEM_CUSTOMER_COMMISSION;
     const hasProviderCommission = isProvider && item.code === LINE_ITEM_PROVIDER_COMMISSION;
     return (hasCustomerCommission || hasProviderCommission) && !item.reversal;
   });
-  console.log(booking);
+
 
   const classes = classNames(rootClassName || css.root, className);
 
@@ -143,7 +142,6 @@ BookingBreakdownComponent.defaultProps = { rootClassName: null, className: null,
 BookingBreakdownComponent.propTypes = {
   rootClassName: string,
   className: string,
-
   userRole: oneOf(['customer', 'provider']).isRequired,
   unitType: propTypes.bookingUnitType.isRequired,
   transaction: propTypes.transaction.isRequired,

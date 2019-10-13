@@ -10,7 +10,6 @@ const LineItemUnitsMaybe = props => {
   if (unitType !== LINE_ITEM_UNITS) {
     return null;
   }
-
   const unitPurchase = transaction.attributes.lineItems.find(
     item => item.code === unitType && !item.reversal
   );

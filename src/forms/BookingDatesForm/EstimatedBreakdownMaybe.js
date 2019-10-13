@@ -45,8 +45,9 @@ const estimatedTotalPrice = (unitPrice, unitCount) => {
   return numericTotalPrice;
 };
 
-const estimatedPeopleDiscountMaybe = (unitPrice, extraPeople) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraPeople).times(0.5).toNumber();
+const estimatedPeopleDiscountMaybe = (unitPrice, participants) => {
+  const numericDiscount = new Decimal(unitPrice).times(participants).times(0.5).toNumber();
+
   return numericDiscount;
 };
 
@@ -58,10 +59,9 @@ const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
 // When we cannot speculatively initiate a transaction (i.e. logged
 // out), we must estimate the booking breakdown. This function creates
 // an estimated transaction object for that use case.
-const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, extraPeople) => {
+const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, participants) => {
   const now = new Date();
-  console.log(bookingStart)
-  console.log(bookingEnd)
+
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const unitPriceInNumbers = convertMoneyToNumber(unitPrice);
@@ -77,9 +77,15 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const hoursDiscount = extraHours
     ? estimatedHoursDiscountMaybe(unitPriceInNumbers, extraHours)
     : 0;
-  const peopleDiscount = extraPeople
-    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers, extraPeople)
+  const peopleDiscount = participants > 1
+    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers, participants)
     : 0;
+
+
+  const peopleDiscountTotal = new Money(
+    convertUnitToSubUnit(peopleDiscount, unitDivisor(unitPrice.currency)),
+    unitPrice.currency
+  );
 
   const withDiscounts = subtotalPrice - hoursDiscount - peopleDiscount;
 
@@ -116,18 +122,18 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? [hoursDiscountLineItem]
     : [];
 
-  const extraPeopleQuantity = extraPeople
-    ? extraPeople
+  const participantsQuantity = participants > 1
+    ? participants - 1
     : 0;
   const peopleDiscountLineItem = {
     code: LINE_ITEM_PEOPLE_DISCOUNT,
     includeFor: ['customer', 'provider'],
     unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.5, unitDivisor(unitPrice.currency)), unitPrice.currency),
-    quantity: new Decimal(extraPeopleQuantity),
-    lineTotal: peopleDiscount,
+    quantity: new Decimal(participantsQuantity),
+    lineTotal: peopleDiscountTotal,
     reversal: false,
   };
-  const peopleDiscountLineItemMaybe = extraPeople
+  const peopleDiscountLineItemMaybe = participants
     ? [peopleDiscountLineItem]
     : [];
 
@@ -163,6 +169,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
         },
       ],
     },
+
     booking: {
       id: new UUID('estimated-booking'),
       type: 'booking',
@@ -176,23 +183,23 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 
 const EstimatedBreakdownMaybe = props => {
 
-  const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, extraPeople } = props.bookingData;
-  console.log("end: " + bookingEnd)
-  console.log("start: " + bookingStart)
+  const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants } = props.bookingData;
+
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
   const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;
-  console.log(canEstimatePrice)
+
   if (!canEstimatePrice) {
     return null;
   }
-  const tx = estimatedTransaction(unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, extraPeople);
+  const tx = estimatedTransaction(unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, participants);
   return (
     <BookingBreakdown
       className={css.receipt}
       userRole="customer"
       unitType={unitType}
       transaction={tx}
+      participants={participants}
       booking={tx.booking}
       dateType={DATE_TYPE_DATETIME}
     />
