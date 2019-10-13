@@ -5,6 +5,7 @@ import moment from 'moment';
  */
 export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
+export const BOOKING_DATE = 'bookingDate';
 
 /**
  * Check that the given parameter is a Date object.

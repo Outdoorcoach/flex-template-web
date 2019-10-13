@@ -88,10 +88,13 @@ export default listingPageReducer;
 
 // ================ Action creators ================ //
 
-export const setInitialValues = initialValues => ({
+export const setInitialValues = (initialValues) =>{ 
+  console.log()
+  return({
   type: SET_INITAL_VALUES,
   payload: pick(initialValues, Object.keys(initialState)),
-});
+})
+}
 
 export const showListingRequest = id => ({
   type: SHOW_LISTING_REQUEST,

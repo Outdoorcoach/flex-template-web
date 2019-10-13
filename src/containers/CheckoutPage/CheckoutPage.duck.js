@@ -269,6 +269,7 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
       cardToken: 'CheckoutPage_speculative_card_token',
     },
   };
+  console.log(bodyParams);
   const queryParams = {
     include: ['booking', 'provider'],
     expand: true,

@@ -53,6 +53,9 @@ import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.css';
 
+import moment from 'moment';
+import { dateFromLocalToAPI } from '../../util/dates';
+
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -85,9 +88,24 @@ export class ListingPageComponent extends Component {
       enquiryModalOpen: enquiryModalOpenForListingId === params.id,
     };
 
+    this.formatBookingDates = this.formatBookingDates.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onContactUser = this.onContactUser.bind(this);
     this.onSubmitEnquiry = this.onSubmitEnquiry.bind(this);
+  }
+
+  formatBookingDates(date, starthour, endhour) {
+    const startDate = moment(date.date);
+    const endDate = moment(date.date);
+    startDate.hours(starthour);
+    endDate.hours(endhour);
+
+    return {
+      bookingStart: startDate.toDate(),
+      bookingEnd: endDate.toDate()
+    }
+
+
   }
 
   handleSubmit(values) {
@@ -101,18 +119,21 @@ export class ListingPageComponent extends Component {
     const listingId = new UUID(params.id);
     const listing = getListing(listingId);
 
-    const { bookingDates, ...bookingData } = values;
+    const { bookingDate, startHour, endHour, ...bookingData } = values;
+
+    const { bookingStart, bookingEnd } = this.formatBookingDates(bookingDate, startHour, endHour);
+    
 
     const initialValues = {
       listing,
       bookingData,
       bookingDates: {
-        bookingStart: bookingDates.startDate,
-        bookingEnd: bookingDates.endDate,
+        bookingStart: bookingStart,
+        bookingEnd: bookingEnd,
       },
       confirmPaymentError: null,
     };
-
+    
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);

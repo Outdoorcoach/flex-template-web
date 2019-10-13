@@ -6,7 +6,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import moment from 'moment';
 import { required, bookingDateRequired, composeValidators } from '../../util/validators';
-import { START_DATE, END_DATE, hoursBetween } from '../../util/dates';
+import { BOOKING_DATE, END_DATE, hoursBetween } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
 import { Form, PrimaryButton, FieldDateInput, FieldSelect } from '../../components';
@@ -62,14 +62,20 @@ export class BookingDatesFormComponent extends Component {
   // focus on that input, otherwise continue with the
   // default handleSubmit function.
   handleFormSubmit(e) {
-    const { startDate, endDate } = e.bookingDates || {};
-    if (!startDate) {
+    const bookingDate = e.bookingDate || {};
+    const startHour = e.startHour || {};
+    const endHour = e.endHour || {};
+    
+    if (!bookingDate) {
       e.preventDefault();
-      this.setState({ focusedInput: START_DATE });
-    } else if (!endDate) {
+      this.setState({ focusedInput: BOOKING_DATE });
+    } else if (!startHour) {
       e.preventDefault();
-      this.setState({ focusedInput: END_DATE });
-    } else {
+      //TODO: set focus on 
+    } else if (!endHour) {
+      e.preventDefault();
+      
+    }else {
       this.props.onSubmit(e);
     }
   }
