@@ -55,17 +55,6 @@ export const dateFromAPIToLocalNoon = date => {
   return momentInLocalTimezone.add(12, 'hours').toDate();
 };
 
-export const dateFromAPIToLocal = date => {
-  const timezoneDiffInMinutes = moment(date).utcOffset();
-  // Example timezone SST:
-  // We get a Fri 00:00 UTC aka "Thu Mar 29 2018 13:00:00 GMT-1100 (SST)"
-  // We need to subtract timezone difference (-11h), effectively adding 11h - to get to correct date
-  const momentInLocalTimezone = moment(date).subtract(timezoneDiffInMinutes, 'minutes');
-  // To be on the safe zone with leap seconds and stuff when using day / night picker
-  // we'll add 12 h to get to the noon of day in local timezone.
-  return momentInLocalTimezone.toDate();
-};
-
 /**
  * Convert local date for API.
  * Date given by browser

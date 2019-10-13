@@ -50,6 +50,9 @@ exports[`CheckoutPage matches snapshot 1`] = `
               "profile": Object {
                 "abbreviatedName": "TT",
                 "displayName": "author display name",
+                "publicData": Object {
+                  "userType": "coach",
+                },
               },
             },
             "id": UUID {
@@ -128,6 +131,9 @@ exports[`CheckoutPage matches snapshot 1`] = `
                 "profile": Object {
                   "abbreviatedName": "TT",
                   "displayName": "author display name",
+                  "publicData": Object {
+                    "userType": "coach",
+                  },
                 },
               },
               "id": UUID {
@@ -143,9 +149,6 @@ exports[`CheckoutPage matches snapshot 1`] = `
         <h2>
           listing1 title
         </h2>
-        <p>
-          55 CheckoutPage.perNight
-        </p>
       </div>
     </div>
   </div>

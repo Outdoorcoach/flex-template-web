@@ -51,21 +51,6 @@ exports[`InboxPage matches snapshot 1`] = `
                 />
               </span>,
             },
-            Object {
-              "linkProps": Object {
-                "name": "InboxPage",
-                "params": Object {
-                  "tab": "sales",
-                },
-              },
-              "selected": false,
-              "text": <span>
-                <FormattedMessage
-                  id="InboxPage.salesTabTitle"
-                  values={Object {}}
-                />
-              </span>,
-            },
           ]
         }
       />
@@ -192,6 +177,9 @@ exports[`InboxPage matches snapshot 1`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "customer-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -212,6 +200,9 @@ exports[`InboxPage matches snapshot 1`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "provider-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -345,6 +336,9 @@ exports[`InboxPage matches snapshot 1`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "customer-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -365,6 +359,9 @@ exports[`InboxPage matches snapshot 1`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "provider-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -509,21 +506,6 @@ exports[`InboxPage matches snapshot 3`] = `
                 />
               </span>,
             },
-            Object {
-              "linkProps": Object {
-                "name": "InboxPage",
-                "params": Object {
-                  "tab": "sales",
-                },
-              },
-              "selected": true,
-              "text": <span>
-                <FormattedMessage
-                  id="InboxPage.salesTabTitle"
-                  values={Object {}}
-                />
-              </span>,
-            },
           ]
         }
       />
@@ -650,6 +632,9 @@ exports[`InboxPage matches snapshot 3`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "customer-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -670,6 +655,9 @@ exports[`InboxPage matches snapshot 3`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "provider-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -803,6 +791,9 @@ exports[`InboxPage matches snapshot 3`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "customer-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {
@@ -823,6 +814,9 @@ exports[`InboxPage matches snapshot 3`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "provider-user-id display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {

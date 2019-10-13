@@ -17,9 +17,7 @@ exports[`PayoutPreferencesPage matches snapshot with Stripe connected 1`] = `
       <withRouter(Connect(TopbarContainerComponent))
         currentPage="PayoutPreferencesPage"
       />
-      <UserNav
-        className={null}
-        rootClassName={null}
+      <Connect(UserNavComponent)
         selectedPageName="PayoutPreferencesPage"
       />
     </LayoutWrapperTopbar>
@@ -72,9 +70,7 @@ exports[`PayoutPreferencesPage matches snapshot with Stripe not connected 1`] = 
       <withRouter(Connect(TopbarContainerComponent))
         currentPage="PayoutPreferencesPage"
       />
-      <UserNav
-        className={null}
-        rootClassName={null}
+      <Connect(UserNavComponent)
         selectedPageName="PayoutPreferencesPage"
       />
     </LayoutWrapperTopbar>
@@ -142,9 +138,7 @@ exports[`PayoutPreferencesPage matches snapshot with details submitted 1`] = `
       <withRouter(Connect(TopbarContainerComponent))
         currentPage="PayoutPreferencesPage"
       />
-      <UserNav
-        className={null}
-        rootClassName={null}
+      <Connect(UserNavComponent)
         selectedPageName="PayoutPreferencesPage"
       />
     </LayoutWrapperTopbar>

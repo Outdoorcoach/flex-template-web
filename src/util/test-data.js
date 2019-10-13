@@ -46,6 +46,9 @@ export const createUser = (id, attributes = {}) => ({
     profile: {
       displayName: `${id} display name`,
       abbreviatedName: 'TT',
+      publicData: {
+        userType: 'coach'
+      }
     },
     ...attributes,
   },

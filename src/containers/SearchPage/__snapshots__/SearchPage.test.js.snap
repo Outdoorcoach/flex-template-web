@@ -80,9 +80,9 @@ exports[`SearchPageComponent matches snapshot 1`] = `
           },
           "priceFilter": Object {
             "config": Object {
-              "max": 1000,
-              "min": 0,
-              "step": 5,
+              "max": 2000,
+              "min": 400,
+              "step": 50,
             },
             "paramName": "price",
           },
