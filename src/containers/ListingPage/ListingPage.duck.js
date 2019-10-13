@@ -89,7 +89,6 @@ export default listingPageReducer;
 // ================ Action creators ================ //
 
 export const setInitialValues = (initialValues) =>{ 
-  console.log()
   return({
   type: SET_INITAL_VALUES,
   payload: pick(initialValues, Object.keys(initialState)),

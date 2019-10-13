@@ -99,7 +99,6 @@ export class ListingPageComponent extends Component {
     const endDate = moment(date.date);
     startDate.hours(starthour);
     endDate.hours(endhour);
-
     return {
       bookingStart: startDate.toDate(),
       bookingEnd: endDate.toDate()
@@ -123,6 +122,8 @@ export class ListingPageComponent extends Component {
 
     const { bookingStart, bookingEnd } = this.formatBookingDates(bookingDate, startHour, endHour);
     
+
+    // ADD LINE ITEMS HERE AND THEN ADD THEM TO INITIAL VALUES
 
     const initialValues = {
       listing,
