@@ -725,7 +725,7 @@
   "SectionHowItWorks.part3Title": "3. Träna",
   "SectionHowItWorks.titleLineOne": "Din personliga tränare är bara några klick bort",
   "SectionHowItWorks.titleLineTwo": "",
-  "SectionLocations.listingsInLocation": "Tränare för",
+  "SectionLocations.listingsInLocation": "Tränare för {sport}",
   "SectionLocations.title": "Individanpassad träning inom ett flertal idrotter",
   "SectionCategories.listingsbyCategory": "Träna",
   "SectionCategories.title": "Certifierade coacher inom flera idrotter",
