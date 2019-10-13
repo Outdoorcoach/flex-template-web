@@ -2,6 +2,7 @@ export { default as AboutPage } from './AboutPage/AboutPage';
 export { default as AuthenticationPage } from './AuthenticationPage/AuthenticationPage';
 export { default as CheckoutPage } from './CheckoutPage/CheckoutPage';
 export { default as ContactDetailsPage } from './ContactDetailsPage/ContactDetailsPage';
+export { default as ContactPage } from './ContactPage/ContactPage';
 export { default as EditListingPage } from './EditListingPage/EditListingPage';
 export { default as EmailVerificationPage } from './EmailVerificationPage/EmailVerificationPage';
 export { default as EnterprisePage } from './EnterprisePage/EnterprisePage';
@@ -20,7 +21,7 @@ export { default as PrivacyPolicyPage } from './PrivacyPolicyPage/PrivacyPolicyP
 export { default as ProfilePage } from './ProfilePage/ProfilePage';
 export { default as ProfileSettingsPage } from './ProfileSettingsPage/ProfileSettingsPage';
 export { default as SearchPage } from './SearchPage/SearchPage';
-export { default as SportsPage } from './SportsPage/SportsPage'; 
+export { default as SportsPage } from './SportsPage/SportsPage';
 export { default as StaticPage } from './StaticPage/StaticPage';
 export { default as StyleguidePage } from './StyleguidePage/StyleguidePage';
 export { default as TermsOfServicePage } from './TermsOfServicePage/TermsOfServicePage';

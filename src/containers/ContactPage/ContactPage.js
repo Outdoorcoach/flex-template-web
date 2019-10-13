@@ -11,16 +11,14 @@ import {
   Footer,
 } from '../../components';
 
-import { loadData } from './AboutPage.duck';
+import { loadData } from './ContactPage.duck';
 
 import { BLOCKS } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
-import css from './AboutPage.css';
-//import image from './about-us-1056.jpg';
+import css from './ContactPage.css';
 
-
-export class AboutPageComponent extends Component {
+export class ContactPageComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -48,18 +46,17 @@ export class AboutPageComponent extends Component {
 
 
   render() {
-    const pageData = this.props.aboutPageData['body'];
+    const pageData = this.props.contactPageData['body'];
 
     let renderedData = this.renderData(pageData, this.staticPageRenderOptions);
-
     return (
       <StaticPage
-        title="About Us"
+        title="Contact"
         schema={{
           '@context': 'http://schema.org',
-          '@type': 'AboutPage',
-          description: 'About Outdoorcoach',
-          name: 'About page',
+          '@type': 'ContactPage',
+          description: 'Outdoorcoach Kontakt',
+          name: 'Contact page',
         }}
       >
         <LayoutSingleColumn className={css.darkTheme}>
@@ -86,31 +83,31 @@ export class AboutPageComponent extends Component {
 
 const mapStateToProps = state => {
   const {
-    aboutPageEntryId,
-    aboutPageFetched,
-    aboutPageData,
-    aboutPageFetchError,
-  } = state.AboutPage;
+    contactPageEntryId,
+    contactPageFetched,
+    contactPageData,
+    contactPageFetchError,
+  } = state.ContactPage;
 
   return {
-    aboutPageEntryId,
-    aboutPageFetched,
-    aboutPageData,
-    aboutPageFetchError,
+    contactPageEntryId,
+    contactPageFetched,
+    contactPageData,
+    contactPageFetchError,
   };
 };
 
-const AboutPage = compose(
+const ContactPage = compose(
   withRouter,
   connect(
     mapStateToProps
   )
-)(AboutPageComponent);
+)(ContactPageComponent);
 
-AboutPage.loadData = () => {
-  let entryId = "2ANXWkYxw6pMjL4qEWyria";
+ContactPage.loadData = () => {
+  let entryId = "33YClkFFddIfHme2IyeMOc";
   return loadData(entryId);
 };
 
 
-export default AboutPage;
+export default ContactPage;

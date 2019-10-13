@@ -6,6 +6,7 @@
 import AboutPage from './AboutPage/AboutPage.duck';
 import CheckoutPage from './CheckoutPage/CheckoutPage.duck';
 import ContactDetailsPage from './ContactDetailsPage/ContactDetailsPage.duck';
+import ContactPage from './ContactPage/ContactPage.duck';
 import EditListingPage from './EditListingPage/EditListingPage.duck';
 import EnterprisePage from './EnterprisePage/EnterprisePage.duck';
 import InboxPage from './InboxPage/InboxPage.duck';
@@ -28,6 +29,7 @@ export {
   AboutPage,
   CheckoutPage,
   ContactDetailsPage,
+  ContactPage,
   EditListingPage,
   EnterprisePage,
   InboxPage,
