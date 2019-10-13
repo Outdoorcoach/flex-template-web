@@ -20,6 +20,7 @@ const { Money } = sdkTypes;
  */
 const lineItemsTotal = lineItems => {
   const amount = lineItems.reduce((total, item) => {
+    console.log(item);
     return total.plus(item.lineTotal.amount);
   }, new Decimal(0));
   return new Money(amount, config.currency);

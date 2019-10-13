@@ -45,14 +45,14 @@ const estimatedTotalPrice = (unitPrice, unitCount) => {
   return numericTotalPrice;
 };
 
-const estimatedPeopleDiscountMaybe = (unitPrice, participants) => {
-  const numericDiscount = new Decimal(unitPrice).times(participants).times(0.5).toNumber();
+const estimatedPeopleDiscountMaybe = (unitPrice, extraparticipants, nrHours) => {
+  const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).times(-1).toNumber();
 
   return numericDiscount;
 };
 
 const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraHours).times(0.6).toNumber();
+  const numericDiscount = new Decimal(unitPrice).times(extraHours).toNumber();
   return numericDiscount;
 };
 
@@ -72,25 +72,27 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
       ? daysBetween(bookingStart, bookingEnd)
       : quantity;
 
+  const bookingLength = hoursBetween(bookingStart, bookingEnd);
   const subtotalPrice = estimatedTotalPrice(unitPriceInNumbers, unitCount);
 
   const hoursDiscount = extraHours
     ? estimatedHoursDiscountMaybe(unitPriceInNumbers, extraHours)
     : 0;
   const peopleDiscount = participants > 1
-    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers, participants)
+    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants-1, bookingLength)
     : 0;
 
-
+  const hoursDiscountTotal = new Money(
+    convertUnitToSubUnit(hoursDiscount, unitDivisor(unitPrice.currency)),
+    unitPrice.currency
+  );
   const peopleDiscountTotal = new Money(
     convertUnitToSubUnit(peopleDiscount, unitDivisor(unitPrice.currency)),
     unitPrice.currency
   );
 
-  const withDiscounts = subtotalPrice - hoursDiscount - peopleDiscount;
-
   const totalPrice = new Money(
-    convertUnitToSubUnit(withDiscounts, unitDivisor(unitPrice.currency)),
+    convertUnitToSubUnit(subtotalPrice, unitDivisor(unitPrice.currency)),
     unitPrice.currency
   );
 
@@ -108,35 +110,36 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   );
 
   const extraHoursQuantity = extraHours
-    ? extraHours
+    ? (extraHours * -1)
     : 0;
   const hoursDiscountLineItem = {
     code: LINE_ITEM_HOURS_DISCOUNT,
-    includeFor: ['customer', 'provider'],
+    includeFor: ['customer'],
     unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.6, unitDivisor(unitPrice.currency)), unitPrice.currency),
     quantity: new Decimal(extraHoursQuantity),
-    lineTotal: hoursDiscount,
+    lineTotal: hoursDiscountTotal,
     reversal: false,
   };
   const hoursDiscountLineItemMaybe = extraHours
     ? [hoursDiscountLineItem]
     : [];
 
-  const participantsQuantity = participants > 1
-    ? participants - 1
+  const extraPeopleQuantity = participants > 1
+    ? (participants - 1)
     : 0;
   const peopleDiscountLineItem = {
     code: LINE_ITEM_PEOPLE_DISCOUNT,
-    includeFor: ['customer', 'provider'],
+    includeFor: ['customer'],
     unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.5, unitDivisor(unitPrice.currency)), unitPrice.currency),
-    quantity: new Decimal(participantsQuantity),
+    quantity: new Decimal(extraPeopleQuantity),
     lineTotal: peopleDiscountTotal,
     reversal: false,
   };
-  const peopleDiscountLineItemMaybe = participants
+  const peopleDiscountLineItemMaybe = participants > 1
     ? [peopleDiscountLineItem]
     : [];
 
+  console.log(peopleDiscountLineItemMaybe);
 
   const lineItemsArray = [
     ...hoursDiscountLineItemMaybe,
@@ -184,7 +187,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 const EstimatedBreakdownMaybe = props => {
 
   const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants } = props.bookingData;
-
+  console.log(participants);
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
   const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;

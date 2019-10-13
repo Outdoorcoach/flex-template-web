@@ -6,7 +6,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import moment from 'moment';
 import { required, bookingDateRequired, composeValidators } from '../../util/validators';
-import { START_DATE, END_DATE } from '../../util/dates';
+import { START_DATE, END_DATE, hoursBetween } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
 import { Form, PrimaryButton, FieldDateInput, FieldSelect } from '../../components';
@@ -132,7 +132,7 @@ export class BookingDatesFormComponent extends Component {
           const endHour = values && values.endHour ? values.endHour : {};
           const participants = values && values.participants ? values.participants : 1;
           const showFields = (values && values.bookingDate);
-
+          
 
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingDatesForm.bookingStartTitle',
@@ -162,12 +162,14 @@ export class BookingDatesFormComponent extends Component {
 
 
           const { bookingStart, bookingEnd } = startDate && startHour & endHour ? this.formatBookingDates(startDate, startHour, endHour) : {};
+          const quantity = bookingStart && bookingEnd ? hoursBetween(bookingStart, bookingEnd) : 1;
+          const extraHours = quantity - 1;
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
           // for customized payment processes.
-
+          
           const bookingData =
-            startDate && startHour & endHour
+            startDate && startHour && endHour
               ? {
                 unitType,
                 unitPrice,
@@ -177,10 +179,11 @@ export class BookingDatesFormComponent extends Component {
 
                 // NOTE: If unitType is `line-item/units`, a new picker
                 // for the quantity should be added to the form.
-                quantity: 1,
+                quantity: quantity*participants,
+                extraHours
               }
               : null;
-
+          
           const bookingInfo = bookingData ? (
             <div className={css.priceBreakdownContainer}>
               <h3 className={css.priceBreakdownTitle}>
@@ -196,7 +199,7 @@ export class BookingDatesFormComponent extends Component {
 
 
           const seatsOptions = seats.map(function (item, i) {
-            return <option key={i + 1} value={i + 1}>{item}</option>
+            return <option key={i + 1} value={item}>{item}</option>
           })
 
           const dateFormatOptions = {
