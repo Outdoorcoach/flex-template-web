@@ -144,8 +144,6 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? [peopleDiscountLineItem]
     : [];
 
-  console.log(peopleDiscountLineItemMaybe);
-
   const lineItemsArray = [
     ...hoursDiscountLineItemMaybe,
     ...peopleDiscountLineItemMaybe,
@@ -192,7 +190,6 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 const EstimatedBreakdownMaybe = props => {
 
   const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants } = props.bookingData;
-  console.log(participants);
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
   const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;

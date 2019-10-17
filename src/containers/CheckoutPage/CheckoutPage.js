@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
-import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATE } from '../../util/types';
+import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT } from '../../util/types';
 import {
   ensureListing,
   ensureCurrentUser,
@@ -18,7 +18,7 @@ import {
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data';
-import { dateFromLocalToAPI, minutesBetween } from '../../util/dates';
+import { dateFromLocalToAPI, minutesBetween, hoursBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
 import {
   isTransactionInitiateAmountTooLowError,
@@ -29,7 +29,7 @@ import {
   isTransactionZeroPaymentError,
   transactionInitiateOrderStripeErrors,
 } from '../../util/errors';
-import { formatMoney } from '../../util/currency';
+import { formatMoney, unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../../util/transaction';
 import {
   AvatarMedium,
@@ -55,6 +55,11 @@ import {
 } from './CheckoutPage.duck';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.css';
+
+import Decimal from 'decimal.js';
+import { types as sdkTypes } from '../../util/sdkLoader';
+
+const { Money } = sdkTypes;
 
 const STORAGE_KEY = 'CheckoutPage';
 
@@ -106,6 +111,9 @@ export class CheckoutPageComponent extends Component {
 
     this.onStripeInitialized = this.onStripeInitialized.bind(this);
     this.loadInitialData = this.loadInitialData.bind(this);
+    this.estimatedHoursDiscountMaybe = this.estimatedHoursDiscountMaybe.bind(this);
+    this.estimatedPeopleDiscountMaybe = this.estimatedPeopleDiscountMaybe.bind(this);
+    this.customPricingParams = this.customPricingParams.bind(this);
     this.handlePaymentIntent = this.handlePaymentIntent.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -173,7 +181,7 @@ export class CheckoutPageComponent extends Component {
       pageData &&
       pageData.listing &&
       pageData.listing.id &&
-      pageData.bookingData &&
+      pageData.bookingData && // contains participants, extrahours
       pageData.bookingDates &&
       pageData.bookingDates.bookingStart &&
       pageData.bookingDates.bookingEnd &&
@@ -182,6 +190,8 @@ export class CheckoutPageComponent extends Component {
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
       const { bookingStart, bookingEnd } = pageData.bookingDates;
+      const { participants } = pageData.bookingData;
+
 
       // Convert picked date to date that will be converted on the API as
       // a noon of correct year-month-date combo in UTC
@@ -191,11 +201,14 @@ export class CheckoutPageComponent extends Component {
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
-      fetchSpeculatedTransaction({
-        listingId,
-        bookingStart: bookingStartForAPI,
-        bookingEnd: bookingEndForAPI,
-      });
+      fetchSpeculatedTransaction(
+        this.customPricingParams({
+          listing,
+          bookingStart: bookingStartForAPI,
+          bookingEnd: bookingEndForAPI,
+          participants,
+        })
+        );
     }
 
     this.setState({ pageData: pageData || {}, dataLoaded: true });
@@ -380,6 +393,110 @@ export class CheckoutPageComponent extends Component {
     return handlePaymentIntentCreation(orderParams);
   }
 
+  estimatedTotalPrice(unitPrice, unitCount) {
+    const numericTotalPrice = new Decimal(unitPrice).times(unitCount).toNumber();
+    return numericTotalPrice;
+  }
+  
+  estimatedPeopleDiscountMaybe(unitPrice, extraparticipants, nrHours) {
+    const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).times(-1).toNumber();
+  
+    return numericDiscount;
+  }
+  
+  estimatedHoursDiscountMaybe(unitPrice, extraHours) {
+    const numericDiscount = new Decimal(unitPrice).times(extraHours).times(-1).toNumber();
+    return numericDiscount;
+  }
+
+  customPricingParams(params) {
+    const { bookingStart, bookingEnd, listing, participants, ...rest } = params;
+
+    const bookingLength = hoursBetween(bookingStart, bookingEnd);
+    console.log(listing);
+    /*price calculations */
+    const unitPriceInNumbers = convertMoneyToNumber(listing.attributes.price);
+    const unitPrice = listing.attributes.price;
+    const unitCount = participants * bookingLength;
+    const subtotalPrice = this.estimatedTotalPrice(unitPriceInNumbers, unitCount);
+    
+    /*extra hours or participants*/
+    const extraHours = bookingLength > 1 ? (bookingLength-1) : 0;
+    const extraPeople = participants > 1 ? (participants-1) : 0;
+
+    const hoursDiscount = extraHours != 0
+      ? this.estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours) 
+      : 0;
+    const peopleDiscount = extraPeople != 0
+      ? this.estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, extraPeople, bookingLength)
+      : 0;
+
+    const hoursDiscountTotal = new Money(
+      convertUnitToSubUnit(hoursDiscount, unitDivisor(unitPrice.currency)),
+      unitPrice.currency
+    );
+    const peopleDiscountTotal = new Money(
+      convertUnitToSubUnit(peopleDiscount, unitDivisor(unitPrice.currency)),
+      unitPrice.currency
+    );
+
+    const totalwithdiscounts = subtotalPrice + hoursDiscount + peopleDiscount;
+    const totalwithdiscountsMoney = new Money(
+      convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
+      unitPrice.currency
+    )
+    const totalPrice = new Money(
+      convertUnitToSubUnit(subtotalPrice, unitDivisor(unitPrice.currency)),
+      unitPrice.currency
+    );
+
+    const hoursDiscountLineItem = {
+      code: LINE_ITEM_HOURS_DISCOUNT,
+      includeFor: ['customer', 'provider'],
+      unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.4, unitDivisor(unitPrice.currency)), unitPrice.currency),
+      quantity: new Decimal(extraHours),
+      lineTotal: hoursDiscountTotal,
+      reversal: false,
+    };
+    const hoursDiscountLineItemMaybe = extraHours != 0
+      ? [hoursDiscountLineItem]
+      : [];
+
+    const peopleDiscountLineItem = {
+      code: LINE_ITEM_PEOPLE_DISCOUNT,
+      includeFor: ['customer', 'provider'],
+      unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.5, unitDivisor(unitPrice.currency)), unitPrice.currency),
+      quantity: new Decimal(extraPeople),
+      lineTotal: peopleDiscountTotal,
+      reversal: false,
+    };
+    const peopleDiscountLineItemMaybe = extraPeople != 0
+    ? [peopleDiscountLineItem]
+    : [];
+
+    const lineItemsArray = [
+      ...hoursDiscountLineItemMaybe,
+      ...peopleDiscountLineItemMaybe,
+      {
+        code: config.bookingUnitType,
+        includeFor: ['customer', 'provider'],
+        unitPrice: unitPrice,
+        quantity: new Decimal(unitCount),
+        lineTotal: totalPrice,
+        reversal: false,
+      }
+    ]
+
+    return {
+      listingId: listing.id,
+      bookingStart,
+      bookingEnd,
+      lineItems: lineItemsArray,
+      ...rest,
+    };
+
+  }
+
   handleSubmit(values) {
     if (this.state.submitting) {
       return;
@@ -422,7 +539,10 @@ export class CheckoutPageComponent extends Component {
       ...addressMaybe,
     };
 
-    const requestPaymentParams = {
+    const requestPaymentParams = this.customPricingParams({
+      listing: this.state.pageData.listing,
+      bookingStart: speculateTransaction.booking.attributes.start,
+      bookingEnd: speculateTransaction.booking.attributes.end,
       pageData: this.state.pageData,
       speculatedTransaction,
       stripe: this.stripe,
@@ -432,7 +552,7 @@ export class CheckoutPageComponent extends Component {
       paymentIntent,
       selectedPaymentMethod: paymentMethod,
       saveAfterOnetimePayment: !!saveAfterOnetimePayment,
-    };
+    });
 
     this.handlePaymentIntent(requestPaymentParams)
       .then(res => {
@@ -514,7 +634,7 @@ export class CheckoutPageComponent extends Component {
 
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
-    const { listing, bookingDates, transaction } = this.state.pageData;
+    const { listing, bookingdata, bookingDates, transaction } = this.state.pageData;
     const existingTransaction = ensureTransaction(transaction);
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
@@ -585,8 +705,9 @@ export class CheckoutPageComponent extends Component {
           userRole="customer"
           unitType={config.bookingUnitType}
           transaction={tx}
+          participants={bookingdata.participants}
           booking={txBooking}
-          dateType={DATE_TYPE_DATE}
+          dateType={DATE_TYPE_DATETIME}
         />
       ) : null;
 

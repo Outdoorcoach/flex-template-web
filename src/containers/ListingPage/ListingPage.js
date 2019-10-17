@@ -16,7 +16,7 @@ import {
   LISTING_PAGE_PARAM_TYPE_EDIT,
   createSlug,
 } from '../../util/urlHelpers';
-import { formatMoney } from '../../util/currency';
+import { formatMoney, unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
 import {
   ensureListing,
@@ -103,9 +103,9 @@ export class ListingPageComponent extends Component {
       bookingStart: startDate.toDate(),
       bookingEnd: endDate.toDate()
     }
-
-
   }
+
+  
 
   handleSubmit(values) {
     const {
@@ -119,12 +119,8 @@ export class ListingPageComponent extends Component {
     const listing = getListing(listingId);
 
     const { bookingDate, startHour, endHour, ...bookingData } = values;
-
     const { bookingStart, bookingEnd } = this.formatBookingDates(bookingDate, startHour, endHour);
     
-
-    // ADD LINE ITEMS HERE AND THEN ADD THEM TO INITIAL VALUES
-
     const initialValues = {
       listing,
       bookingData,
@@ -134,7 +130,7 @@ export class ListingPageComponent extends Component {
       },
       confirmPaymentError: null,
     };
-    
+    console.log(bookingData);
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
@@ -400,6 +396,7 @@ export class ListingPageComponent extends Component {
         </span>
       ) : null;
 
+    console.log(currentListing);
     return (
       <Page
         title={schemaTitle}
