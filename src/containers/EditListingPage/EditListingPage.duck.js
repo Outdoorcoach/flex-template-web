@@ -627,6 +627,7 @@ export const requestDeleteAvailabilityException = params => (dispatch, getState,
 // display the state.
 export function requestUpdateListing(tab, data) {
   return (dispatch, getState, sdk) => {
+    console.log(data);
     dispatch(updateListing(data));
     const { id } = data;
     let updateResponse;
