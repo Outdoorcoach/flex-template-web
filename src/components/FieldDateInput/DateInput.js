@@ -16,8 +16,10 @@ import { intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import moment from 'moment';
 import config from '../../config';
-import { propTypes, TIME_SLOT_DAY } from '../../util/types';
-import { dateFromAPIToLocalNoon } from '../../util/dates';
+import { propTypes, TIME_SLOT_DAY, TIME_SLOT_HOUR } from '../../util/types';
+import { dateFromAPIToLocalNoon,
+  dateFromAPIToLocal,
+   } from '../../util/dates';
 import { ensureTimeSlot } from '../../util/data';
 
 import NextMonthIcon from './NextMonthIcon';
@@ -116,6 +118,17 @@ const timeSlotEqualsDay = (timeSlot, day) => {
   return isDay && isSameDay(day, moment(localStartDate));
 };
 
+// Checks if time slot (propTypes.timeSlot) start time equals a day (moment)
+const timeSlotEqualsTime = (timeSlot, day) => {
+  // Time slots describe available dates by providing a start and
+  // an end date which is the following day. In the single date picker
+  // the start date is used to represent available dates.
+  const localStartDate = dateFromAPIToLocalNoon(timeSlot.attributes.start);
+
+  const isDay = ensureTimeSlot(timeSlot).attributes.type === TIME_SLOT_HOUR;
+  return isDay && isSameDay(day, moment(localStartDate));
+};
+
 class DateInputComponent extends Component {
   constructor(props) {
     super(props);
@@ -165,6 +178,7 @@ class DateInputComponent extends Component {
       timeSlots,
       ...datePickerProps
     } = this.props;
+    console.log(timeSlots);
     /* eslint-enable no-unused-vars */
 
     const initialMoment = initialDate ? moment(initialDate) : null;
@@ -172,7 +186,7 @@ class DateInputComponent extends Component {
     const date = value && value.date instanceof Date ? moment(value.date) : initialMoment;
 
     const isDayBlocked = timeSlots
-      ? day => !timeSlots.find(timeSlot => timeSlotEqualsDay(timeSlot, day))
+      ? day => !timeSlots.find(timeSlot => timeSlotEqualsTime(timeSlot, day))
       : () => false;
 
     const placeholder = placeholderText || intl.formatMessage({ id: 'FieldDateInput.placeholder' });

@@ -267,13 +267,14 @@ propTypes.booking = shape({
 
 // A time slot that covers one day, having a start and end date.
 export const TIME_SLOT_DAY = 'time-slot/day';
+export const TIME_SLOT_HOUR = 'time-slot/time';
 
 // Denormalised time slot object
 propTypes.timeSlot = shape({
   id: propTypes.uuid.isRequired,
   type: propTypes.value('timeSlot').isRequired,
   attributes: shape({
-    type: oneOf([TIME_SLOT_DAY]).isRequired,
+    type: oneOf([TIME_SLOT_DAY,TIME_SLOT_HOUR]).isRequired,
     end: instanceOf(Date).isRequired,
     start: instanceOf(Date).isRequired,
   }),
