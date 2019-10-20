@@ -7,7 +7,7 @@ import { TopbarSearchForm } from '../../forms';
 import config from '../../config';
 import { createResourceLocatorString } from '../../util/routes';
 import routeConfiguration from '../../routeConfiguration';
-import { parse, stringify } from '../../util/urlHelpers';
+import { parse } from '../../util/urlHelpers';
 
 import css from './SectionHero.css';
 
@@ -42,7 +42,7 @@ class SectionHero extends Component {
   render() {
 
     const { rootClassName, className, location } = this.props;
-    const { mobilemenu, mobilesearch, address, origin, bounds } = parse(location.search, {
+    const { address, origin, bounds } = parse(location.search, {
       latlng: ['origin'],
       latlngBounds: ['bounds'],
     });
