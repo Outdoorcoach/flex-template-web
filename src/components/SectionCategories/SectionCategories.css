@@ -14,6 +14,7 @@
 .locations {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   margin-top: 32px;
 
   @media (--viewportMedium) {
@@ -25,6 +26,7 @@
 .location {
   width: 100%;
   margin-top: 25px;
+  flex: 1 0 28%;
 
   /* Remove link's hover effect */
   &:hover {
@@ -106,5 +108,6 @@
 }
 
 .locationName {
-  color: var(--marketplaceColor);
+  color: var(--matterColorBright);
+  font-weight: var(--fontWeightSemiBold);
 }
