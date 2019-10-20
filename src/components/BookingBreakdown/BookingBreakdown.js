@@ -10,11 +10,12 @@ import {
   propTypes,
   LINE_ITEM_CUSTOMER_COMMISSION,
   LINE_ITEM_PROVIDER_COMMISSION,
+  LINE_ITEM_UNITS,
 } from '../../util/types';
 
 import LineItemBookingPeriod from './LineItemBookingPeriod';
 import LineItemBasePriceMaybe from './LineItemBasePriceMaybe';
-import LineItemUnitsMaybe from './LineItemUnitsMaybe';
+import LineItemBookingLengthMaybe from './LineItemBookingLengthMaybe';
 import LineItemSubTotalMaybe from './LineItemSubTotalMaybe';
 import LineItemCustomerCommissionMaybe from './LineItemCustomerCommissionMaybe';
 import LineItemCustomerCommissionRefundMaybe from './LineItemCustomerCommissionRefundMaybe';
@@ -25,6 +26,8 @@ import LineItemTotalPrice from './LineItemTotalPrice';
 import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe';
 
 import css from './BookingBreakdown.css';
+import LineItemPeopleDiscountMaybe from './LineItemPeopleDiscountMaybe';
+import LineItemHoursDiscountMaybe from './LineItemHoursDiscountMaybe';
 
 export const BookingBreakdownComponent = props => {
   const {
@@ -34,6 +37,7 @@ export const BookingBreakdownComponent = props => {
     unitType,
     transaction,
     booking,
+    participants,
     intl,
     dateType,
   } = props;
@@ -91,10 +95,11 @@ export const BookingBreakdownComponent = props => {
   return (
     <div className={classes}>
       <LineItemBookingPeriod booking={booking} unitType={unitType} dateType={dateType} />
-      <LineItemUnitsMaybe transaction={transaction} unitType={unitType} />
-
-      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
+      <LineItemBasePriceMaybe transaction={transaction} participants={participants} unitType={unitType} intl={intl} participants={participants}/>
+      <LineItemPeopleDiscountMaybe transaction={transaction} participants={participants} intl={intl}/>
+      <LineItemHoursDiscountMaybe transaction={transaction} intl={intl}/>
       <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
+      
 
       <LineItemSubTotalMaybe
         transaction={transaction}

@@ -395,8 +395,6 @@ export class ListingPageComponent extends Component {
           <span className={css.separator}>•</span>
         </span>
       ) : null;
-
-    console.log(currentListing);
     return (
       <Page
         title={schemaTitle}

@@ -6,7 +6,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import moment from 'moment';
 import { required, bookingDateRequired, composeValidators } from '../../util/validators';
-import { BOOKING_DATE, END_DATE, hoursBetween } from '../../util/dates';
+import { BOOKING_DATE, END_DATE, hoursBetween, START_HOUR } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
 import { Form, PrimaryButton, FieldDateInput, FieldSelect } from '../../components';
@@ -14,16 +14,24 @@ import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 
 import css from './BookingDatesForm.css';
 
+import { isSameDay } from 'react-dates';
+import { isHourBlocked } from '../../components/FieldSelect/HourSelect.helpers';
+
 const identity = v => v;
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { focusedInput: null };
+    this.state = { focusedInput: null, 
+      currendDate: null, 
+      startHour: null, 
+      endHour: null,
+    };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.onFocusedInputChange = this.onFocusedInputChange.bind(this);
     this.formatBookingDates = this.formatBookingDates.bind(this);
     this.renderHourOptions = this.renderHourOptions.bind(this);
+    this.findFirstNonDisabled = this.findFirstNonDisabled.bind(this);
   }
 
   // Function that can be passed to nested components
@@ -43,29 +51,43 @@ export class BookingDatesFormComponent extends Component {
       bookingStart: startDate.toDate(),
       bookingEnd: endDate.toDate()
     }
-
-
   }
 
-  renderHourOptions() {
+  /* Takes a timeslot object and renders objects used to 
+   * render options for the hour picker
+   */
+  renderHourOptions(dayTimeSlots, selectedStart, bookingDate) {
+    const isStart = selectedStart ? moment(bookingDate).hours(selectedStart) : false;
     let hours = [];
-    let hoursPerDay = 24
+    let hoursPerDay = 24;
+    
     for (let i = 0; i < hoursPerDay; i++) {
-      let dayMoment = moment('2019-01-01 00:00:00')
+      let hourMoment = moment(bookingDate).hours(i).minutes(0);
+      let isBlocked = isHourBlocked(dayTimeSlots, hourMoment, hourMoment, START_HOUR, isStart);
+      const formattedHour = hourMoment.format('HH:mm');
+      const hourObject = {
+        displayHour: formattedHour,
+        isDisabled: isBlocked,
+      }
       hours.push(
-        dayMoment.add(i, 'hour').format('HH:mm')
+        hourObject
       )
     }
     return hours;
+  }
+  findFirstNonDisabled(selectOptions, minValue) {
+    let min = parseInt(minValue);
+    return selectOptions.find( function(opt) {
+      return !opt.props.disabled && opt.props.value > min ? opt.props.value : false
+    });
   }
   // In case start or end date for the booking is missing
   // focus on that input, otherwise continue with the
   // default handleSubmit function.
   handleFormSubmit(e) {
     const bookingDate = e.bookingDate || {};
-    const startHour = e.startHour || {};
-    const endHour = e.endHour || {};
-    
+    const startHour = parseInt(e.startHour) || false;
+    const endHour = parseInt(e.endHour) || false;
     if (!bookingDate) {
       e.preventDefault();
       this.setState({ focusedInput: BOOKING_DATE });
@@ -75,7 +97,10 @@ export class BookingDatesFormComponent extends Component {
     } else if (!endHour) {
       e.preventDefault();
       
-    }else {
+    } else if (startHour >= endHour) {
+      e.preventDefault();
+    }
+    else {
       this.props.onSubmit(e);
     }
   }
@@ -132,12 +157,12 @@ export class BookingDatesFormComponent extends Component {
             timeSlots,
             fetchTimeSlotsError,
           } = fieldRenderProps;
-
           const startDate = values && values.bookingDate ? values.bookingDate : {};
-          const startHour = values && values.startHour ? values.startHour : {};
-          const endHour = values && values.endHour ? values.endHour : {};
+          const startHour = values && values.startHour ? values.startHour : null;
+          const endHour = values && values.endHour ? values.endHour : null;
           const participants = values && values.participants ? values.participants : 1;
-          const showFields = (values && values.bookingDate);
+          const showStartDate = (values && values.bookingDate);
+          const showEndDate = (values && values.startHour);
           
 
           const bookingStartLabel = intl.formatMessage({
@@ -168,14 +193,22 @@ export class BookingDatesFormComponent extends Component {
 
 
           const { bookingStart, bookingEnd } = startDate && startHour & endHour ? this.formatBookingDates(startDate, startHour, endHour) : {};
-          const quantity = bookingStart && bookingEnd ? hoursBetween(bookingStart, bookingEnd) : 1;
-          const extraHours = quantity - 1;
+          let quantity;
+          let extraHours;
+          try {
+            quantity = bookingStart && bookingEnd ? hoursBetween(bookingStart, bookingEnd): 1;
+            extraHours = quantity - 1;
+          } catch(error){
+            quantity = false;
+            extraHours = 0;
+          }
+          
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
           // for customized payment processes.
           
           const bookingData =
-            startDate && startHour && endHour
+            startDate && startHour && endHour && quantity
               ? {
                 unitType,
                 unitPrice,
@@ -199,11 +232,30 @@ export class BookingDatesFormComponent extends Component {
             </div>
           ) : null;
 
-          const dayHours = this.renderHourOptions().map(function (item, i) {
-            return <option key={i} value={i}>{item}</option>
-          })
-
-
+          
+          const selectedDateTimeSlots = values && values.bookingDate ?
+            timeSlots.filter(timeSlot => {
+              let selectedDateMoment = moment(startDate.date);
+              if (isSameDay(selectedDateMoment, moment(timeSlot.attributes.start))) {
+                return timeSlot;
+              }
+              return {};
+            })
+            : null;
+          
+          const startHours = selectedDateTimeSlots ? 
+            this.renderHourOptions(selectedDateTimeSlots,false, values.bookingDate.date).map(function (item, i) {
+              return <option key={i} value={i} disabled={item.isDisabled}>{item.displayHour}</option>
+            })
+            : (<option key={0} value={0}>Ingen data</option>);
+           
+          const endHours = selectedDateTimeSlots && values.startHour ? 
+            this.renderHourOptions(selectedDateTimeSlots, parseInt(values.startHour), values.bookingDate.date).map(function (item, i) {
+              
+              return <option key={i} value={i} disabled={item.isDisabled}>{item.displayHour}</option>
+            })
+            : false;
+         
           const seatsOptions = seats.map(function (item, i) {
             return <option key={i + 1} value={item}>{item}</option>
           })
@@ -231,7 +283,7 @@ export class BookingDatesFormComponent extends Component {
           const requiredseatsmessage = required('Du måste välja ett klockslag');
 
           return (
-            <Form onSubmit={handleSubmit} className={classes}>
+            <Form onSubmit={handleSubmit} >
               {timeSlotsError}
               <FieldDateInput
                 className={css.bookingDates}
@@ -247,33 +299,39 @@ export class BookingDatesFormComponent extends Component {
                   bookingDateRequired(startDateErrorMessage, endDateErrorMessage)
                 )}
               />
-              {showFields ? <React.Fragment>
+              {showStartDate ? 
                 <FieldSelect
                   id={`${formId}.bookingStartHour`}
                   name="startHour"
                   label={startHourLabel}
                   validate={requiredmessage}
                   useMobileMargins>
-                  {dayHours}
+                  {startHours}
                 </FieldSelect>
-                <FieldSelect
-                  id={`${formId}.bookingEndHour`}
-                  name="endHour"
-                  label={endHourLabel}
-                  validate={requiredmessage}
-                  useMobileMargins>
-                  {dayHours}
-                </FieldSelect>
-                <FieldSelect
-                  id={`${formId}.bookingParticipants`}
-                  name="participants"
-                  label={participantsLabel}
-                  validate={requiredseatsmessage}
-                  useMobileMargins>
-                  {seatsOptions}
-                </FieldSelect>
-              </React.Fragment> : ""}
-
+                : ""
+              }
+              {showEndDate ? 
+                <React.Fragment>
+                  <FieldSelect
+                    id={`${formId}.bookingEndHour`}
+                    name="endHour"
+                    label={endHourLabel}
+                    validate={requiredmessage}
+                    useMobileMargins>
+                    {endHours}
+                  </FieldSelect>
+                  <FieldSelect
+                    id={`${formId}.bookingParticipants`}
+                    name="participants"
+                    label={participantsLabel}
+                    validate={requiredseatsmessage}
+                    initialValue={1}
+                    useMobileMargins>
+                    {seatsOptions}
+                  </FieldSelect>
+                </React.Fragment> 
+                : ""
+              }
               {bookingInfo}
               <p className={css.smallPrint}>
                 <FormattedMessage

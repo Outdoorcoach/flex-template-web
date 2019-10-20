@@ -31,7 +31,7 @@ import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import { dateFromLocalToAPI, nightsBetween, daysBetween, hoursBetween } from '../../util/dates';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
-import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT } from '../../util/types';
+import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT, LINE_ITEM_CUSTOMER_COMMISSION, LINE_ITEM_HOURS } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { BookingBreakdown } from '../../components';
 
@@ -46,13 +46,13 @@ const estimatedTotalPrice = (unitPrice, unitCount) => {
 };
 
 const estimatedPeopleDiscountMaybe = (unitPrice, extraparticipants, nrHours) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).times(-1).toNumber();
+  const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).toNumber();
 
   return numericDiscount;
 };
 
 const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraHours).times(-1).toNumber();
+  const numericDiscount = new Decimal(unitPrice).times(extraHours).toNumber();
   return numericDiscount;
 };
 
@@ -91,7 +91,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     unitPrice.currency
   );
 
-  const totalwithdiscounts = subtotalPrice + hoursDiscount + peopleDiscount;
+  const totalwithdiscounts = subtotalPrice - hoursDiscount - peopleDiscount;
   const totalwithdiscountsMoney = new Money(
     convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
     unitPrice.currency
@@ -121,7 +121,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     code: LINE_ITEM_HOURS_DISCOUNT,
     includeFor: ['customer'],
     unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.4, unitDivisor(unitPrice.currency)), unitPrice.currency),
-    quantity: new Decimal(extraHoursQuantity),
+    quantity: new Decimal(extraHoursQuantity*-1),
     lineTotal: hoursDiscountTotal,
     reversal: false,
   };
@@ -136,7 +136,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     code: LINE_ITEM_PEOPLE_DISCOUNT,
     includeFor: ['customer'],
     unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.5, unitDivisor(unitPrice.currency)), unitPrice.currency),
-    quantity: new Decimal(extraPeopleQuantity),
+    quantity: new Decimal(extraPeopleQuantity*-1),
     lineTotal: peopleDiscountTotal,
     reversal: false,
   };
@@ -148,7 +148,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ...hoursDiscountLineItemMaybe,
     ...peopleDiscountLineItemMaybe,
     {
-      code: unitType,
+      code: LINE_ITEM_HOURS,
       includeFor: ['customer', 'provider'],
       unitPrice: unitPrice,
       quantity: new Decimal(unitCount),

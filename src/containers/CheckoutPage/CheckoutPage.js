@@ -231,6 +231,7 @@ export class CheckoutPageComponent extends Component {
       paymentIntent,
       selectedPaymentMethod,
       saveAfterOnetimePayment,
+      lineItems,
     } = handlePaymentParams;
     const storedTx = ensureTransaction(pageData.transaction);
 
@@ -387,6 +388,7 @@ export class CheckoutPageComponent extends Component {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
+      lineItems,
       ...optionalPaymentParams,
     };
 
@@ -411,18 +413,17 @@ export class CheckoutPageComponent extends Component {
 
   customPricingParams(params) {
     const { bookingStart, bookingEnd, listing, participants, ...rest } = params;
-
+    const participantsNumber = parseInt(participants);
     const bookingLength = hoursBetween(bookingStart, bookingEnd);
     console.log(listing);
     /*price calculations */
     const unitPriceInNumbers = convertMoneyToNumber(listing.attributes.price);
     const unitPrice = listing.attributes.price;
-    const unitCount = participants * bookingLength;
+    const unitCount = participantsNumber * bookingLength;
     const subtotalPrice = this.estimatedTotalPrice(unitPriceInNumbers, unitCount);
-    
     /*extra hours or participants*/
     const extraHours = bookingLength > 1 ? (bookingLength-1) : 0;
-    const extraPeople = participants > 1 ? (participants-1) : 0;
+    const extraPeople = participantsNumber > 1 ? (participantsNumber-1) : 0;
 
     const hoursDiscount = extraHours != 0
       ? this.estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours) 
@@ -440,11 +441,6 @@ export class CheckoutPageComponent extends Component {
       unitPrice.currency
     );
 
-    const totalwithdiscounts = subtotalPrice + hoursDiscount + peopleDiscount;
-    const totalwithdiscountsMoney = new Money(
-      convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
-      unitPrice.currency
-    )
     const totalPrice = new Money(
       convertUnitToSubUnit(subtotalPrice, unitDivisor(unitPrice.currency)),
       unitPrice.currency
@@ -454,7 +450,7 @@ export class CheckoutPageComponent extends Component {
       code: LINE_ITEM_HOURS_DISCOUNT,
       includeFor: ['customer', 'provider'],
       unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.4, unitDivisor(unitPrice.currency)), unitPrice.currency),
-      quantity: new Decimal(extraHours),
+      quantity: new Decimal(extraHours*-1),
       lineTotal: hoursDiscountTotal,
       reversal: false,
     };
@@ -466,7 +462,7 @@ export class CheckoutPageComponent extends Component {
       code: LINE_ITEM_PEOPLE_DISCOUNT,
       includeFor: ['customer', 'provider'],
       unitPrice: new Money(convertUnitToSubUnit(unitPriceInNumbers * 0.5, unitDivisor(unitPrice.currency)), unitPrice.currency),
-      quantity: new Decimal(extraPeople),
+      quantity: new Decimal(extraPeople*-1),
       lineTotal: peopleDiscountTotal,
       reversal: false,
     };
@@ -538,12 +534,13 @@ export class CheckoutPageComponent extends Component {
       email: ensureCurrentUser(currentUser).attributes.email,
       ...addressMaybe,
     };
-
+    
     const requestPaymentParams = this.customPricingParams({
       listing: this.state.pageData.listing,
-      bookingStart: speculateTransaction.booking.attributes.start,
-      bookingEnd: speculateTransaction.booking.attributes.end,
+      bookingStart: speculatedTransaction.booking.attributes.start,
+      bookingEnd: speculatedTransaction.booking.attributes.end,
       pageData: this.state.pageData,
+      participants: this.state.pageData.bookingData.participants,
       speculatedTransaction,
       stripe: this.stripe,
       card,
@@ -634,7 +631,7 @@ export class CheckoutPageComponent extends Component {
 
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
-    const { listing, bookingdata, bookingDates, transaction } = this.state.pageData;
+    const { listing, bookingData, bookingDates, transaction } = this.state.pageData;
     const existingTransaction = ensureTransaction(transaction);
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
@@ -705,7 +702,7 @@ export class CheckoutPageComponent extends Component {
           userRole="customer"
           unitType={config.bookingUnitType}
           transaction={tx}
-          participants={bookingdata.participants}
+          participants={bookingData.participants}
           booking={txBooking}
           dateType={DATE_TYPE_DATETIME}
         />

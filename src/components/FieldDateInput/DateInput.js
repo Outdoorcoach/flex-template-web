@@ -178,7 +178,7 @@ class DateInputComponent extends Component {
       timeSlots,
       ...datePickerProps
     } = this.props;
-    console.log(timeSlots);
+    
     /* eslint-enable no-unused-vars */
 
     const initialMoment = initialDate ? moment(initialDate) : null;

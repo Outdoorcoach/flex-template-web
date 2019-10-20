@@ -6,6 +6,8 @@ import moment from 'moment';
 export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 export const BOOKING_DATE = 'bookingDate';
+export const START_HOUR = 'startHour';
+export const END_HOUR = 'endHour';
 
 /**
  * Check that the given parameter is a Date object.
