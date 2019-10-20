@@ -35,10 +35,12 @@ class TopbarSearchFormComponent extends Component {
       <FinalForm
         {...this.props}
         render={formRenderProps => {
-          const { rootClassName, className, desktopInputRoot, intl, isMobile } = formRenderProps;
+          const { rootClassName, className, isSectionHero, desktopInputRoot, intl, isMobile } = formRenderProps;
 
           const classes = classNames(rootClassName, className);
+          
           const desktopInputRootClass = desktopInputRoot || css.desktopInputRoot;
+          
 
           // Allow form submit only when the place has changed
           const preventFormSubmit = e => e.preventDefault();

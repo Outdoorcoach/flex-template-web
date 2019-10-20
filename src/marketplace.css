@@ -23,7 +23,7 @@
   --backgroundImage: {
     /* Gradient direction and overlaying the black color on top of the image for better readability */
     background: linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
-      url('../../assets/background-1440.jpg');
+      url('../../assets/background_winter.jpg');
 
     /* Add loading color for the div */
     background-color: var(--matterColor);
@@ -39,9 +39,9 @@
 
   /* ================ Colors ================ */
 
-  --marketplaceColor: #08b3b3;
-  --marketplaceColorLight: #86CBCF;
-  --marketplaceColorDark: #2C5A68;
+  --marketplaceColor: #11b9af;
+  --marketplaceColorLight: rgb(133, 216, 216);
+  --marketplaceColorDark: #1c2123;
 
   /* Used with inline CSS SVGs */
   --marketplaceColorEncoded: %23488193;
@@ -156,7 +156,7 @@
   /* ================ Buttons ================ */
 
   --marketplaceButtonFontStyles: {
-    font-family: 'sofiapro', Helvetica, Arial, sans-serif;
+    font-family: 'Work Sans', Helvetica, Arial, sans-serif;
     font-weight: var(--fontWeightSemiBold);
     font-size: 18px;
     line-height: 24px;

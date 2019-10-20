@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import difference from 'lodash/difference';
 import mapValues from 'lodash/mapValues';
 import moment from 'moment';
+import 'moment/locale/sv';
 import { IntlProvider } from './util/reactIntl';
 import configureStore from './store';
 import routeConfiguration from './routeConfiguration';

@@ -827,19 +827,17 @@ export class CheckoutPageComponent extends Component {
       );
     }
 
-    const unitType = config.bookingUnitType;
-    const isNightly = unitType === LINE_ITEM_NIGHT;
-    const isDaily = unitType === LINE_ITEM_DAY;
+    //const unitType = config.bookingUnitType;
+    //const isNightly = unitType === LINE_ITEM_NIGHT;
+    //const isDaily = unitType === LINE_ITEM_DAY;
 
-    const unitTranslationKey = isNightly
+    /*const unitTranslationKey = isNightly
       ? 'CheckoutPage.perNight'
       : isDaily
       ? 'CheckoutPage.perDay'
-      : 'CheckoutPage.perUnit';
+      : 'CheckoutPage.perUnit';*/
 
-    const price = currentListing.attributes.price;
-    const formattedPrice = formatMoney(intl, price);
-    const detailsSubTitle = `${formattedPrice} ${intl.formatMessage({ id: unitTranslationKey })}`;
+    
 
     const showInitialMessageInput = !(
       existingTransaction && existingTransaction.attributes.lastTransition === TRANSITION_ENQUIRE
