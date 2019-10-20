@@ -31,26 +31,37 @@ exports[`ProfilePage matches snapshot 1`] = `
       tabs={null}
     >
       <div>
-        <AvatarLarge
-          disableProfileLink={true}
-          user={
-            Object {
-              "attributes": Object {
-                "banned": false,
-                "deleted": false,
-                "profile": Object {
-                  "abbreviatedName": "TT",
-                  "displayName": "test-user display name",
+        <div>
+          <AvatarLarge
+            disableProfileLink={true}
+            user={
+              Object {
+                "attributes": Object {
+                  "banned": false,
+                  "deleted": false,
+                  "profile": Object {
+                    "abbreviatedName": "TT",
+                    "displayName": "test-user display name",
+                    "publicData": Object {
+                      "userType": "coach",
+                    },
+                  },
                 },
-              },
-              "id": UUID {
-                "_sdkType": "UUID",
-                "uuid": "test-user",
-              },
-              "type": "user",
+                "id": UUID {
+                  "_sdkType": "UUID",
+                  "uuid": "test-user",
+                },
+                "type": "user",
+              }
             }
-          }
-        />
+          />
+          <h3>
+            <FormattedMessage
+              id="ProfileSettingsPage.providerTypeName"
+              values={Object {}}
+            />
+          </h3>
+        </div>
         <h1>
           <FormattedMessage
             id="ProfilePage.mobileHeading"
@@ -78,50 +89,6 @@ exports[`ProfilePage matches snapshot 1`] = `
             }
           />
         </h1>
-        <div>
-          <ButtonTabNavHorizontal
-            className={null}
-            rootClassName={null}
-            skin="light"
-            tabClassName={null}
-            tabRootClassName={null}
-            tabs={
-              Array [
-                Object {
-                  "onClick": [Function],
-                  "selected": true,
-                  "text": <h3>
-                    <FormattedMessage
-                      id="ProfilePage.reviewsOfProviderTitle"
-                      values={
-                        Object {
-                          "count": 0,
-                        }
-                      }
-                    />
-                  </h3>,
-                },
-                Object {
-                  "onClick": [Function],
-                  "selected": false,
-                  "text": <h3>
-                    <FormattedMessage
-                      id="ProfilePage.reviewsOfCustomerTitle"
-                      values={
-                        Object {
-                          "count": 0,
-                        }
-                      }
-                    />
-                  </h3>,
-                },
-              ]
-            }
-          />
-          <injectIntl(ReviewsComponent)
-            reviews={Array []}
-          />
-        </div>
       </div>
     </LayoutWrapperMain>
     <LayoutWrapperFooter

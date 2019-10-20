@@ -4,7 +4,7 @@ import { fakeIntl, createBooking } from '../../util/test-data';
 import { renderDeep } from '../../util/test-helpers';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import {
-  TRANSITION_CANCEL,
+  TRANSITION_CANCEL_BY_CUSTOMER,
   TRANSITION_REQUEST_PAYMENT,
   TX_TRANSITION_ACTOR_CUSTOMER,
   DATE_TYPE_DATE,
@@ -119,8 +119,8 @@ describe('BookingBreakdown', () => {
             {
               code: 'line-item/provider-commission',
               includeFor: ['provider'],
-              lineTotal: new Money(-200, 'USD'),
-              unitPrice: new Money(-200, 'USD'),
+              lineTotal: new Money(200, 'USD'),
+              unitPrice: new Money(0, 'USD'),
               reversal: false,
             },
           ],
@@ -141,7 +141,7 @@ describe('BookingBreakdown', () => {
         unitType={LINE_ITEM_NIGHT}
         dateType={DATE_TYPE_DATE}
         transaction={exampleTransaction({
-          lastTransition: TRANSITION_CANCEL,
+          lastTransition: TRANSITION_CANCEL_BY_CUSTOMER,
           payinTotal: new Money(0, 'USD'),
           payoutTotal: new Money(0, 'USD'),
           lineItems: [
@@ -156,16 +156,16 @@ describe('BookingBreakdown', () => {
             {
               code: 'line-item/night',
               includeFor: ['customer', 'provider'],
-              quantity: new Decimal(-2),
-              lineTotal: new Money(-2000, 'USD'),
+              quantity: new Decimal(2),
+              lineTotal: new Money(2000, 'USD'),
               unitPrice: new Money(1000, 'USD'),
               reversal: true,
             },
             {
               code: 'line-item/provider-commission',
               includeFor: ['provider'],
-              percentage: new Decimal(-10),
-              lineTotal: new Money(-200, 'USD'),
+              percentage: new Decimal(10),
+              lineTotal: new Money(200, 'USD'),
               unitPrice: new Money(2000, 'USD'),
               reversal: false,
             },

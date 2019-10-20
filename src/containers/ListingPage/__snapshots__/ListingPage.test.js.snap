@@ -72,6 +72,9 @@ exports[`ListingPage matches snapshot 1`] = `
                   "profile": Object {
                     "abbreviatedName": "TT",
                     "displayName": "user-1 display name",
+                    "publicData": Object {
+                      "userType": "coach",
+                    },
                   },
                 },
                 "id": UUID {
@@ -93,31 +96,6 @@ exports[`ListingPage matches snapshot 1`] = `
           title="listing1 title"
         />
         <div>
-          <SectionAvatar
-            params={
-              Object {
-                "id": "listing1",
-                "slug": "listing1-title",
-              }
-            }
-            user={
-              Object {
-                "attributes": Object {
-                  "banned": false,
-                  "deleted": false,
-                  "profile": Object {
-                    "abbreviatedName": "TT",
-                    "displayName": "user-1 display name",
-                  },
-                },
-                "id": UUID {
-                  "_sdkType": "UUID",
-                  "uuid": "user-1",
-                },
-                "type": "user",
-              }
-            }
-          />
           <div>
             <SectionHeading
               category={null}
@@ -152,55 +130,6 @@ exports[`ListingPage matches snapshot 1`] = `
                 </span>
               }
               showContactUser={true}
-            />
-            <SectionDescriptionMaybe
-              description="listing1 description"
-            />
-            <SectionFeaturesMaybe
-              options={
-                Array [
-                  Object {
-                    "key": "feat1",
-                    "label": "Feat 1",
-                  },
-                  Object {
-                    "key": "feat2",
-                    "label": "Feat 2",
-                  },
-                  Object {
-                    "key": "feat3",
-                    "label": "Feat 3",
-                  },
-                ]
-              }
-              publicData={Object {}}
-            />
-            <SectionRulesMaybe
-              className={null}
-              publicData={Object {}}
-              rootClassName={null}
-            />
-            <SectionMapMaybe
-              className={null}
-              geolocation={
-                LatLng {
-                  "_sdkType": "LatLng",
-                  "lat": 40,
-                  "lng": 60,
-                }
-              }
-              listingId={
-                UUID {
-                  "_sdkType": "UUID",
-                  "uuid": "listing1",
-                }
-              }
-              publicData={Object {}}
-              rootClassName={null}
-            />
-            <SectionReviews
-              fetchReviewsError={null}
-              reviews={Array []}
             />
             <SectionHostMaybe
               authorDisplayName="user-1 display name"
@@ -252,6 +181,9 @@ exports[`ListingPage matches snapshot 1`] = `
                       "profile": Object {
                         "abbreviatedName": "TT",
                         "displayName": "user-1 display name",
+                        "publicData": Object {
+                          "userType": "coach",
+                        },
                       },
                     },
                     "id": UUID {
@@ -275,6 +207,32 @@ exports[`ListingPage matches snapshot 1`] = `
               sendEnquiryError={null}
               sendEnquiryInProgress={false}
               title="listing1 title"
+            />
+            <SectionDescriptionMaybe
+              description="listing1 description"
+            />
+            <SectionRulesMaybe
+              className={null}
+              publicData={Object {}}
+              rootClassName={null}
+            />
+            <SectionMapMaybe
+              className={null}
+              geolocation={
+                LatLng {
+                  "_sdkType": "LatLng",
+                  "lat": 40,
+                  "lng": 60,
+                }
+              }
+              listingId={
+                UUID {
+                  "_sdkType": "UUID",
+                  "uuid": "listing1",
+                }
+              }
+              publicData={Object {}}
+              rootClassName={null}
             />
           </div>
           <withRouter(injectIntl(BookingPanel))
@@ -307,6 +265,9 @@ exports[`ListingPage matches snapshot 1`] = `
                     "profile": Object {
                       "abbreviatedName": "TT",
                       "displayName": "user-1 display name",
+                      "publicData": Object {
+                        "userType": "coach",
+                      },
                     },
                   },
                   "id": UUID {

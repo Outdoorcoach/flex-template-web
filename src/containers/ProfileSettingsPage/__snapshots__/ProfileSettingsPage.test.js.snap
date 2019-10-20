@@ -16,9 +16,7 @@ exports[`ContactDetailsPage matches snapshot 1`] = `
       <withRouter(Connect(TopbarContainerComponent))
         currentPage="ProfileSettingsPage"
       />
-      <UserNav
-        className={null}
-        rootClassName={null}
+      <Connect(UserNavComponent)
         selectedPageName="ProfileSettingsPage"
       />
     </LayoutWrapperTopbar>
@@ -34,6 +32,20 @@ exports[`ContactDetailsPage matches snapshot 1`] = `
               values={Object {}}
             />
           </h1>
+          <div>
+            <h3>
+              <FormattedMessage
+                id="ProfileSettingsPage.accountTypeDescription"
+                values={Object {}}
+              />
+            </h3>
+            <h4>
+              <FormattedMessage
+                id="ProfileSettingsPage.memberTypeName"
+                values={Object {}}
+              />
+            </h4>
+          </div>
         </div>
       </div>
     </LayoutWrapperMain>

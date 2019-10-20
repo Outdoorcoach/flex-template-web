@@ -292,15 +292,20 @@ export const txIsReviewed = tx =>
  */
 
 const txTransitions = tx => ensureTransaction(tx).attributes.transitions || [];
-const hasPassedTransition = (transitionName, tx) =>
-  !!txTransitions(tx).find(t => t.transition === transitionName);
-
+const hasPassedTransition = (transitionName, tx) => {
+  //console.log(transitionName)
+  return (!!txTransitions(tx).find(t => {
+    //console.log(t.transition)
+    return (t.transition === transitionName)
+  }))
+}
 const hasPassedStateFn = state => tx =>
   getTransitionsToState(state).filter(t => hasPassedTransition(t, tx)).length > 0;
 
 export const txHasBeenAccepted = hasPassedStateFn(STATE_ACCEPTED);
 export const txHasBeenCompleted = hasPassedStateFn(STATE_COMPLETED);
 export const txHasBeenDelivered = hasPassedStateFn(STATE_DELIVERED);
+export const txHasBeenPreauthorized = hasPassedStateFn(STATE_PREAUTHORIZED);
 
 /**
  * Other transaction related utility functions

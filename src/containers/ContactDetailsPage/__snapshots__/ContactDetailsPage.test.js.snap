@@ -17,9 +17,7 @@ exports[`ContactDetailsPage matches snapshot 1`] = `
       <withRouter(Connect(TopbarContainerComponent))
         currentPage="ContactDetailsPage"
       />
-      <UserNav
-        className={null}
-        rootClassName={null}
+      <Connect(UserNavComponent)
         selectedPageName="ContactDetailsPage"
       />
     </LayoutWrapperTopbar>

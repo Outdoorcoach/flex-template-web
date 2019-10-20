@@ -357,7 +357,15 @@ describe('Auth duck', () => {
 
       return signup(params)(dispatch, getState, sdk).then(() => {
         expect(sdk.currentUser.create.mock.calls).toEqual([
-          [{ ...rest, protectedData: { phoneNumber } }],
+          [{
+            ...rest, protectedData: { phoneNumber, }, publicData: {
+              "userType": "member",
+            },
+            privateData: {
+              "hasProviderAccess": false,
+            },
+
+          }],
         ]);
         expect(sdk.login.mock.calls).toEqual([[{ username: email, password }]]);
         expect(dispatchedActions(dispatch)).toEqual([
@@ -400,7 +408,14 @@ describe('Auth duck', () => {
 
       return signup(params)(dispatch, getState, sdk).then(() => {
         expect(sdk.currentUser.create.mock.calls).toEqual([
-          [{ ...rest, protectedData: { phoneNumber } }],
+          [{
+            ...rest, protectedData: { phoneNumber }, publicData: {
+              "userType": "member",
+            },
+            privateData: {
+              "hasProviderAccess": false,
+            },
+          }],
         ]);
         expect(dispatchedActions(dispatch)).toEqual([
           signupRequest(),

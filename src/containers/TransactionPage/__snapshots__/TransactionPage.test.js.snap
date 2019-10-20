@@ -155,6 +155,9 @@ exports[`TransactionPage - Order matches snapshot 1`] = `
                   "profile": Object {
                     "abbreviatedName": "TT",
                     "displayName": "customer1 display name",
+                    "publicData": Object {
+                      "userType": "coach",
+                    },
                   },
                 },
                 "id": UUID {
@@ -198,6 +201,9 @@ exports[`TransactionPage - Order matches snapshot 1`] = `
                   "profile": Object {
                     "abbreviatedName": "TT",
                     "displayName": "provider1 display name",
+                    "publicData": Object {
+                      "userType": "coach",
+                    },
                   },
                 },
                 "id": UUID {
@@ -378,6 +384,9 @@ exports[`TransactionPage - Sale matches snapshot 1`] = `
                   "profile": Object {
                     "abbreviatedName": "TT",
                     "displayName": "customer1 display name",
+                    "publicData": Object {
+                      "userType": "coach",
+                    },
                   },
                 },
                 "id": UUID {
@@ -421,6 +430,9 @@ exports[`TransactionPage - Sale matches snapshot 1`] = `
                   "profile": Object {
                     "abbreviatedName": "TT",
                     "displayName": "provider1 display name",
+                    "publicData": Object {
+                      "userType": "coach",
+                    },
                   },
                 },
                 "id": UUID {

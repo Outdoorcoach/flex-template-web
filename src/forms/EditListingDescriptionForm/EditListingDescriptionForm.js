@@ -82,7 +82,7 @@ const EditListingDescriptionFormComponent = props => (
       const submitReady = updated && pristine;
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
-      console.log("hello", props)
+
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessageCreateListingDraft}
