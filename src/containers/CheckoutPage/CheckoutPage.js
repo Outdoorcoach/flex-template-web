@@ -8,17 +8,7 @@ import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
-<<<<<<< HEAD
 import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT } from '../../util/types';
-=======
-import {
-  propTypes,
-  LINE_ITEM_NIGHT,
-  LINE_ITEM_DAY,
-  LINE_ITEM_UNITS,
-  DATE_TYPE_DATE
-} from '../../util/types';
->>>>>>> 7add73045581da8760bcb62fe0814365d663c6fe
 import {
   ensureListing,
   ensureCurrentUser,
@@ -207,8 +197,8 @@ export class CheckoutPageComponent extends Component {
 
       // Convert picked date to date that will be converted on the API as
       // a noon of correct year-month-date combo in UTC
-      // const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
-      // const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
+      const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
+      const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
 
 
       // Fetch speculated transaction for showing price in booking breakdown
