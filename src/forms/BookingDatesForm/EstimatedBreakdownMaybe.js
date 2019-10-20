@@ -79,7 +79,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours)
     : 0;
   const peopleDiscount = participants > 1
-    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants-1, bookingLength)
+    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants - 1, bookingLength)
     : 0;
 
   const hoursDiscountTotal = new Money(

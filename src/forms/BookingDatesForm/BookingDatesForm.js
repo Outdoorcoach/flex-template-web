@@ -96,7 +96,6 @@ export class BookingDatesFormComponent extends Component {
       //TODO: set focus on 
     } else if (!endHour) {
       e.preventDefault();
-      
     } else if (startHour >= endHour) {
       e.preventDefault();
     }
@@ -206,7 +205,7 @@ export class BookingDatesFormComponent extends Component {
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
           // for customized payment processes.
-          
+
           const bookingData =
             startDate && startHour && endHour && quantity
               ? {
@@ -218,11 +217,11 @@ export class BookingDatesFormComponent extends Component {
 
                 // NOTE: If unitType is `line-item/units`, a new picker
                 // for the quantity should be added to the form.
-                quantity: quantity*participants,
+                quantity: quantity * participants,
                 extraHours
               }
               : null;
-          
+
           const bookingInfo = bookingData ? (
             <div className={css.priceBreakdownContainer}>
               <h3 className={css.priceBreakdownTitle}>
@@ -280,7 +279,7 @@ export class BookingDatesFormComponent extends Component {
           );
 
           const requiredmessage = required('Du måste välja ett klockslag');
-          const requiredseatsmessage = required('Du måste välja ett klockslag');
+          const requiredseatsmessage = required('Du måste välja antal personer!');
 
           return (
             <Form onSubmit={handleSubmit} >

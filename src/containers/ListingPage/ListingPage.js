@@ -52,10 +52,10 @@ import SectionHostMaybe from './SectionHostMaybe';
 import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.css';
-
 import moment from 'moment';
-import { dateFromLocalToAPI } from '../../util/dates';
 
+
+const { Money } = sdkTypes;
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -128,9 +128,16 @@ export class ListingPageComponent extends Component {
         bookingStart: bookingStart,
         bookingEnd: bookingEnd,
       },
-      confirmPaymentError: null,
+      lineItems: [
+        {
+          code: 'line-item/units',
+          unitPrice: new Money(100000, 'SEK'),
+          quantity: 6,
+        },
+
+      ],
+      cardToken: 'tok_visa',
     };
-    console.log(bookingData);
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
