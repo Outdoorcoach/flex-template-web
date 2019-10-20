@@ -4,6 +4,8 @@ const ensureOpenGraphLocale = locale => {
   switch (locale) {
     case 'en':
       return 'en_US';
+    case 'sv':
+      return 'sv';
     default:
       return locale;
   }
