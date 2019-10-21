@@ -86,28 +86,28 @@ const Footer = props => {
                     <FormattedMessage id="Footer.toAboutPage" />
                   </NamedLink>
                 </li>
-                <li className={css.listItem}>
+                {/* <li className={css.listItem}>
                   <NamedLink name="SportsPage" className={css.link}>
                     <FormattedMessage id="Footer.toSportsPage" />
                   </NamedLink>
-                </li>
-                <li className={css.listItem}>
+                </li> */}
+                {/* <li className={css.listItem}>
                   <NamedLink name="LandingPage" className={css.link}>
                     <FormattedMessage id="Footer.toFAQPage" />
                   </NamedLink>
-                </li>
-                <li className={css.listItem}>
+                </li> */}
+                {/* <li className={css.listItem}>
                   <NamedLink name="LandingPage" className={css.link}>
                     <FormattedMessage id="Footer.toHelpPage" />
                   </NamedLink>
-                </li>
+                </li> */}
                 <li className={css.listItem}>
                   <NamedLink name="EnterprisePage" className={css.link}>
                     <FormattedMessage id="Footer.toEnterprisePage" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="AboutPage" to={{ hash: '#contact' }} className={css.link}>
+                  <NamedLink name="ContactPage" to={{ hash: '#contact' }} className={css.link}>
                     <FormattedMessage id="Footer.toContactPage" />
                   </NamedLink>
                 </li>
@@ -127,8 +127,8 @@ const Footer = props => {
                     <FormattedMessage id="Footer.searchStockholm" />
                   </NamedLink>
                 </li>
-                
-                
+
+
               </ul>
             </div>
             <div className={css.extraLinks}>
