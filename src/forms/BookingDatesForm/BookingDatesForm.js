@@ -254,7 +254,7 @@ export class BookingDatesFormComponent extends Component {
               return <option key={i} value={i} disabled={item.isDisabled}>{item.displayHour}</option>
             })
             : false;
-         
+          
           const seatsOptions = seats.map(function (item, i) {
             return <option key={i + 1} value={item}>{item}</option>
           })
@@ -316,6 +316,7 @@ export class BookingDatesFormComponent extends Component {
                     name="endHour"
                     label={endHourLabel}
                     validate={requiredmessage}
+                    initialValue={startHour + 1}
                     useMobileMargins>
                     {endHours}
                   </FieldSelect>
