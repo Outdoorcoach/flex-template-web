@@ -1,7 +1,12 @@
 @import '../../marketplace.css';
 
 .pageTitle {
-  text-align: center;
+  text-align: left;
+  display: block;
+  width: 100%;
+}
+.pageBody {
+  display: inline-block;
 }
 .darkTheme{
   background-color: var(--marketplaceColorDark);
@@ -17,6 +22,11 @@
     width: calc(100% - 72px);
     margin: 72px auto;
   }
+}
+
+.bodyUnorderedList {
+  list-style: circle;
+  padding-left: 2rem;
 }
 
 .coverImage {

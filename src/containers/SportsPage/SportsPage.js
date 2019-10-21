@@ -65,7 +65,7 @@ export class SportsPageComponent extends Component {
         title="Sports"
         schema={{
           '@context': 'http://schema.org',
-          '@type': 'SportsPage',
+          '@type': 'CollectionPage',
           description: 'Sports offered on outdoorcoach',
           name: 'Sports page',
         }}

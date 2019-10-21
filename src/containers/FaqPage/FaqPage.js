@@ -49,7 +49,7 @@ const FaqPageComponent = props => {
   const schemaTitle = intl.formatMessage({ id: 'FaqPage.schemaTitle' }, { siteTitle });
   const schema = {
     '@context': 'http://schema.org',
-    '@type': 'WebPage',
+    '@type': 'FAQPage',
     name: schemaTitle,
   };
   return (

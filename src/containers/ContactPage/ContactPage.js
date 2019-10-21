@@ -25,17 +25,23 @@ export class ContactPageComponent extends Component {
     this.state = {
     };
 
+    const Heading = ({ children }) => <h1 className={css.pageTitle}>{children}</h1>;
+    const Text = ({ children }) => <p className={css.pageBody}>{children}</p>;
+    const List = ({ children }) => <ul className={css.bodyUnorderedList}>{children}</ul>;
+
     this.staticPageRenderOptions = {
       renderNode: {
         [BLOCKS.PARAGRAPH]: (node, children) => (
-          <p>{children}</p>
+          <Text>{children}</Text>
         ),
         [BLOCKS.HEADING_1]: (node, children) => (
-          <h1 className={css.pageTitle}>{children}</h1>
+          <Heading>{children}</Heading>
+        ),
+        [BLOCKS.UL_LIST]: (node, children) => (
+          <List>{children}</List>
         )
       },
     };
-    this.renderData = this.renderData.bind(this);
   }
 
   renderData(documentData, options) {

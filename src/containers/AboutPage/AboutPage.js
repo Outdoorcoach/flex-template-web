@@ -58,8 +58,8 @@ export class AboutPageComponent extends Component {
         schema={{
           '@context': 'http://schema.org',
           '@type': 'AboutPage',
-          description: 'About Outdoorcoach',
-          name: 'About page',
+          description: 'Vad är Outdoorcoach',
+          name: 'Om Outdoorcoach',
         }}
       >
         <LayoutSingleColumn className={css.darkTheme}>
