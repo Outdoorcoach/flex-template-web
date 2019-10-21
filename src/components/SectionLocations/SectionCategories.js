@@ -11,6 +11,8 @@ import css from './SectionCategories.css';
 import xcSkiImage from './images/cover-img-xc.jpg';
 import trailRunningImage from './images/cover-img-trail.jpg';
 import alpineSkiImage from './images/cover-img-alpine.jpg';
+import OrienteeringImage from './images/Orienteering.jpg';
+import RunningImage from './images/Running.jpg';
 
 class LocationImage extends Component {
   render() {
@@ -18,7 +20,7 @@ class LocationImage extends Component {
     return <img alt={alt} {...rest} />;
   }
 }
-const LazyImage = lazyLoadWithDimensions(LocationImage);
+const LazyImage = lazyLoadWithDimensions(LocationImage, );
 
 const locationLink = (name, image, searchQuery) => {
   const nameText = <span className={css.locationName}>{name}</span>;
@@ -51,19 +53,29 @@ const SectionLocations = props => {
       </div>
       <div className={css.locations}>
         {locationLink(
-          'Helsinki',
+          'Längdåkning',
           xcSkiImage,
-          '?address=Helsinki%2C%20Finland&bounds=60.2978389%2C25.254484899999966%2C59.9224887%2C24.782875800000056&origin=60.16985569999999%2C24.93837910000002'
+          '?address=Sverige&bounds=66.92051817%2C27.09540066%2C55.02371294%2C6.64228397&pub_category=xcski'
         )}
         {locationLink(
-          'Rovaniemi',
-          trailRunningImage,
-          '?address=Rovaniemi%2C%20Finland&bounds=67.18452510000002%2C27.32667850000007%2C66.1553745%2C24.736871199999996&origin=66.50394779999999%2C25.729390599999988'
-        )}
-        {locationLink(
-          'Ruka',
+          'Alpint',
           alpineSkiImage,
-          '?address=Ruka%2C%20Finland&bounds=66.1704578%2C29.14246849999995%2C66.1614402%2C29.110453699999994&origin=66.16594940000002%2C29.12646110000003'
+          '?address=Sverige&bounds=66.92051817%2C27.09540066%2C55.02371294%2C6.64228397&pub_category=alpine'
+        )}
+        {locationLink(
+          'Traillöpning',
+          trailRunningImage,
+          '?address=Sverige&bounds=66.92051817%2C27.09540066%2C55.02371294%2C6.64228397&pub_category=Trailrun'
+        )}
+        {locationLink(
+          'Löpning',
+          RunningImage,
+          '?address=Sverige&bounds=66.92051817%2C27.09540066%2C55.02371294%2C6.64228397&pub_category=running'
+        )}
+        {locationLink(
+          'Orientering',
+          OrienteeringImage,
+          '?address=Sverige&bounds=66.92051817%2C27.09540066%2C55.02371294%2C6.64228397&pub_category=Orienteering'
         )}
       </div>
     </div>

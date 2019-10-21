@@ -38,10 +38,13 @@ export const amenities = [
 ];
 
 export const categories = [
-  { key: 'alpine', label: 'Utförsåkning' },
-  { key: 'xcski', label: 'Längdskidåkning' },
+  { key: 'alpine', label: 'Alpint' },
+  { key: 'xcski', label: 'Längdåkning' },
   { key: 'Trailrun', label: 'Traillöpning' },
+  { key: 'running', label: 'Löpning' },
   { key: 'Orienteering', label: 'Orientering' },
+  { key: 'rollerski', label: 'Rullskidor' },
+  { key: 'openwater', label: 'Open Water' },
 ];
 
 

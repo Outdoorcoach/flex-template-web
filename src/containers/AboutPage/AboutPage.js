@@ -51,17 +51,15 @@ export class AboutPageComponent extends Component {
     const pageData = this.props.aboutPageData['body'];
 
     let renderedData = this.renderData(pageData, this.staticPageRenderOptions);
-    //let renderedHeading = renderedData[0];
-    //let renderedBody = renderedData.shift();
-    // prettier-ignore
+
     return (
       <StaticPage
         title="About Us"
         schema={{
           '@context': 'http://schema.org',
           '@type': 'AboutPage',
-          description: 'About Outdoorcoach',
-          name: 'About page',
+          description: 'Vad är Outdoorcoach',
+          name: 'Om Outdoorcoach',
         }}
       >
         <LayoutSingleColumn className={css.darkTheme}>

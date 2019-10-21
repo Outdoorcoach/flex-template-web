@@ -4,6 +4,7 @@ import {
   AuthenticationPage,
   CheckoutPage,
   ContactDetailsPage,
+  ContactPage,
   EditListingPage,
   EmailVerificationPage,
   EnterprisePage,
@@ -58,8 +59,14 @@ const routeConfiguration = () => {
     {
       path: '/about',
       name: 'AboutPage',
-      component: props => <AboutPage {...props}/>,
+      component: props => <AboutPage {...props} />,
       loadData: AboutPage.loadData,
+    },
+    {
+      path: '/contact',
+      name: 'ContactPage',
+      component: props => <ContactPage {...props} />,
+      loadData: ContactPage.loadData,
     },
     {
       path: '/enterprise',

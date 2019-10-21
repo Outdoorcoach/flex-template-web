@@ -61,12 +61,12 @@ export class EnterprisePageComponent extends Component {
     
     return (
       <StaticPage
-        title="Outdoorcoach for business"
+        title="Outdoorcoach för företag"
         schema={{
           '@context': 'http://schema.org',
-          '@type': 'EnterprisePage',
-          description: 'Custom sports solutions for employers',
-          name: 'Enterprise page',
+          '@type': 'WebPage',
+          description: 'Skräddarsydda träningsupplägg för organisationer och företag',
+          name: 'Outdoorcoach',
         }}
       >
         <LayoutSingleColumn>
