@@ -55,6 +55,9 @@ p,
 pre {
   @apply --marketplaceBodyFontStyles;
 }
+b, strong {
+  font-weight: 600;
+}
 
 /* ================ Normalisations ================ */
 

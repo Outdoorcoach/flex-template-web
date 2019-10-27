@@ -62,7 +62,7 @@ export class AboutPageComponent extends Component {
           name: 'Om Outdoorcoach',
         }}
       >
-        <LayoutSingleColumn className={css.darkTheme}>
+        <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer />
           </LayoutWrapperTopbar>

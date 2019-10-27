@@ -1,6 +1,6 @@
 /* Fonts */
 /* These are imported into marketplace.css */
-
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700&display=swap');
 
 :root {
   /*
@@ -43,7 +43,7 @@
   /* ================ Body font ================ */
 
   --marketplaceBodyFontStyles: {
-    font-family: 'Open Sans', 'Work Sans', Helvetica, Arial, sans-serif;
+    font-family: 'Work Sans', Helvetica, Arial, sans-serif;
     font-weight: var(--fontWeightRegular);
     font-size: 16px;
     line-height: 24px;
@@ -64,7 +64,7 @@
   /* ================ Hero title ================ */
 
   --marketplaceHeroTitleFontStyles: {
-    font-weight: var(--fontWeightBold);
+    font-weight: var(--fontWeightSemiBold);
     font-size: 42px;
     line-height: 42px;
     letter-spacing: -1px;
