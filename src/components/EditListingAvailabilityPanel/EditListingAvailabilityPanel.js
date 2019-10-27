@@ -179,8 +179,24 @@ const EditListingAvailabilityPanel = props => {
       { dayOfWeek: 'sun', seats: 1, startTime: '07:00', endTime: '22:00'  },
     ],
   };
-  const availabilityPlan = defaultAvailabilityPlan;
+  const availabilityPlan = currentListing.attributes.availabilityPlan || defaultAvailabilityPlan;
+  
+  const initialValues = valuesFromLastSubmit
+    ? valuesFromLastSubmit
+    : createInitialValues(availabilityPlan);
 
+  const handleSubmit = values => {
+    setValuesFromLastSubmit(values);
+
+    // Final Form can wait for Promises to return.
+    return onSubmit(createAvailabilityPlan(values))
+      .then(() => {
+        setIsEditPlanModalOpen(false);
+      })
+      .catch(e => {
+        // Don't close modal if there was an error
+      });
+  };
   return (
     <main className={classes} ref={setPortalRootAfterInitialRender}>
       <h1 className={css.title}>

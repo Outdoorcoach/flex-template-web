@@ -129,17 +129,6 @@ const timeSlotContainsDay = (timeSlot, day, timeZone) => {
   return false;
 };
 
-// Checks if time slot (propTypes.timeSlot) start time equals a day (moment)
-const timeSlotEqualsTime = (timeSlot, day) => {
-  // Time slots describe available dates by providing a start and
-  // an end date which is the following day. In the single date picker
-  // the start date is used to represent available dates.
-  const localStartDate = dateFromAPIToLocalNoon(timeSlot.attributes.start);
-
-  const isDay = ensureTimeSlot(timeSlot).attributes.type === TIME_SLOT_HOUR;
-  return isDay && isSameDay(day, moment(localStartDate));
-};
-
 class DateInputComponent extends Component {
   constructor(props) {
     super(props);

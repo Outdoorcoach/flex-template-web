@@ -58,9 +58,7 @@ const FieldSelectComponent = props => {
     ...rest,
   };
 
-  const classes = classNames(rootClassName || css.root, className, {
-    [css.mobileMargins]: useMobileMargins,
-  });
+  const classes = classNames(rootClassName || css.root, className);
   return (
     <div className={classes}>
       {label ? <label htmlFor={id}>{label}</label> : null}

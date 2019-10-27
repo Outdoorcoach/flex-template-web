@@ -28,7 +28,7 @@
 import React from 'react';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { dateFromLocalToAPI, nightsBetween, daysBetween, hoursBetween } from '../../util/dates';
+import { nightsBetween, daysBetween, hoursBetween } from '../../util/dates';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
 import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT, LINE_ITEM_CUSTOMER_COMMISSION, LINE_ITEM_HOURS } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
@@ -100,18 +100,6 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     unitPrice.currency
   );
 
-
-  // bookingStart: "Fri Mar 30 2018 12:00:00 GMT-1100 (SST)" aka "Fri Mar 30 2018 23:00:00 GMT+0000 (UTC)"
-  // Server normalizes night/day bookings to start from 00:00 UTC aka "Thu Mar 29 2018 13:00:00 GMT-1100 (SST)"
-  // The result is: local timestamp.subtract(12h).add(timezoneoffset) (in eg. -23 h)
-
-  // local noon -> startOf('day') => 00:00 local => remove timezoneoffset => 00:00 API (UTC)
-  const serverDayStart = dateFromLocalToAPI(
-    moment(bookingStart)
-  );
-  const serverDayEnd = dateFromLocalToAPI(
-    moment(bookingEnd)
-  );
 
   const extraHoursQuantity = extraHours
     ? (extraHours)
@@ -188,7 +176,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 
 const EstimatedBreakdownMaybe = props => {
 
-  const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants } = props.bookingData;
+  const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants, timeZone } = props.bookingData;
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
   const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;
