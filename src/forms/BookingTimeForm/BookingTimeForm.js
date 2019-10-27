@@ -7,9 +7,10 @@ import classNames from 'classnames';
 import { calculateQuantityFromHours, timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
-import { Form, PrimaryButton } from '../../components';
+import { Form, PrimaryButton,  FieldSelect } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
+import { required } from '../../util/validators';
 
 import css from './BookingTimeForm.css';
 
@@ -27,6 +28,14 @@ export class BookingTimeFormComponent extends Component {
   render() {
     const { rootClassName, className, price: unitPrice, ...rest } = this.props;
     const classes = classNames(rootClassName || css.root, className);
+
+    const seats = [
+      1,
+      2,
+      3,
+      4,
+      5,
+    ]
 
     if (!unitPrice) {
       return (
@@ -57,6 +66,7 @@ export class BookingTimeFormComponent extends Component {
             endDatePlaceholder,
             startDatePlaceholder,
             form,
+            formId,
             pristine,
             handleSubmit,
             intl,
@@ -73,12 +83,16 @@ export class BookingTimeFormComponent extends Component {
 
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;
           const endTime = values && values.bookingEndTime ? values.bookingEndTime : null;
+          const participants = values && values.participants ? values.participants : null;
+          const showparticipantSelector = endTime ? true : false;
 
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingTimeForm.bookingStartTitle',
           });
           const bookingEndLabel = intl.formatMessage({ id: 'BookingTimeForm.bookingEndTitle' });
-
+          const participantsLabel = intl.formatMessage({
+            id: 'BookingDatesForm.nrOfParticpantsTitle',
+          });
           const startDate = startTime ? timestampToDate(startTime) : null;
           const endDate = endTime ? timestampToDate(endTime) : null;
 
@@ -86,7 +100,7 @@ export class BookingTimeFormComponent extends Component {
           // EstimatedBreakdownMaybe component to change the calculations
           // for customized payment processes.
           const bookingData =
-            startDate && endDate
+            startDate && endDate && participants
               ? {
                   unitType,
                   unitPrice,
@@ -94,8 +108,10 @@ export class BookingTimeFormComponent extends Component {
                   endDate,
 
                   // Calculate the quantity as hours between the booking start and booking end
-                  quantity: calculateQuantityFromHours(startDate, endDate),
+                  quantity: calculateQuantityFromHours(startDate, endDate) * participants,
+                  extraHours: calculateQuantityFromHours(startDate, endDate) - 1,
                   timeZone,
+                  participants,
                 }
               : null;
           const bookingInfo = bookingData ? (
@@ -124,6 +140,10 @@ export class BookingTimeFormComponent extends Component {
             startDateInputProps,
             endDateInputProps,
           };
+          const seatsOptions = seats.map(function (item, i) {
+            return <option key={i + 1} value={item}>{item}</option>
+          });
+          const requiredseatsmessage = required('Du måste välja antal personer!');
 
           return (
             <Form onSubmit={handleSubmit} className={classes}>
@@ -141,6 +161,16 @@ export class BookingTimeFormComponent extends Component {
                   pristine={pristine}
                   timeZone={timeZone}
                 />
+              ) : null}
+              {showparticipantSelector ? (
+                <FieldSelect
+                id={`${formId}.bookingParticipants`}
+                name="participants"
+                label={participantsLabel}
+                validate={requiredseatsmessage}
+                initialValue={1}>
+                {seatsOptions}
+              </FieldSelect>
               ) : null}
               {bookingInfo}
               <p className={css.smallPrint}>

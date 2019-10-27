@@ -64,7 +64,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const unitPriceInNumbers = convertMoneyToNumber(unitPrice);
-
+  console.log(extraHours);
   const unitCount = isNightly
     ? nightsBetween(bookingStart, bookingEnd)
     : isDaily
@@ -176,15 +176,16 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 
 const EstimatedBreakdownMaybe = props => {
 
-  const { unitType, unitPrice, bookingStart, bookingEnd, quantity, extraHours, participants, timeZone } = props.bookingData;
+  const { unitType, unitPrice, startDate, endDate, quantity, extraHours, participants, timeZone } = props.bookingData;
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
-  const canEstimatePrice = bookingStart && bookingEnd && unitPrice && quantityIfUsingUnits;
+  console.log(quantityIfUsingUnits);
+  const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits;
 
   if (!canEstimatePrice) {
     return null;
   }
-  const tx = estimatedTransaction(unitType, bookingStart, bookingEnd, unitPrice, quantity, extraHours, participants);
+  const tx = estimatedTransaction(unitType, startDate, endDate, unitPrice, quantity, extraHours, participants);
   return (
     <BookingBreakdown
       className={css.receipt}

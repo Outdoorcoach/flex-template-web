@@ -23,7 +23,6 @@ const lineItemsTotal = lineItems => {
     
     return total.plus(item.lineTotal.amount);
   }, new Decimal(0));
-  console.log(amount);
   return new Money(amount, config.currency);
 };
 

@@ -414,6 +414,7 @@ export class CheckoutPageComponent extends Component {
   customPricingParams(params) {
     const { bookingStart, bookingEnd, listing, participants,quantity, ...rest } = params;
     const participantsNumber = parseInt(participants);
+    console.log(params);
     const bookingLength = quantity;//hoursBetween(bookingStart, bookingEnd);
     console.log(listing);
     /*price calculations */
