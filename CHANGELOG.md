@@ -10,14 +10,57 @@ way to update this template, but currently, we follow a pattern:
   cause conflicts.
 - Patch (v0.0.**X**): Bug fixes and small changes to components.
 
+Note: ftw-time@vx.x.x referers to updates made specifically to this repository. Previous ones are
+coming from upstream: https://github.com/sharetribe/flex-template-web/
+
 ---
 
 ## Upcoming version 2019-XX-XX
 
-- [fix] AvailabilityPlan doesn't need to have entries for every day.
-  [#1214](https://github.com/sharetribe/flex-template-web/pull/1214)
+## [ftw-time@v1.0.0] 2019-10-25
 
-## [v3.5.1] 2019-09-16
+- [add] Add default process and email templates to `ext/transaction-process`.
+  [#20](https://github.com/sharetribe/ftw-time/pull/20)
+- [fix] BookingTimeForm: UI improvements to date and time pickers.
+  [#23](https://github.com/sharetribe/ftw-time/pull/23)
+- [fix] Make the time selects fixed with on `EditListingPage` and add hover color to remove entry
+  icon. [#22](https://github.com/sharetribe/ftw-time/pull/22)
+- [fix] BookingTimeForm: do not pick exclusive end date from selected timeslot
+  [#21](https://github.com/sharetribe/ftw-time/pull/21)
+- [fix] Due to DST, one sharp hour (03:00) happens twice a day.
+  [#19](https://github.com/sharetribe/ftw-time/pull/19)
+- [fix] Submit buttons need extra space to the end of the form on mobile browsers.
+  [#18](https://github.com/sharetribe/ftw-time/pull/18)
+- [remove] `EditListingAvailabilityForm` component. It's for day-based process.
+  [#17](https://github.com/sharetribe/ftw-time/pull/17)
+- [add] AvailabilityPlan edit form created and `EditListingAvailabilityPanel` uses it.
+  [#8](https://github.com/sharetribe/ftw-time/pull/8)
+- [fix] Query up to 500 timeslots per request and fix border-bottom of disabled FieldSelect.
+  [#16](https://github.com/sharetribe/ftw-time/pull/16)
+- [add] Add more tests to functions in `util/dates.js`.
+  [#11](https://github.com/sharetribe/ftw-time/pull/11)
+- [add] Update translations to use hour instead of unit.
+  [#15](https://github.com/sharetribe/ftw-time/pull/15)
+- [fix] Fix BookingTimeForm and add monthly timeslots to picker.
+  [#13](https://github.com/sharetribe/ftw-time/pull/13)
+- [add] Add time-based dates to `BookingBreakdown` on `CheckoutPage`.
+  [#11](https://github.com/sharetribe/ftw-time/pull/11)
+- [add] New components `BookingTimeForm` and `FieldDateAndTimeInput` for handling time-based
+  availability. Also change template to use time-based transaction process.
+  [#7](https://github.com/sharetribe/ftw-time/pull/7)
+- [add] Inbox and TransactionPage use time zones to display booking times
+  [#10](https://github.com/sharetribe/ftw-time/pull/10)
+- [add] Fetch timeSlots on ListingPage and TransactionPage.
+  [#9](https://github.com/sharetribe/ftw-time/pull/9)
+- [remove] Remove dateFromAPIToLocalNoon and dateFromLocalToAPI.
+  [#6](https://github.com/sharetribe/ftw-time/pull/6)
+- [add] Add new component `FieldTimeZoneSelect`. Also add `moment-timezone` as a dependency and some
+  helper functions to `util/dates.js` for handling timezones and tiem-based timeslots.
+  [#5](https://github.com/sharetribe/ftw-time/pull/5)
+- [add] add FieldTimeZoneSelect component and a script that can extract IANA time zone keys from
+  moment-timezone's JSON formatted files. [#2](https://github.com/sharetribe/ftw-time/pull/2)
+
+## [v3.5.1] 2019-09-17
 
 - [add] add orverriding function `onAdd` and `onRemove` for `CustomOverlayView` in
   `SearchMapWithGoogleMap` to abide to React rules and do not `unmountComponentAtNode` when a
@@ -28,6 +71,8 @@ way to update this template, but currently, we follow a pattern:
   overriding `render` method to render child object by using `createPortal` instead of
   `unstable_renderSubtreeIntoContainer`.
   [#1200](https://github.com/sharetribe/flex-template-web/pull/1200)
+
+  [v3.5.1]: https://github.com/sharetribe/flex-template-web/compare/v3.5.0...v3.5.1
 
 ## [v3.5.0] 2019-08-29
 
@@ -124,8 +169,6 @@ way to update this template, but currently, we follow a pattern:
 - Update dependecies: all the easily updateable minor and batch updates: array.prototype.find,
   babel-jest, core-js, enzyme (et al.), express, helmet, inquirer, lodash, nodemon, raf, redux,
   source-map-support [#1163](https://github.com/sharetribe/flex-template-web/pull/1163)
-
-  [v3.4.0]: https://github.com/sharetribe/flex-template-web/compare/v3.3.0...v3.4.0
 
 ## [v3.3.0] 2019-08-22
 

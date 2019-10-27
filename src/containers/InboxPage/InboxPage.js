@@ -16,8 +16,8 @@ import {
   txIsPaymentExpired,
   txIsPaymentPending,
 } from '../../util/transaction';
-import { propTypes, DATE_TYPE_DATE } from '../../util/types';
-import { ensureCurrentUser } from '../../util/data';
+import { propTypes, DATE_TYPE_DATETIME } from '../../util/types';
+import { ensureCurrentUser, ensureListing } from '../../util/data';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import {
@@ -184,6 +184,10 @@ const BookingInfoMaybe = props => {
   if (isEnquiry) {
     return null;
   }
+  const listingAttributes = ensureListing(tx.listing).attributes;
+  const timeZone = listingAttributes.availabilityPlan
+    ? listingAttributes.availabilityPlan.timezone
+    : 'Etc/UTC';
 
   // If you want to show the booking price after the booking time on InboxPage you can
   // add the price after the BookingTimeInfo component. You can get the price by uncommenting
@@ -203,7 +207,8 @@ const BookingInfoMaybe = props => {
         intl={intl}
         tx={tx}
         unitType={unitType}
-        dateType={DATE_TYPE_DATE}
+        dateType={DATE_TYPE_DATETIME}
+        timeZone={timeZone}
       />
     </div>
   );

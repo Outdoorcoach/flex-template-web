@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
-import { array, arrayOf, bool, func, shape, string, oneOf } from 'prop-types';
+import { array, arrayOf, bool, func, object, shape, string, oneOf } from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -24,6 +24,7 @@ import {
   ensureUser,
   userDisplayNameAsString,
 } from '../../util/data';
+import { timestampToDate, calculateQuantityFromHours } from '../../util/dates';
 import { richText } from '../../util/richText';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
@@ -41,7 +42,7 @@ import {
 } from '../../components';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
-import { sendEnquiry, loadData, setInitialValues } from './ListingPage.duck';
+import { sendEnquiry, loadData, setInitialValues, fetchTimeSlots } from './ListingPage.duck';
 import SectionImages from './SectionImages';
 
 import SectionHeading from './SectionHeading';
@@ -88,24 +89,10 @@ export class ListingPageComponent extends Component {
       enquiryModalOpen: enquiryModalOpenForListingId === params.id,
     };
 
-    this.formatBookingDates = this.formatBookingDates.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onContactUser = this.onContactUser.bind(this);
     this.onSubmitEnquiry = this.onSubmitEnquiry.bind(this);
   }
-
-  formatBookingDates(date, starthour, endhour) {
-    const startDate = moment(date.date);
-    const endDate = moment(date.date);
-    startDate.hours(starthour);
-    endDate.hours(endhour);
-    return {
-      bookingStart: startDate.toDate(),
-      bookingEnd: endDate.toDate()
-    }
-  }
-
-  
 
   handleSubmit(values) {
     const {
@@ -118,25 +105,23 @@ export class ListingPageComponent extends Component {
     const listingId = new UUID(params.id);
     const listing = getListing(listingId);
 
-    const { bookingDate, startHour, endHour, ...bookingData } = values;
-    const { bookingStart, bookingEnd } = this.formatBookingDates(bookingDate, startHour, endHour);
-    
+    const { bookingStartTime, bookingEndTime, ...restOfValues } = values;
+    const bookingStart = timestampToDate(bookingStartTime);
+    const bookingEnd = timestampToDate(bookingEndTime);
+
+    const bookingData = {
+      quantity: calculateQuantityFromHours(bookingStart, bookingEnd),
+      ...restOfValues,
+    };
+
     const initialValues = {
       listing,
       bookingData,
       bookingDates: {
-        bookingStart: bookingStart,
-        bookingEnd: bookingEnd,
+        bookingStart,
+        bookingEnd,
       },
-      lineItems: [
-        {
-          code: 'line-item/units',
-          unitPrice: new Money(100000, 'SEK'),
-          quantity: 6,
-        },
-
-      ],
-      cardToken: 'tok_visa',
+      confirmPaymentError: null,
     };
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
@@ -203,6 +188,7 @@ export class ListingPageComponent extends Component {
       getOwnListing,
       intl,
       onManageDisableScrolling,
+      onFetchTimeSlots,
       params: rawParams,
       location,
       scrollingDisabled,
@@ -211,8 +197,7 @@ export class ListingPageComponent extends Component {
       // fetchReviewsError,
       sendEnquiryInProgress,
       sendEnquiryError,
-      timeSlots,
-      fetchTimeSlotsError,
+      monthlyTimeSlots,
       categoriesConfig,
     } = this.props;
 
@@ -483,8 +468,8 @@ export class ListingPageComponent extends Component {
                   subTitle={bookingSubTitle}
                   authorDisplayName={authorDisplayName}
                   onManageDisableScrolling={onManageDisableScrolling}
-                  timeSlots={timeSlots}
-                  fetchTimeSlotsError={fetchTimeSlotsError}
+                  monthlyTimeSlots={monthlyTimeSlots}
+                  onFetchTimeSlots={onFetchTimeSlots}
                 />
               </div>
             </div>
@@ -503,10 +488,9 @@ ListingPageComponent.defaultProps = {
   currentUser: null,
   enquiryModalOpenForListingId: null,
   showListingError: null,
-  // reviews: [],
-  // fetchReviewsError: null,
-  timeSlots: null,
-  fetchTimeSlotsError: null,
+  //reviews: [],
+  //fetchReviewsError: null,
+  monthlyTimeSlots: null,
   sendEnquiryError: null,
   categoriesConfig: config.custom.categories,
   amenitiesConfig: config.custom.amenities,
@@ -540,10 +524,17 @@ ListingPageComponent.propTypes = {
   enquiryModalOpenForListingId: string,
   showListingError: propTypes.error,
   callSetInitialValues: func.isRequired,
-  // reviews: arrayOf(propTypes.review),
-  // fetchReviewsError: propTypes.error,
-  timeSlots: arrayOf(propTypes.timeSlot),
-  fetchTimeSlotsError: propTypes.error,
+  //reviews: arrayOf(propTypes.review),
+  //fetchReviewsError: propTypes.error,
+  monthlyTimeSlots: object,
+  // monthlyTimeSlots could be something like:
+  // monthlyTimeSlots: {
+  //   '2019-11': {
+  //     timeSlots: [],
+  //     fetchTimeSlotsInProgress: false,
+  //     fetchTimeSlotsError: null,
+  //   }
+  // }
   sendEnquiryInProgress: bool.isRequired,
   sendEnquiryError: propTypes.error,
   onSendEnquiry: func.isRequired,
@@ -557,10 +548,9 @@ const mapStateToProps = state => {
   const { isAuthenticated } = state.Auth;
   const {
     showListingError,
-    // reviews,
-    // fetchReviewsError,
-    timeSlots,
-    fetchTimeSlotsError,
+    //reviews,
+    //fetchReviewsError,
+    monthlyTimeSlots,
     sendEnquiryInProgress,
     sendEnquiryError,
     enquiryModalOpenForListingId,
@@ -587,10 +577,9 @@ const mapStateToProps = state => {
     scrollingDisabled: isScrollingDisabled(state),
     enquiryModalOpenForListingId,
     showListingError,
-    // reviews,
-    // fetchReviewsError,
-    timeSlots,
-    fetchTimeSlotsError,
+    //reviews,
+    //fetchReviewsError,
+    monthlyTimeSlots,
     sendEnquiryInProgress,
     sendEnquiryError,
   };
@@ -602,6 +591,8 @@ const mapDispatchToProps = dispatch => ({
   callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
   onSendEnquiry: (listingId, message) => dispatch(sendEnquiry(listingId, message)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
+  onFetchTimeSlots: (listingId, start, end, timeZone) =>
+    dispatch(fetchTimeSlots(listingId, start, end, timeZone)),
 });
 
 // Note: it is important that the withRouter HOC is **outside** the

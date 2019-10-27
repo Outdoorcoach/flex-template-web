@@ -15,7 +15,7 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Fri 2:00 AM
+              Fri 12:00 PM
             </span>
           </div>
           <div>
@@ -32,7 +32,7 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Sun 2:00 AM
+              Sun 12:00 PM
             </span>
           </div>
           <div>
@@ -45,6 +45,16 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
     </div>,
     <hr />,
   ]
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span>
+      10
+    </span>
+  </div>
   <div>
     <span>
       <span>
@@ -86,7 +96,7 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Fri 2:00 AM
+              Fri 12:00 PM
             </span>
           </div>
           <div>
@@ -103,7 +113,7 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Sun 2:00 AM
+              Sun 12:00 PM
             </span>
           </div>
           <div>
@@ -116,6 +126,16 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
     </div>,
     <hr />,
   ]
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span>
+      10
+    </span>
+  </div>
   <div>
     <span>
       <span>
@@ -157,7 +177,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
           </div>
           <div>
             <span>
-              Fri 2:00 AM
+              Fri 12:00 PM
             </span>
           </div>
           <div>
@@ -174,7 +194,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
           </div>
           <div>
             <span>
-              Sun 2:00 AM
+              Sun 12:00 PM
             </span>
           </div>
           <div>
@@ -187,6 +207,16 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
     </div>,
     <hr />,
   ]
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span>
+      10
+    </span>
+  </div>
   <div>
     <span>
       <span>
@@ -276,7 +306,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Fri 2:00 AM
+              Fri 12:00 PM
             </span>
           </div>
           <div>
@@ -293,7 +323,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Sun 2:00 AM
+              Sun 12:00 PM
             </span>
           </div>
           <div>
@@ -306,6 +336,16 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
     </div>,
     <hr />,
   ]
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span>
+      10
+    </span>
+  </div>
   <div>
     <span>
       <span>

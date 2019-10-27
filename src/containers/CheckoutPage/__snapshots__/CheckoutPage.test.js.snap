@@ -149,6 +149,9 @@ exports[`CheckoutPage matches snapshot 1`] = `
         <h2>
           listing1 title
         </h2>
+        <p>
+          55 CheckoutPage.perUnit
+        </p>
       </div>
     </div>
   </div>

@@ -16,6 +16,7 @@ import {
 import LineItemBookingPeriod from './LineItemBookingPeriod';
 import LineItemBasePriceMaybe from './LineItemBasePriceMaybe';
 import LineItemBookingLengthMaybe from './LineItemBookingLengthMaybe';
+import LineItemUnitPriceMaybe from './LineItemUnitPriceMaybe';
 import LineItemSubTotalMaybe from './LineItemSubTotalMaybe';
 import LineItemCustomerCommissionMaybe from './LineItemCustomerCommissionMaybe';
 import LineItemCustomerCommissionRefundMaybe from './LineItemCustomerCommissionRefundMaybe';
@@ -40,6 +41,7 @@ export const BookingBreakdownComponent = props => {
     participants,
     intl,
     dateType,
+    timeZone,
   } = props;
 
   const isCustomer = userRole === 'customer';
@@ -63,12 +65,13 @@ export const BookingBreakdownComponent = props => {
    *
    * LineItemUnitsMaybe: if he unitType is line-item/unit print the name and
    * quantity of the unit
+   * This line item is not used by default in the BookingBreakdown.
+   *
+   * LineItemUnitPriceMaybe: prints just the unit price, e.g. "Price per night $32.00".
    *
    * LineItemBasePriceMaybe: prints the base price calculation for the listing, e.g.
    * "$150.00 * 2 nights $300"
    *
-   * LineItemUnitPriceMaybe: prints just the unit price, e.g. "Price per night $32.00".
-   * This line item is not used by default in the BookingBreakdown.
    *
    * LineItemUnknownItemsMaybe: prints the line items that are unknown. In ideal case there
    * should not be unknown line items. If you are using custom pricing, you should create
@@ -94,8 +97,15 @@ export const BookingBreakdownComponent = props => {
 
   return (
     <div className={classes}>
-      <LineItemBookingPeriod booking={booking} unitType={unitType} dateType={dateType} />
-      <LineItemBasePriceMaybe transaction={transaction} participants={participants} unitType={unitType} intl={intl} participants={participants}/>
+      <LineItemBookingPeriod
+        booking={booking}
+        unitType={unitType}
+        dateType={dateType}
+        timeZone={timeZone}
+      />
+      <LineItemUnitPriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
+
+      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
       <LineItemPeopleDiscountMaybe transaction={transaction} participants={participants} intl={intl}/>
       <LineItemHoursDiscountMaybe transaction={transaction} intl={intl}/>
       <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
@@ -142,7 +152,12 @@ export const BookingBreakdownComponent = props => {
   );
 };
 
-BookingBreakdownComponent.defaultProps = { rootClassName: null, className: null, dateType: null };
+BookingBreakdownComponent.defaultProps = {
+  rootClassName: null,
+  className: null,
+  dateType: null,
+  timeZone: null,
+};
 
 BookingBreakdownComponent.propTypes = {
   rootClassName: string,
@@ -152,6 +167,7 @@ BookingBreakdownComponent.propTypes = {
   transaction: propTypes.transaction.isRequired,
   booking: propTypes.booking.isRequired,
   dateType: propTypes.dateType,
+  timeZone: string,
 
   // from injectIntl
   intl: intlShape.isRequired,

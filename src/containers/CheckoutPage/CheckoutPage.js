@@ -187,18 +187,14 @@ export class CheckoutPageComponent extends Component {
       pageData.bookingDates &&
       pageData.bookingDates.bookingStart &&
       pageData.bookingDates.bookingEnd &&
+      pageData.bookingData.quantity &&
       !isBookingCreated;
 
     if (shouldFetchSpeculatedTransaction) {
-      const listingId = pageData.listing.id;
+      const listing = pageData.listing;
       const { bookingStart, bookingEnd } = pageData.bookingDates;
       const { participants } = pageData.bookingData;
-
-
-      // Convert picked date to date that will be converted on the API as
-      // a noon of correct year-month-date combo in UTC
-      const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
-      const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
+      const { quantity } = pageData.bookingData;
 
 
       // Fetch speculated transaction for showing price in booking breakdown
@@ -207,9 +203,10 @@ export class CheckoutPageComponent extends Component {
       fetchSpeculatedTransaction(
         this.customPricingParams({
           listing,
-          bookingStart: bookingStartForAPI,
-          bookingEnd: bookingEndForAPI,
+          bookingStart,
+          bookingEnd,
           participants,
+          quantity
         })
         );
     }
@@ -415,9 +412,9 @@ export class CheckoutPageComponent extends Component {
   }
 
   customPricingParams(params) {
-    const { bookingStart, bookingEnd, listing, participants, ...rest } = params;
+    const { bookingStart, bookingEnd, listing, participants,quantity, ...rest } = params;
     const participantsNumber = parseInt(participants);
-    const bookingLength = hoursBetween(bookingStart, bookingEnd);
+    const bookingLength = quantity;//hoursBetween(bookingStart, bookingEnd);
     console.log(listing);
     /*price calculations */
     const unitPriceInNumbers = convertMoneyToNumber(listing.attributes.price);
@@ -698,6 +695,9 @@ export class CheckoutPageComponent extends Component {
     // (i.e. have an id)
     const tx = existingTransaction.booking ? existingTransaction : speculatedTransaction;
     const txBooking = ensureBooking(tx.booking);
+    const timeZone = currentListing.attributes.availabilityPlan
+      ? currentListing.attributes.availabilityPlan.timezone
+      : 'Etc/UTC';
     const breakdown =
       tx.id && txBooking.id ? (
         <BookingBreakdown
@@ -708,6 +708,7 @@ export class CheckoutPageComponent extends Component {
           participants={bookingData.participants}
           booking={txBooking}
           dateType={DATE_TYPE_DATETIME}
+          timeZone={timeZone}
         />
       ) : null;
 

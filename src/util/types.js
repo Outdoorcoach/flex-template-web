@@ -274,7 +274,7 @@ propTypes.timeSlot = shape({
   id: propTypes.uuid.isRequired,
   type: propTypes.value('timeSlot').isRequired,
   attributes: shape({
-    type: oneOf([TIME_SLOT_DAY,TIME_SLOT_HOUR]).isRequired,
+    type: oneOf([TIME_SLOT_DAY, TIME_SLOT_TIME]).isRequired,
     end: instanceOf(Date).isRequired,
     start: instanceOf(Date).isRequired,
   }),
