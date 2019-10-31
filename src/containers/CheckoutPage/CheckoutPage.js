@@ -542,6 +542,7 @@ export class CheckoutPageComponent extends Component {
       bookingEnd: speculatedTransaction.booking.attributes.end,
       pageData: this.state.pageData,
       participants: this.state.pageData.bookingData.participants,
+      quantity: this.state.pageData.bookingData.quantity,
       speculatedTransaction,
       stripe: this.stripe,
       card,

@@ -141,7 +141,6 @@ export const TransactionPageComponent = props => {
       quantity: calculateQuantityFromHours(bookingStart, bookingEnd),
       ...restOfValues,
     };
-
     const initialValues = {
       listing: currentListing,
       // enquired transaction should be passed to CheckoutPage
