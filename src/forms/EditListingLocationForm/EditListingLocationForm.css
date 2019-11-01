@@ -69,7 +69,8 @@
 }
 
 .locationAddress,
-.building {
+.building,
+.locationDetails {
   flex-shrink: 0;
   margin-bottom: 24px;
 
