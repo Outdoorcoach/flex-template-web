@@ -177,6 +177,11 @@
 
 .mainTitle {
   display: block;
+  font-size: 24px;
+  font-weight: 500;
+  @media (--viewportMedium) {
+    line-height: 32px;
+  }
 }
 
 .transactionInfoMessage {
