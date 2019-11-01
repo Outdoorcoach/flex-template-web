@@ -215,7 +215,7 @@ const countryCodes = [
   { code: 'SR', en: 'Suriname', fr: 'Suriname', es: 'Surinam', de: 'Suriname' },
   { code: 'SJ', en: 'Svalbard and Jan Mayen', fr: 'Svalbard et Jan Mayen', es: 'Islas Svalbard y Jan Mayen', de: 'Svalbard und Jan Mayen' },
   { code: 'SZ', en: 'Swaziland', fr: 'Eswatini', es: 'Suazilandia', de: 'Swasiland' },
-  { code: 'SE', en: 'Sweden', fr: 'Suède', es: 'Suecia', de: 'Schweden' },
+  { code: 'SE', en: 'Sweden', fr: 'Suède', es: 'Suecia', de: 'Schweden', se: 'Sverige' },
   { code: 'CH', en: 'Switzerland', fr: 'Suisse', es: 'Suiza', de: 'Schweiz' },
   { code: 'SY', en: 'Syrian Arab Republic', fr: 'Syrie', es: 'Siria', de: 'Syrien, Arabische Republik' },
   { code: 'TW', en: 'Taiwan', fr: 'Taiwan', es: 'Taiwán', de: 'Taiwan' },

@@ -72,9 +72,9 @@
    :to :state/declined}
   {:name :transition/complete,
    :at {:fn/timepoint [:time/booking-end]},
-   :actions [],
+   :actions [{:name :action/stripe-create-payout}],
    :from :state/accepted,
-   :to :state/completed}
+   :to :state/delivered}
   {:name :transition/cancel-by-operator,
    :actor :actor.role/operator,
    :actions
@@ -99,23 +99,6 @@
     {:name :action/stripe-refund-payment}],
    :from :state/accepted,
    :to :state/cancelled}
-  {:name :transition/cancel-by-customer-no-refund,
-   :actor :actor.role/customer,
-   :actions
-   [{:name :action/cancel-booking}
-    {:name :action/stripe-create-payout}],
-   :from :state/accepted,
-   :to :state/cancelled}
-  {:name :transition/dispute,
-   :actor :actor.role/customer,
-   :actions [],
-   :from :state/completed,
-   :to :state/disputed}
-  {:name :transition/mark-delivered,
-   :actor :actor.role/provider,
-   :actions [{:name :action/stripe-create-payout}],
-   :from :state/completed,
-   :to :state/delivered}
   {:name :transition/review-1-by-provider,
    :actor :actor.role/provider,
    :actions [{:name :action/post-review-by-provider}],
@@ -179,19 +162,15 @@
    :to :actor.role/customer,
    :template :booking-request-auto-declined}
   {:name :notification/money-paid-delivered,
-   :on :transition/mark-delivered,
-   :to :actor.role/provider,
-   :template :money-paid}
-  {:name :notification/money-paid-late-cancel,
-   :on :transition/cancel-by-customer-no-refund,
+   :on :transition/complete,
    :to :actor.role/provider,
    :template :money-paid}
   {:name :notification/review-period-start-provider,
-   :on :transition/mark-delivered,
+   :on :transition/complete,
    :to :actor.role/provider,
    :template :review-by-provider-wanted}
   {:name :notification/review-period-start-customer,
-   :on :transition/mark-delivered,
+   :on :transition/complete,
    :to :actor.role/customer,
    :template :review-by-customer-wanted}
   {:name :notification/review-by-provider-first,

@@ -153,6 +153,7 @@ const StripePaymentAddress = props => {
           className={css.field}
           label={countryLabel}
           validate={countryRequired}
+          initialValue={'SE'}
         >
           <option disabled value="">
             {countryPlaceholder}
