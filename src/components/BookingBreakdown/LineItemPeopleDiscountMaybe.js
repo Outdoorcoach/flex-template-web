@@ -12,7 +12,6 @@ const { Money } = sdkTypes;
 const LineItemPeopleDiscountMaybe = props => {
   const { transaction, participants, intl } = props;
 
-  const extraparticipants = participants ? parseInt(participants) - 1 : "";
   const peopleDiscountItem = transaction.attributes.lineItems.find(
     item => item.code === LINE_ITEM_PEOPLE_DISCOUNT && !item.reversal
   );
@@ -20,6 +19,7 @@ const LineItemPeopleDiscountMaybe = props => {
   if (!peopleDiscountItem) {
     return null;
   }
+  const extraparticipants = (peopleDiscountItem.quantity.toNumber() * -1); 
   
   const amount = new Money((peopleDiscountItem.unitPrice.amount * peopleDiscountItem.quantity.toNumber()), config.currency);
   const formattedAmount = formatMoney(intl, amount);

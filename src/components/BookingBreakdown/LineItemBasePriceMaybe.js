@@ -22,17 +22,18 @@ const LineItemBasePriceMaybe = props => {
     item => item.code === LINE_ITEM_HOURS && !item.reversal
   );
 
-  const nrparticipants = participants? parseInt(participants) : 0;
+ 
   const bookinglength = participants? (unitPurchase.quantity / parseInt(participants)) : unitPurchase.quantity;
 
   const quantity = unitPurchase ? unitPurchase.quantity.toString() : null;
+  const nrparticipants = quantity;
   const unitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
   const total = unitPurchase ? formatMoney(intl, unitPurchase.lineTotal) : null;
 
   return quantity && total ? (
     <div className={css.lineItem}>
       <span className={css.itemLabel}>
-        <FormattedMessage id={translationKey} values={{ bookinglength, nrparticipants, unitPrice, quantity, nrparticipants }} />
+        <FormattedMessage id={translationKey} values={{ bookinglength, nrparticipants, unitPrice, quantity }} />
       </span>
       <span className={css.itemValue}>{total}</span>
     </div>

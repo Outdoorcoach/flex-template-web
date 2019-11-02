@@ -2,7 +2,11 @@
 
 .root {
   margin-left: 24px;
-    margin-right: 24px;
+  margin-right: 24px;
+  @media (--viewportMedium) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .select {
