@@ -28,7 +28,7 @@
   /* Font */
   color: var(--matterColorAnti);
 
-  margin-top: 5px;
+  margin-top: 12px;
   margin-bottom: 14px;
   @media (--viewportMedium) {
     margin-top: 5px;

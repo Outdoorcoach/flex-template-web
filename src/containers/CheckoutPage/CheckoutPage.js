@@ -153,7 +153,6 @@ export class CheckoutPageComponent extends Component {
       history,
       lineItems
     } = this.props;
-
     // Fetch currentUser with stripeCustomer entity
     // Note: since there's need for data loading in "componentWillMount" function,
     //       this is added here instead of loadData static function.
@@ -196,6 +195,7 @@ export class CheckoutPageComponent extends Component {
       const { participants } = pageData.bookingData;
       const { quantity } = pageData.bookingData;
 
+      
 
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
@@ -388,9 +388,6 @@ export class CheckoutPageComponent extends Component {
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
       lineItems,
-      protectedData: {
-        participants: pageData.bookingData.participants
-      },
       ...optionalPaymentParams,
     };
 
@@ -414,11 +411,9 @@ export class CheckoutPageComponent extends Component {
   }
 
   customPricingParams(params) {
-    const { bookingStart, bookingEnd, listing, participants,quantity, ...rest } = params;
+    const { bookingStart, bookingEnd, listing, participants, quantity, ...rest } = params;
     const participantsNumber = parseInt(participants);
-    console.log(params);
     const bookingLength = quantity;//hoursBetween(bookingStart, bookingEnd);
-    console.log(listing);
     /*price calculations */
     const unitPriceInNumbers = convertMoneyToNumber(listing.attributes.price);
     const unitPrice = listing.attributes.price;
@@ -491,6 +486,7 @@ export class CheckoutPageComponent extends Component {
       bookingStart,
       bookingEnd,
       lineItems: lineItemsArray,
+      participants: participantsNumber,
       ...rest,
     };
 

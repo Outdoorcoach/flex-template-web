@@ -165,6 +165,7 @@ export const stripeCustomerError = e => ({
 /* ================ Thunks ================ */
 
 export const initiateOrder = (orderParams, transactionId) => (dispatch, getState, sdk) => {
+  console.log(orderParams);
   dispatch(initiateOrderRequest());
   const bodyParams = transactionId
     ? {
@@ -274,7 +275,7 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
     }
 
   };
-  console.log(bodyParams);
+  console.log(params);
   const queryParams = {
     include: ['booking', 'provider'],
     expand: true,

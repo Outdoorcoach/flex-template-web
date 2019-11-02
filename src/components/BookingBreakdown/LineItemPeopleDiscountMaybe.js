@@ -20,7 +20,7 @@ const LineItemPeopleDiscountMaybe = props => {
   if (!peopleDiscountItem) {
     return null;
   }
-  console.log([peopleDiscountItem.unitPrice, peopleDiscountItem.quantity.toNumber()]);
+  
   const amount = new Money((peopleDiscountItem.unitPrice.amount * peopleDiscountItem.quantity.toNumber()), config.currency);
   const formattedAmount = formatMoney(intl, amount);
   

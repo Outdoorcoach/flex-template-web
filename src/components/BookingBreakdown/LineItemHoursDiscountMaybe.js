@@ -19,7 +19,6 @@ const LineItemHoursDiscountMaybe = props => {
   if (!hoursDiscountItem) {
     return null;
   }
-  console.log([hoursDiscountItem.unitPrice, hoursDiscountItem.quantity.toNumber()]);
   const amount = new Money((hoursDiscountItem.unitPrice.amount * hoursDiscountItem.quantity.toNumber()), config.currency);
   const formattedAmount = formatMoney(intl, amount);
   

@@ -212,15 +212,15 @@
   /* Font */
   color: var(--matterColorAnti);
 
-  margin-top: 0;
+  margin-top: 9px;
   margin-bottom: 14px;
 
   @media (--viewportMedium) {
-    margin-top: 0;
+    margin-top: 8px;
     margin-bottom: 18px;
   }
   @media (--viewportLarge) {
-    margin-top: 0;
+    margin-top: 12px;
     margin-bottom: 14px;
   }
 }
