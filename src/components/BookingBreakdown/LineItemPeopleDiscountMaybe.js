@@ -12,7 +12,7 @@ const { Money } = sdkTypes;
 const LineItemPeopleDiscountMaybe = props => {
   const { transaction, participants, intl } = props;
 
-  const extraparticipants = parseInt(participants) - 1;
+  const extraparticipants = participants ? parseInt(participants) - 1 : "";
   const peopleDiscountItem = transaction.attributes.lineItems.find(
     item => item.code === LINE_ITEM_PEOPLE_DISCOUNT && !item.reversal
   );
