@@ -302,6 +302,7 @@ export class TransactionPanelComponent extends Component {
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
+    // TODO Add cancel booking button
     const saleButtons = (
       <SaleActionButtonsMaybe
         showButtons={stateData.showSaleButtons}

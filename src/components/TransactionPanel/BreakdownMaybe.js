@@ -20,7 +20,7 @@ const BreakdownMaybe = props => {
   const classes = classNames(rootClassName || css.breakdownMaybe, className);
   const breakdownClasses = classNames(breakdownClassName || css.breakdown);
 
-  console.log(transaction.booking);
+  console.log(transaction);
 
   return loaded ? (
     <div className={classes}>

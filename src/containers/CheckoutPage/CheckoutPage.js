@@ -383,12 +383,14 @@ export class CheckoutPageComponent extends Component {
         : selectedPaymentFlow === PAY_AND_SAVE_FOR_LATER_USE
           ? { setupPaymentMethodForSaving: true }
           : {};
-
     const orderParams = {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
       lineItems,
+      protectedData: {
+        participants: pageData.bookingData.participants
+      },
       ...optionalPaymentParams,
     };
 
@@ -401,13 +403,13 @@ export class CheckoutPageComponent extends Component {
   }
   
   estimatedPeopleDiscountMaybe(unitPrice, extraparticipants, nrHours) {
-    const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).times(-1).toNumber();
+    const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).toNumber();
   
     return numericDiscount;
   }
   
   estimatedHoursDiscountMaybe(unitPrice, extraHours) {
-    const numericDiscount = new Decimal(unitPrice).times(extraHours).times(-1).toNumber();
+    const numericDiscount = new Decimal(unitPrice).times(extraHours).toNumber();
     return numericDiscount;
   }
 
@@ -1013,7 +1015,6 @@ CheckoutPageComponent.propTypes = {
 };
 
 const mapStateToProps = state => {
-  console.log(state)
   const {
     listing,
     lineItems,
