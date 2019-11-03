@@ -133,7 +133,7 @@ export const txState = (intl, tx, type) => {
       nameClassName: css.nameNotEmphasized,
       bookingClassName: css.bookingNoActionNeeded,
       lastTransitionedAtClassName: css.lastTransitionedAtNotEmphasized,
-      stateClassName: css.stateNoActionNeeded,
+      stateClassName: isOrder? css.stateNoActionNeeded : css.stateActionNeeded,
       state: intl.formatMessage({
         id: 'InboxPage.stateCanceled',
       }),
