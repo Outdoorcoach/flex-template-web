@@ -399,14 +399,14 @@ export class CheckoutPageComponent extends Component {
     return numericTotalPrice;
   }
   
-  estimatedPeopleDiscountMaybe(unitPrice, extraparticipants, nrHours) {
-    const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).toNumber();
+  estimatedPeopleDiscountMaybe(unitPrice) {
+    const numericDiscount = new Decimal(unitPrice).toNumber();
   
     return numericDiscount;
   }
   
-  estimatedHoursDiscountMaybe(unitPrice, extraHours) {
-    const numericDiscount = new Decimal(unitPrice).times(extraHours).toNumber();
+  estimatedHoursDiscountMaybe(unitPrice) {
+    const numericDiscount = new Decimal(unitPrice).toNumber();
     return numericDiscount;
   }
 
@@ -421,13 +421,13 @@ export class CheckoutPageComponent extends Component {
     const subtotalPrice = this.estimatedTotalPrice(unitPriceInNumbers, unitCount);
     /*extra hours or participants*/
     const extraHours = bookingLength > 1 ? (bookingLength-1) : 0;
-    const extraPeople = participantsNumber > 1 ? (participantsNumber-1) : 0;
+    const extraPeople = participantsNumber > 1 ? ((participantsNumber-1) * bookingLength) : 0;
 
     const hoursDiscount = extraHours != 0
-      ? this.estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours) 
+      ? this.estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4) 
       : 0;
     const peopleDiscount = extraPeople != 0
-      ? this.estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, extraPeople, bookingLength)
+      ? this.estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5)
       : 0;
 
     const hoursDiscountTotal = new Money(

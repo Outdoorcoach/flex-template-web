@@ -2,11 +2,12 @@ import React from 'react';
 import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, LINE_ITEM_HOURS, propTypes } from '../../util/types';
+import { calculateQuantityFromHours } from '../../util/dates';
 
 import css from './BookingBreakdown.css';
 
 const LineItemBasePriceMaybe = props => {
-  const { transaction, unitType, intl, participants } = props;
+  const { transaction, unitType, intl} = props;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const translationKey = isNightly
@@ -22,11 +23,12 @@ const LineItemBasePriceMaybe = props => {
     item => item.code === LINE_ITEM_HOURS && !item.reversal
   );
 
+  const attributes = transaction.booking.attributes;
  
-  const bookinglength = participants? (unitPurchase.quantity / parseInt(participants)) : unitPurchase.quantity;
+  const bookinglength = calculateQuantityFromHours(attributes.start, attributes.end);
 
   const quantity = unitPurchase ? unitPurchase.quantity.toString() : null;
-  const nrparticipants = quantity;
+  const nrparticipants = quantity / bookinglength;
   const unitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
   const total = unitPurchase ? formatMoney(intl, unitPurchase.lineTotal) : null;
 

@@ -28,7 +28,7 @@
 import React from 'react';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { nightsBetween, daysBetween, hoursBetween } from '../../util/dates';
+import { nightsBetween, daysBetween, hoursBetween, calculateQuantityFromHours } from '../../util/dates';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
 import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT, LINE_ITEM_CUSTOMER_COMMISSION, LINE_ITEM_HOURS } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
@@ -44,14 +44,14 @@ const estimatedTotalPrice = (unitPrice, unitCount) => {
   return numericTotalPrice;
 };
 
-const estimatedPeopleDiscountMaybe = (unitPrice, extraparticipants, nrHours) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraparticipants).times(nrHours).toNumber();
+const estimatedPeopleDiscountMaybe = (unitPrice) => {
+  const numericDiscount = new Decimal(unitPrice).toNumber();
 
   return numericDiscount;
 };
 
-const estimatedHoursDiscountMaybe = (unitPrice, extraHours) => {
-  const numericDiscount = new Decimal(unitPrice).times(extraHours).toNumber();
+const estimatedHoursDiscountMaybe = (unitPrice) => {
+  const numericDiscount = new Decimal(unitPrice).toNumber();
   return numericDiscount;
 };
 
@@ -71,14 +71,14 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
       ? daysBetween(bookingStart, bookingEnd)
       : quantity;
 
-  const bookingLength = hoursBetween(bookingStart, bookingEnd);
+  const bookingLength = calculateQuantityFromHours(bookingStart, bookingEnd);
   const subtotalPrice = estimatedTotalPrice(unitPriceInNumbers, unitCount);
 
   const hoursDiscount = extraHours
-    ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4, extraHours)
+    ? estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4)
     : 0;
   const peopleDiscount = participants > 1
-    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5, participants - 1, bookingLength)
+    ? estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5)
     : 0;
 
   const hoursDiscountTotal = new Money(
@@ -117,7 +117,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     : [];
 
   const extraPeopleQuantity = participants > 1
-    ? (participants - 1)
+    ? ((participants - 1) * bookingLength)
     : 0;
   const peopleDiscountLineItem = {
     code: LINE_ITEM_PEOPLE_DISCOUNT,

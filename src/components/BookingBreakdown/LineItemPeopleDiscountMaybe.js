@@ -4,13 +4,14 @@ import { LINE_ITEM_PEOPLE_DISCOUNT, propTypes } from '../../util/types';
 import config from '../../config';
 import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
+import { calculateQuantityFromHours } from '../../util/dates';
 
 import css from './BookingBreakdown.css';
 
 const { Money } = sdkTypes;
 
 const LineItemPeopleDiscountMaybe = props => {
-  const { transaction, participants, intl } = props;
+  const { transaction, intl } = props;
 
   const peopleDiscountItem = transaction.attributes.lineItems.find(
     item => item.code === LINE_ITEM_PEOPLE_DISCOUNT && !item.reversal
@@ -19,9 +20,12 @@ const LineItemPeopleDiscountMaybe = props => {
   if (!peopleDiscountItem) {
     return null;
   }
-  const extraparticipants = (peopleDiscountItem.quantity.toNumber() * -1); 
+  const attributes = transaction.booking.attributes;
+  const quantity = peopleDiscountItem.quantity.toNumber() * -1;
+  const bookinglength = calculateQuantityFromHours(attributes.start, attributes.end);
+  const extraparticipants = (quantity / bookinglength); 
   
-  const amount = new Money((peopleDiscountItem.unitPrice.amount * peopleDiscountItem.quantity.toNumber()), config.currency);
+  const amount = new Money((peopleDiscountItem.unitPrice.amount * quantity * -1), config.currency);
   const formattedAmount = formatMoney(intl, amount);
   
 
