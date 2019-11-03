@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { func, object, string } from 'prop-types';
 import classNames from 'classnames';
-import { intlShape } from '../../util/reactIntl';
+import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import {
   getStartHours,
   getEndHours,
@@ -26,6 +26,7 @@ import { FieldDateInput, FieldSelect } from '../../components';
 import NextMonthIcon from './NextMonthIcon';
 import PreviousMonthIcon from './PreviousMonthIcon';
 import css from './FieldDateAndTimeInput.css';
+import moment from 'moment';
 
 const MAX_TIME_SLOTS_RANGE = 180;
 const TODAY = new Date();
@@ -102,7 +103,7 @@ const getAvailableEndTimes = (
 
 const getTimeSlots = (timeSlots, date, timeZone) => {
   return timeSlots && timeSlots[0]
-    ? timeSlots.filter(t => isInRange(date, t.attributes.start, t.attributes.end, 'day', timeZone))
+    ? timeSlots.filter(t => isInRange(date, t.attributes.start, t.attributes.end, 'day', timeZone) )
     : [];
 };
 
@@ -112,7 +113,7 @@ const getAllTimeValues = (
   intl,
   timeZone,
   timeSlots,
-  startDate,
+  startDate, // the date in question
   selectedStartTime,
   selectedEndDate
 ) => {
@@ -152,11 +153,10 @@ const getAllTimeValues = (
 
 const getMonthlyTimeSlots = (monthlyTimeSlots, date, timeZone) => {
   const monthId = monthIdStringInTimeZone(date, timeZone);
-
   return !monthlyTimeSlots || Object.keys(monthlyTimeSlots).length === 0
     ? []
     : monthlyTimeSlots[monthId] && monthlyTimeSlots[monthId].timeSlots
-    ? monthlyTimeSlots[monthId].timeSlots
+    ? monthlyTimeSlots[monthId].timeSlots/*.filter(slot => !moment(slot.attributes.start).isSame(moment(), 'day') )*/
     : [];
 };
 
@@ -336,6 +336,7 @@ class FieldDateAndTimeInput extends Component {
     return !(dateIsAfter(localizedDay, startDate) && dateIsAfter(endDate, localizedDay));
   }
 
+
   render() {
     const {
       rootClassName,
@@ -407,6 +408,8 @@ class FieldDateAndTimeInput extends Component {
       findNextBoundary(timeZone, TODAY)
     );
 
+    //const dateIsWithin24Hours = moment.duration(moment().diff(moment(this.state.selectedStart))).as('hours') <= 24;
+
     return (
       <div className={classes}>
         <div className={css.formRow}>
@@ -456,6 +459,14 @@ class FieldDateAndTimeInput extends Component {
             </FieldSelect>
           </div>
         </div>
+        {/*dateIsWithin24Hours?
+          (<p className={css.smallPrint}>
+            <FormattedMessage
+              id='BookingTimeForm.ownListing'
+            />
+          </p>)
+          : ""
+          */}
         <div className={css.formRow}>
           <div className={css.field}>
             <FieldDateInput

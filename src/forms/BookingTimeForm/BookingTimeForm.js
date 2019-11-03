@@ -11,6 +11,7 @@ import { Form, PrimaryButton,  FieldSelect } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
 import { required } from '../../util/validators';
+import moment from 'moment';
 
 import css from './BookingTimeForm.css';
 
@@ -145,6 +146,7 @@ export class BookingTimeFormComponent extends Component {
           });
           const requiredseatsmessage = required('Du måste välja antal personer!');
 
+          const isDateWithin24HoursFromNow = moment.duration( moment(startDate).diff(moment()) ).asHours() <= 24;
           return (
             <Form onSubmit={handleSubmit} className={classes}>
               {monthlyTimeSlots && timeZone ? (
@@ -173,6 +175,13 @@ export class BookingTimeFormComponent extends Component {
               </FieldSelect>
               ) : null}
               {bookingInfo}
+              {isDateWithin24HoursFromNow ? 
+                (<p className={css.bookingnotice}>
+                  <FormattedMessage
+                    id='BookingTimeForm.within24HoursNotice'
+                  />
+                </p>)
+                : ""}
               <p className={css.smallPrint}>
                 <FormattedMessage
                   id={

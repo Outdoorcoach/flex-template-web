@@ -126,3 +126,11 @@
   stroke: var(--matterColorLight);
   fill: var(--matterColorLight);
 }
+
+.smallPrint {
+  @apply --marketplaceTinyFontStyles;
+  color: var(--matterColorAnti);
+  text-align: start;
+  margin: 5px 0 12px 0;
+  flex-shrink: 0;
+}

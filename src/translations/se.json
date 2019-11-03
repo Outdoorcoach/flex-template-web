@@ -108,6 +108,7 @@
   "BookingTimeForm.requiredDate": "Oops, se till add datumen är korrekta!",
   "BookingTimeForm.timeSlotsError": "Laddning misslyckades. Prova att ladda om sidan",
   "BookingTimeForm.youWontBeChargedInfo": "Du kommer inte debiteras ännu",
+  "BookingTimeForm.within24HoursNotice": "OBS! det är mindre än 24 timmar tills din bokning startar",
   "CheckoutPage.bookingTimeNotAvailableMessage": "Din önskade tid är tyvärr inte tillgänglig.",
   "CheckoutPage.chargeDisabledMessage": "Betaluppgifterna för den här coachen är inkompletta vilket gör att denna tjänst inte kan bokas. Kontakta administratör för mer information",
   "CheckoutPage.errorlistingLinkText": "the Outdoorcoach page",

@@ -11,12 +11,13 @@ import { parse, stringify } from '../../util/urlHelpers';
 import config from '../../config';
 import { ModalInMobile, Button } from '../../components';
 import { BookingTimeForm } from '../../forms';
+import moment from 'moment';
 
 import css from './BookingPanel.css';
 
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023;
-const TODAY = new Date();
+const TOMORROW = moment().add(1,'days').add(1,'hours').toDate();
 
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
@@ -132,8 +133,8 @@ const BookingPanel = props => {
             listingId={listing.id}
             monthlyTimeSlots={monthlyTimeSlots}
             onFetchTimeSlots={onFetchTimeSlots}
-            startDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
-            endDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
+            startDatePlaceholder={intl.formatDate(TOMORROW, dateFormattingOptions)}
+            endDatePlaceholder={intl.formatDate(TOMORROW, dateFormattingOptions)}
             timeZone={timeZone}
           />
         ) : null}

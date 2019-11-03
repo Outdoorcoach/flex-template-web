@@ -74,6 +74,23 @@
     margin-bottom: 21px;
   }
 }
+.bookingnotice {
+  @apply --marketplaceTinyFontStyles;
+  color: var(--attentionColor);
+  text-align: center;
+  margin: 0 24px 20px 24px;
+  flex-shrink: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (--viewportLarge) {
+    margin-top: 24px;
+    margin-bottom: 21px;
+  }
+}
 
 .submitButtonWrapper {
   flex-shrink: 0;
