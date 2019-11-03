@@ -36,6 +36,22 @@
 
     
   }
+  --loginImage: {
+    /* Gradient direction and overlaying the black color on top of the image for better readability */
+    background: linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
+      url('../../assets/background_winter.jpg');
+
+    /* Add loading color for the div */
+    background-color: var(--matterColor);
+
+    /* Cover the whole screen with the background image */
+    background-size: cover;
+
+    /* Align the image within the container */
+    background-position: center center;
+
+    
+  }
 
   /* ================ Colors ================ */
 
@@ -257,6 +273,7 @@
   /* ================ Inputs ================ */
 
   --marketplaceInputStyles: {
+    @apply --marketplaceBodyFontStyles;
     /* Dimensions */
     display: block;
     width: 100%;
