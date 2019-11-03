@@ -21,7 +21,7 @@
 
   --marketplaceDefaultFontStyles: {
     font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-    font-weight: var(--fontWeightRegular);
+    font-weight: var(--fontWeightMedium);
     font-size: 16px;
     line-height: 24px;
     letter-spacing: -0.1px;
