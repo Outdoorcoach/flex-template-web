@@ -11,6 +11,8 @@ import {
   txIsInFirstReviewBy,
   TRANSITION_ACCEPT,
   TRANSITION_DECLINE,
+  TRANSITION_CANCEL_BY_CUSTOMER,
+  TRANSITION_CANCEL_BY_PROVIDER,
 } from '../../util/transaction';
 import * as log from '../../util/log';
 import {
@@ -63,6 +65,14 @@ export const FETCH_TIME_SLOTS_REQUEST = 'app/TransactionPage/FETCH_TIME_SLOTS_RE
 export const FETCH_TIME_SLOTS_SUCCESS = 'app/TransactionPage/FETCH_TIME_SLOTS_SUCCESS';
 export const FETCH_TIME_SLOTS_ERROR = 'app/TransactionPage/FETCH_TIME_SLOTS_ERROR';
 
+export const CANCEL_BY_CUSTOMER_REQUEST = 'app/TransactionPage/CANCEL_BY_CUSTOMER_REQUEST';
+export const CANCEL_BY_CUSTOMER_SUCCESS = 'app/TransactionPage/CANCEL_BY_CUSTOMER_SUCCESS';
+export const CANCEL_BY_CUSTOMER_ERROR = 'app/TransactionPage/CANCEL_BY_CUSTOMER_ERROR';
+
+export const CANCEL_BY_PROVIDER_REQUEST = 'app/TransactionPage/CANCEL_BY_PROVIDER_REQUEST';
+export const CANCEL_BY_PROVIDER_SUCCESS = 'app/TransactionPage/CANCEL_BY_PROVIDER_SUCCESS';
+export const CANCEL_BY_PROVIDER_ERROR = 'app/TransactionPage/CANCEL_BY_PROVIDER_ERROR';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -73,6 +83,8 @@ const initialState = {
   acceptSaleError: null,
   declineInProgress: false,
   declineSaleError: null,
+  cancelBookingInProgress: null,
+  cancelBookingError: null,
   fetchMessagesInProgress: false,
   fetchMessagesError: null,
   totalMessages: 0,
@@ -217,6 +229,18 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
       };
       return { ...state, monthlyTimeSlots };
     }
+    case CANCEL_BY_CUSTOMER_REQUEST:
+      return { ...state, cancelBookingInProgress: true, cancelBookingError: null};
+    case CANCEL_BY_CUSTOMER_SUCCESS:
+      return { ...state, cancelBookingInProgress: false };
+    case CANCEL_BY_CUSTOMER_ERROR:
+      return { ...state, cancelBookingInProgress: false, cancelBookingError: payload };
+    case CANCEL_BY_CUSTOMER_REQUEST:
+      return { ...state, cancelBookingInProgress: true, cancelBookingError: null};
+    case CANCEL_BY_CUSTOMER_SUCCESS:
+      return { ...state, cancelBookingInProgress: false };
+    case CANCEL_BY_CUSTOMER_ERROR:
+      return { ...state, cancelBookingInProgress: false, cancelBookingError: payload };
 
     default:
       return state;
@@ -227,6 +251,9 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
 
 export const acceptOrDeclineInProgress = state => {
   return state.TransactionPage.acceptInProgress || state.TransactionPage.declineInProgress;
+};
+export const cancelInProgress = state => {
+  return state.TransactionPage.cancelBookingInProgress;
 };
 
 // ================ Action creators ================ //
@@ -285,6 +312,14 @@ export const fetchTimeSlotsError = (monthId, error) => ({
   error: true,
   payload: { monthId, error },
 });
+
+const cancelByCustomerRequest = () => ({ type: CANCEL_BY_CUSTOMER_REQUEST });
+const cancelByCustomerSuccess = () => ({ type: CANCEL_BY_CUSTOMER_SUCCESS });
+const cancelByCustomerError = e => ({ type: CANCEL_BY_CUSTOMER_ERROR, error: true, payload: e });
+
+const cancelByProviderRequest = () => ({ type: CANCEL_BY_PROVIDER_REQUEST });
+const cancelByProviderSuccess = () => ({ type: CANCEL_BY_PROVIDER_SUCCESS });
+const cancelByProviderError = e => ({ type: CANCEL_BY_PROVIDER_ERROR, error: true, payload: e });
 
 // ================ Thunks ================ //
 
@@ -430,6 +465,53 @@ export const acceptSale = id => (dispatch, getState, sdk) => {
       log.error(e, 'accept-sale-failed', {
         txId: id,
         transition: TRANSITION_ACCEPT,
+      });
+      throw e;
+    });
+};
+
+export const cancelByCustomer = id => (dispatch, getState, sdk) => {
+  if (cancelInProgress(getState())) {
+    return Promise.reject(new Error('Accept or decline already in progress'));
+  }
+  dispatch(cancelByCustomerRequest());
+
+  return sdk.transactions
+    .transition({ id, transition: TRANSITION_CANCEL_BY_CUSTOMER, params: {} }, { expand: true })
+    .then(response => {
+      dispatch(addMarketplaceEntities(response));
+      dispatch(cancelByCustomerSuccess());
+      dispatch(fetchCurrentUserNotifications());
+      return response;
+    })
+    .catch(e => {
+      dispatch(cancelByCustomerError(storableError(e)));
+      log.error(e, 'accept-sale-failed', {
+        txId: id,
+        transition: TRANSITION_CANCEL_BY_CUSTOMER,
+      });
+      throw e;
+    });
+};
+export const cancelByProvider = id => (dispatch, getState, sdk) => {
+  if (cancelInProgress(getState())) {
+    return Promise.reject(new Error('Accept or decline already in progress'));
+  }
+  dispatch(cancelByProviderRequest());
+
+  return sdk.transactions
+    .transition({ id, transition: TRANSITION_CANCEL_BY_PROVIDER, params: {} }, { expand: true })
+    .then(response => {
+      dispatch(addMarketplaceEntities(response));
+      dispatch(cancelByProviderSuccess());
+      dispatch(fetchCurrentUserNotifications());
+      return response;
+    })
+    .catch(e => {
+      dispatch(cancelByProviderError(storableError(e)));
+      log.error(e, 'accept-sale-failed', {
+        txId: id,
+        transition: TRANSITION_CANCEL_BY_PROVIDER,
       });
       throw e;
     });

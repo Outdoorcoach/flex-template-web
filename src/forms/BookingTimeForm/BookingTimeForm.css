@@ -75,7 +75,7 @@
   }
 }
 .bookingnotice {
-  @apply --marketplaceTinyFontStyles;
+  @apply --marketplaceBodyFontStyles;
   color: var(--attentionColor);
   text-align: center;
   margin: 0 24px 20px 24px;

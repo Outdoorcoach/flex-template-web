@@ -143,11 +143,19 @@ const resolveTransitionMessage = (
         <FormattedMessage id="ActivityFeed.transitionExpire" values={{ displayName }} />
       );
     case TRANSITION_CANCEL_BY_CUSTOMER:
-      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+        return txRoleIsCustomer(ownRole) ? (
+          <FormattedMessage id="ActivityFeed.ownTransitionCancel" />
+        ) : (
+          <FormattedMessage id="ActivityFeed.transitionCancelByOther" values={{ displayName }} />
+        );
     case TRANSITION_CANCEL_BY_OPERATOR:
-      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+        return txRoleIsProvider(ownRole) ? (
+          <FormattedMessage id="ActivityFeed.ownTransitionCancel" />
+        ) : (
+          <FormattedMessage id="ActivityFeed.transitionCancelByOther" values={{ displayName }} />
+        );
     case TRANSITION_CANCEL_BY_PROVIDER:
-      return <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" />;
+      return <FormattedMessage id="ActivityFeed.transitionCancelByProvider" />;
     case TRANSITION_COMPLETE:
       // Show the leave a review link if the state is delivered and if the current user is the first to leave a review
       /*const reviewPeriodJustStarted = txIsDelivered(transaction);

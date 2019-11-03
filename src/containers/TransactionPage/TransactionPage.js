@@ -30,6 +30,8 @@ import { TopbarContainer } from '../../containers';
 import {
   acceptSale,
   declineSale,
+  cancelByCustomer,
+  cancelByProvider,
   loadData,
   setInitialValues,
   sendMessage,
@@ -75,6 +77,10 @@ export const TransactionPageComponent = props => {
     declineSaleError,
     onAcceptSale,
     onDeclineSale,
+    cancelBookingInProgress,
+    cancelBookingError,
+    onCancelByProvider,
+    onCancelByCustomer,
     monthlyTimeSlots,
     processTransitions,
     callSetInitialValues,
@@ -247,6 +253,10 @@ export const TransactionPageComponent = props => {
       declineInProgress={declineInProgress}
       acceptSaleError={acceptSaleError}
       declineSaleError={declineSaleError}
+      cancelBookingInProgress={cancelBookingInProgress}
+      cancelBookingError={cancelBookingError}
+      onCancelByProvider={onCancelByProvider}
+      onCancelByCustomer={onCancelByCustomer}
       nextTransitions={processTransitions}
       onSubmitBookingRequest={handleSubmitBookingRequest}
       monthlyTimeSlots={monthlyTimeSlots}
@@ -299,6 +309,10 @@ TransactionPageComponent.propTypes = {
   declineInProgress: bool.isRequired,
   onAcceptSale: func.isRequired,
   onDeclineSale: func.isRequired,
+  cancelBookingInProgress: bool.isRequired,
+  cancelBookingError: bool.isRequired,
+  onCancelByProvider: func.isRequired,
+  onCancelByCustomer: func.isRequired,
   scrollingDisabled: bool.isRequired,
   transaction: propTypes.transaction,
   fetchMessagesError: propTypes.error,
@@ -343,6 +357,8 @@ const mapStateToProps = state => {
     declineSaleError,
     acceptInProgress,
     declineInProgress,
+    cancelBookingInProgress,
+    cancelBookingError,
     transactionRef,
     fetchMessagesInProgress,
     fetchMessagesError,
@@ -370,6 +386,8 @@ const mapStateToProps = state => {
     declineSaleError,
     acceptInProgress,
     declineInProgress,
+    cancelBookingInProgress,
+    cancelBookingError,
     scrollingDisabled: isScrollingDisabled(state),
     transaction,
     fetchMessagesInProgress,
@@ -392,6 +410,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onAcceptSale: transactionId => dispatch(acceptSale(transactionId)),
     onDeclineSale: transactionId => dispatch(declineSale(transactionId)),
+    onCancelByCustomer: transactionId => dispatch(cancelByCustomer(transactionId)),
+    onCancelByProvider: transactionId => dispatch(cancelByProvider(transactionId)),
     onShowMoreMessages: txId => dispatch(fetchMoreMessages(txId)),
     onSendMessage: (txId, message) => dispatch(sendMessage(txId, message)),
     onManageDisableScrolling: (componentId, disableScrolling) =>
