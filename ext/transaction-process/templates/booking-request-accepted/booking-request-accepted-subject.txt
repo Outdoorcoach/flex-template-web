@@ -1,1 +1,1 @@
-{{transaction.provider.display-name}} accepted your booking request!
+{{transaction.provider.display-name}} bekräftade din bokning!
