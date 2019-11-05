@@ -178,12 +178,12 @@
                                 </tr>
                               </table>
 
-
+                              {{#with transaction}}
                               <table class="module" role="module" data-type="text" border="0" cellpadding="0"
                                 cellspacing="0" width="100%" style="table-layout: fixed;padding: 30px 10% 0px 10%">
                                 <tr>
                                   <td>
-                                    {{#with transaction}}
+                                    
                                     <h1>Hej, Hur gick det? Lämna ett omdöme!</h1>
                                   </td>
                                 </tr>
@@ -200,7 +200,7 @@
                                     <p><a href="{{marketplace.url}}/order/{{url-encode id}}/details">Lämna omdöme</a></p>
                                     <br />
                                     <i>Omdömen är en viktig del av att hålla uppe servicenivån på {{marketplace.name}}.</i>
-                                    {{/with}}
+                                    
                                   </td>
 
     
