@@ -1,1 +1,1 @@
-Write a review for {{transaction.customer.display-name}}
+Lämna ett omdöme om {{transaction.customer.display-name}}

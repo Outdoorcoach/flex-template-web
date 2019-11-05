@@ -1,1 +1,1 @@
-Write a review for {{transaction.listing.title}}
+{{transaction.listing.title}} har slutförts

@@ -1,1 +1,1 @@
-Read the review {{other-party.display-name}} wrote you
+{{other-party.display-name}} Har lämnat ett omdöme om dig

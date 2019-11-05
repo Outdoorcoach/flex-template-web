@@ -1,20 +1,290 @@
-
 {{~#*inline "format-date"~}}
-{{date date format="MMM d, YYYY" tz="Etc/UTC"}}
+{{#with transaction.listing.availability-plan}}
+{{date d format="hh:mm a" tz=timezone}} on {{date date format="MMM d, YYYY" tz=timezone}}
+{{/with}}
 {{~/inline~}}
 
-<html>
-  <body>
-    <h1>Your booking request was declined.</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
 
-    {{#with transaction}}
-    <p>Unfortunately {{provider.display-name}} decided to decline your booking request for {{listing.title}} from {{> format-date date=booking.start}} to {{> format-date date=booking.end}}. You have not been billed.</p>
-    {{/with}}
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <!--<![endif]-->
+  <!--[if (gte mso 9)|(IE)]>
+    <xml>
+    <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+  <!--[if (gte mso 9)|(IE)]>
+    <style type="text/css">
+      body {width: 600px;margin: 0 auto;}
+      table {border-collapse: collapse;}
+      table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+      img {-ms-interpolation-mode: bicubic;}
+    </style>
+    <![endif]-->
 
-    <p><a href="{{marketplace.url}}">Try to book something else instead</a></p>
+  <style type="text/css">
+    body,
+    p,
+    div {
+      font-family: Open sans,
+        Helvetica, Arial, sans-serif;
+      color: #1c2323;
 
-    <hr />
+    }
 
-    <p>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team.</p>
-  </body>
+    body {
+      color: #1C2323;
+
+    }
+
+    a {
+      color: #11B9AF;
+      text-decoration: none;
+    }
+
+    h1 {
+      font-weight: 600;
+      color: #1c2323;
+      font-size: 36px;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+      line-height: 129.5%;
+      letter-spacing: 2.5%;
+      font-size: 16px;
+    }
+
+    table.wrapper {
+      width: 100% !important;
+      table-layout: fixed;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    img.max-width {
+      max-width: 100% !important;
+    }
+
+    .column.of-2 {
+      width: 50%;
+    }
+
+    .column.of-3 {
+      width: 33.333%;
+    }
+
+    .column.of-4 {
+      width: 25%;
+    }
+
+    @media screen and (max-width:480px) {
+
+      .preheader .rightColumnContent,
+      .footer .rightColumnContent {
+        text-align: left !important;
+      }
+
+      .preheader .rightColumnContent div,
+      .preheader .rightColumnContent span,
+      .footer .rightColumnContent div,
+      .footer .rightColumnContent span {
+        text-align: left !important;
+      }
+
+      .preheader .rightColumnContent,
+      .preheader .leftColumnContent {
+        font-size: 80% !important;
+        padding: 5px 0;
+      }
+
+      table.wrapper-mobile {
+        width: 100% !important;
+        table-layout: fixed;
+      }
+
+      img.max-width {
+        height: auto !important;
+        max-width: 480px !important;
+      }
+
+      a.bulletproof-button {
+        display: block !important;
+        width: auto !important;
+        font-size: 80%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .columns {
+        width: 100% !important;
+      }
+
+      .column {
+        display: block !important;
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .total_spacer {
+        padding: 0px 0px 0px 0px;
+      }
+    }
+  </style>
+  <!--user entered Head Start-->
+
+  <!--End Head user entered-->
+</head>
+
+<body>
+  <center class="wrapper" data-link-color="#1188E6">
+    <div class="webkit">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#f2f2f2">
+        <tr>
+          <td valign="top" width="100%">
+            <table width="100%" role="content-container" class="outer" align="center" cellpadding="0" cellspacing="0"
+              border="0">
+              <tr>
+                <td width="100%">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <!--[if mso]>
+                          <center>
+                          <table><tr><td width="600">
+                          <![endif]-->
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                          style="width: 100%; max-width:600px;" align="center">
+                          <tr>
+                            <td role="modules-container" style="text-align: left;" bgcolor="#ffffff" width="100%"
+                              align="left">
+                              <table class="wrapper" role="module" data-type="image" border="0" cellpadding="0"
+                                cellspacing="0" width="100%" style="table-layout: fixed;">
+                                <tr>
+                                  <td align="right"
+                                    style="padding:30px 30px 50px 30px;background-color:#1C2323;text-align: right;">
+                                    <img class="max-width" width="30%"
+                                      src="https://images.ctfassets.net/2jrncopryo0k/3DWLUJW045Fz2lcZH0cIiM/651564da9251e728816a35633cbb1b0c/logo_white.png"
+                                      alt="">
+                                  </td>
+                                </tr>
+                              </table>
+
+
+                              <table class="module" role="module" data-type="text" border="0" cellpadding="0"
+                                cellspacing="0" width="100%" style="table-layout: fixed;padding: 30px 10% 0px 10%">
+                                <tr>
+                                  <td>
+                                    <h1>Din förfrågan nekades</h1>
+                                  </td>
+                                </tr>
+                              </table>
+
+                              {{#with transaction}}
+
+                              <table class="module" role="module" data-type="text" border="0" cellpadding="0"
+                                cellspacing="0" width="100%" style="table-layout: fixed;padding:0px 10% 50px 10%">
+                                <tr>
+                                  <td>
+                                    <p>{{provider.display-name}} nekade tyvärr din bokning av {{listing.title}} den {{> format-date date=booking.start}} till {{> format-date date=booking.end}}. Inga pengar har dragits från ditt konto.</p>
+                                    {{/with}}
+
+                                    Om du vill kan du <p><a href="{{marketplace.url}}">Söka efter något annat som passar dig</a></p>
+
+                                </tr>
+                              </table>
+                              
+                              {{/with}}
+                              <table class="module" role="module" data-type="text" border="0" cellpadding="0"
+                                cellspacing="0" width="100%" style="table-layout: fixed;">
+                                <tr>
+                                  <td
+                                    style="padding:30px 20px 0px 20px;line-height:22px;text-align:inherit;background-color:#1c2323"
+                                    height="100%" valign="top" bgcolor="#F5F5F5">
+                                    <div style="text-align: center;"><span style="color:#7a7a7a;"><span
+                                          style="font-size:11px;">©Outdoorcoach Nordic 2019.</span></span></div>
+                                  </td>
+                                </tr>
+                              </table>
+
+                              <table class="module" role="module" data-type="social" align="center" border="0"
+                                cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+                                <tbody>
+                                  <tr>
+                                    <td valign="top"
+                                      style="padding:10px 0px 30px 0px;font-size:6px;line-height:10px;background-color:#1c2323;">
+                                      <table align="center">
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding: 0px 5px;">
+                                              <a role="social-icon-link"
+                                                href="https://www.facebook.com/outdoorcoachnordic/" target="_blank"
+                                                alt="Facebook" data-nolink="false" title="Facebook "
+                                                style="-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:inline-block;background-color:#3B579D;">
+                                                <img role="social-icon" alt="Facebook" title="Facebook " height="30"
+                                                  width="30" style="height: 30px, width: 30px"
+                                                  src="https://marketing-image-production.s3.amazonaws.com/social/white/facebook.png" />
+                                              </a>
+                                            </td>
+                                            <td style="padding: 0px 5px;">
+                                              <a role="social-icon-link" href="https://twitter.com/OC_Nordic"
+                                                target="_blank" alt="Twitter" data-nolink="false" title="Twitter "
+                                                style="-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:inline-block;background-color:#7AC4F7;">
+                                                <img role="social-icon" alt="Twitter" title="Twitter " height="30"
+                                                  width="30" style="height: 30px, width: 30px"
+                                                  src="https://marketing-image-production.s3.amazonaws.com/social/white/twitter.png" />
+                                              </a>
+                                            </td>
+                                            <td style="padding: 0px 5px;">
+                                              <a role="social-icon-link" href="instagram.com" target="_blank"
+                                                alt="Instagram" data-nolink="false" title="Instagram "
+                                                style="-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:inline-block;background-color:#D62C81;">
+                                                <img role="social-icon" alt="Instagram" title="Instagram " height="30"
+                                                  width="30" style="height: 30px, width: 30px"
+                                                  src="https://marketing-image-production.s3.amazonaws.com/social/white/instagram.png" />
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+
+                            </td>
+                          </tr>
+                        </table>
+                        <!--[if mso]>
+                        </td></tr></table>
+                        </center>
+                        <![endif]-->
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </center>
+</body>
+
 </html>
