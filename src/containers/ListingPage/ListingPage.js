@@ -434,6 +434,7 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
+                  <SectionDescriptionMaybe description={description} />
                   <SectionHostMaybe
                     title={title}
                     listing={currentListing}
@@ -447,7 +448,6 @@ export class ListingPageComponent extends Component {
                     currentUser={currentUser}
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
-                  <SectionDescriptionMaybe description={description} />
                   {/*<SectionFeaturesMaybe options={amenitiesConfig} publicData={publicData} />*/}
                   <SectionRulesMaybe publicData={publicData} />
                   <SectionMapMaybe
