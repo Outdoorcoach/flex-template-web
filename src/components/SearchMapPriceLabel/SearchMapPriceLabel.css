@@ -34,7 +34,7 @@
   color: var(--matterColor);
   letter-spacing: 0.1px;
 
-  background-color: var(--matterColorLight);
+  background-color: var(--marketplaceColor);
 
   /* Borders */
   border-style: solid;
@@ -58,8 +58,8 @@
 
 .priceLabelActive {
   /* Same as hover */
-  background-color: var(--marketplaceColor);
-  border-color: var(--marketplaceColor);
+  background-color: var(--matterColorLight);
+  border-color: var(--matterColorLight);
   color: var(--matterColorLight);
   box-shadow: var(--boxShadowPopup);
 }
@@ -91,12 +91,12 @@
   transition: var(--transitionStyleButton);
 
   /* Caret should have same bg-color and border as label */
-  background-color: var(--matterColorLight);
+  background-color: var(--marketplaceColor);
   border-right-style: solid;
-  border-right-color: var(--matterColorNegative);
+  border-right-color: var(--marketplaceColor);
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: var(--matterColorNegative);
+  border-bottom-color: var(--marketplaceColor);
   border-bottom-width: 1px;
 }
 
