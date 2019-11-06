@@ -21,7 +21,7 @@ import config from './config';
 
 // Flex template application uses English translations as default.
 
-import defaultMessages from './translations/se.json';
+import defaultMessages from './translations/sv.json';
 
 // If you want to change the language, change the imports to match the wanted locale:
 //   1) Change the language in the config.js file!
@@ -42,7 +42,7 @@ import defaultMessages from './translations/se.json';
 
 // Step 3:
 // If you are using a non-english locale, point `messagesInLocale` to correct .json file
-import messagesInLocale from './translations/se.json';
+import messagesInLocale from './translations/sv.json';
 
 // If translation key is missing from `messagesInLocale` (e.g. fr.json),
 // corresponding key will be added to messages from `defaultMessages` (en.json)
