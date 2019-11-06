@@ -12,7 +12,7 @@ import css from './ListingPage.css';
 class SectionMapMaybe extends Component {
   constructor(props) {
     super(props);
-    this.state = { isStatic: true };
+    this.state = { isStatic: false };
   }
 
   render() {
