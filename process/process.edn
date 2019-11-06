@@ -165,6 +165,22 @@
    :on :transition/complete,
    :to :actor.role/provider,
    :template :money-paid}
+  {:name :notification/booking-cancelled-by-customer,
+   :on :transition/cancel-by-customer,
+   :to :actor.role/provider,
+   :template :booking-canceled-by-customer}
+  {:name :notification/booking-cancelled-by-provider,
+   :on :transition/cancel-by-provider,
+   :to :actor.role/customer,
+   :template :booking-canceled-by-provider}
+  {:name :notification/booking-cancelled-by-operator-to-customer,
+   :on :transition/cancel-by-operator,
+   :to :actor.role/customer,
+   :template :booking-canceled-by-operator}
+  {:name :notification/booking-cancelled-by-operator-to-provider,
+   :on :transition/cancel-by-operator,
+   :to :actor.role/provider,
+   :template :booking-canceled-by-operator}
   {:name :notification/review-period-start-provider,
    :on :transition/complete,
    :to :actor.role/provider,

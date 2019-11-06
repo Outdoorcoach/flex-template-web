@@ -1,0 +1,1 @@
+{{transaction.customer.display-name}} avbokade {{transaction.listing.title}}

@@ -5,19 +5,19 @@
 
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date d format="hh:mm a" tz=timezone}} on {{date date format="MMM d, YYYY" tz=timezone}}
+{{date d format="hh:mm a" tz=timezone lang="sv-SV"}} den {{date date format="d MMM, YYYY" tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 
 {{~#*inline "format-day-time"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="EE hh:mm a" tz=timezone}}
+{{date date format="EE hh:mm a" tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 
 {{~#*inline "format-month-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="MMM d" tz=timezone}}
+{{date date format="MMM d" tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 

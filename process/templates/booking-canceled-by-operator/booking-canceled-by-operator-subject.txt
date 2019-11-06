@@ -1,0 +1,1 @@
+{{transaction.listing.title}} har avbokats av {{marketplace.name}}
