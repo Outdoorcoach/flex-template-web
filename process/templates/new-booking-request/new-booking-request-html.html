@@ -1,6 +1,6 @@
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date d format="hh:mm a" tz=timezone lang="sv-SV"}} den {{date date format="MMM d, YYYY" tz=timezone lang="sv-SV"}}
+{{date d format="hh:mm" tz=timezone lang="sv-SV"}} den {{date date format="MMM d, YYYY" tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 
@@ -10,7 +10,7 @@
 
 {{~#*inline "format-day-time"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="EE hh:mm a" tz=timezone lang="sv-SV"}}
+{{date date format="EE hh:mm " tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 
@@ -87,6 +87,10 @@
       -webkit-text-size-adjust: 100%;
       -moz-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
+    }
+    .pricing {
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     img.max-width {
@@ -201,7 +205,7 @@
                               </table>
 
                               {{#with transaction}}
-                              <table class="module" role="module" data-type="text" border="0" cellpadding="0"
+                              <table class="module pricing" role="module" data-type="text" border="0" cellpadding="2"
                                 cellspacing="0" width="100%" style="table-layout: fixed;padding: 30px 10% 0px 10%">
                                 <thead>
                                   <tr>
@@ -218,27 +222,15 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                    <tr class="top-row">
+                                        <th class="left">Bokning</th>
+                                        <th class="right">{{> format-money money=payin-total}}</th>
+                                    </tr>
                                 {{#each tx-line-items}}
                                   {{#contains include-for "provider"}}
-                                    {{#eq "line-item/units" code}}
-                                      {{#if seats}}
-                                      <tr class="top-row">
-                                        <td colspan="2">{{> format-money money=unit-price}} &times; {{number units}} {{inflect units "timme" "timmar"}}</td>
-                                      </tr>
-                                      <tr class="bottom-row">
-                                        <td colspan="2">Platser &times; {{number seats}}</td>
-                                      </tr>
-                                      {{else}}
-                                      <tr class="top-row bottom-row">
-                                        <td colspan="2">{{> format-money money=unit-price}} &times; {{number quantity}} {{inflect quantity "unit" "units"}}</td>
-                                      </tr>
-                                      {{/if}}
-                                      <tr class="top-row">
-                                        <th class="left">Netto</th>
-                                        <th class="right">{{> format-money money=line-total}}</th>
-                                      </tr>
-                                    {{/eq}}
-                          
+                                  
+                                     
+                                
                                     {{#eq "line-item/provider-commission" code}}
                                       <tr class="bottom-row">
                                         <td>{{marketplace.name}}-avgift</td>
@@ -249,7 +241,7 @@
                                 {{/each}}
                                 </tbody>
                                 <tfoot>
-                                  <tr class="top-row">
+                                  <tr class="top-row" style="margin-top: 40px; margin-bottom: 20px;">
                                     <th class="left">Du tjänar</th>
                                     <th class="right">{{> format-money money=payout-total}}</th>
                                   </tr>
@@ -262,12 +254,14 @@
                                 cellspacing="0" width="100%" style="table-layout: fixed;padding:0px 10% 50px 10%">
                                 <tr>
                                   <td>
+                                      <p><a href="{{marketplace.url}}/sale/{{url-encode id}}/details">Acceptera eller neka bokningen</a></p>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
                                     <p>Du behöver svara på förfrågan innan {{> format-date date=delayed-transition.run-at}}, Annars går förfrågan ut. Om tiderna inte passar kan du neka förfrågan. Om du nekar rekommenderar vi att du föreslår passande tider så att kunden lättare kan ta beslut om att göra en ny förfrågan </p>
 
-                                    <p><a href="{{marketplace.url}}/sale/{{url-encode id}}/details">Acceptera eller neka bokningen</a></p>
-                                
-                            
-
+                                  </td>                            
                                 </tr>
                               </table>
                               

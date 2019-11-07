@@ -4,13 +4,13 @@
 
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date d format="hh:mm a" tz=timezone lang="sv-SV"}} on {{date date format="MMM d, YYYY" tz=timezone lang="sv-SV"}}
+{{date d format="hh:mm " tz=timezone lang="sv-SV"}} on {{date date format="MMM d, YYYY" tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 
 {{~#*inline "format-day-time"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="EE hh:mm a" tz=timezone lang="sv-SV"}}
+{{date date format="EE hh:mm " tz=timezone lang="sv-SV"}}
 {{/with}}
 {{~/inline~}}
 
@@ -234,26 +234,11 @@
                                 <tbody>
                                 {{#each tx-line-items}}
                                   {{#contains include-for "provider"}}
-                                    {{#eq "line-item/units" code}}
-                                      {{#if seats}}
                                       <tr class="top-row">
-                                        <td colspan="2">{{> format-money money=unit-price}} &times; {{number units}} {{inflect units "timme" "timmar"}}</td>
+                                        <th class="left">Bokning</th>
+                                        <th class="right">{{> format-money money=payin-total}}</th>
                                       </tr>
-                                      <tr class="bottom-row">
-                                        <td colspan="2">platser &times; {{number seats}}</td>
-                                      </tr>
-                                      {{else}}
-                                      <tr class="top-row bottom-row">
-                                        <td colspan="2">{{> format-money money=unit-price}} &times; {{number quantity}} {{inflect quantity "timme" "timmar"}}</td>
-                                      </tr>
-                                      {{/if}}
-                                      <tr class="top-row">
-                                        <th class="left">Netto</th>
-                                        <th class="right">{{> format-money money=line-total}}</th>
-                                      </tr>
-                                    {{/eq}}
-                          
-                                    {{#eq "line-item/provider-commission" code}}
+                                  {{#eq "line-item/provider-commission" code}}
                                       <tr class="bottom-row">
                                         <td>{{marketplace.name}}-avgift</td>
                                         <td class="right">{{> format-money money=line-total}}</td>
@@ -266,11 +251,20 @@
                                   <tr class="top-row">
                                       <th class="left">Du tjänar</th>
                                       <th class="right">{{> format-money money=payout-total}}</th>
-                                    </tr>
-                                  </tfoot>
+                                  </tr>
+                                </tfoot>
                               </table>
                               
                               {{/with}}
+                              <table class="module" role="module" data-type="text" border="0" cellpadding="0"
+                                cellspacing="0" width="100%" style="table-layout: fixed;padding:0px 10% 50px 10%; margin-top: 20px;">
+                                <tr>
+                                  <td>
+                                    <p>Moms att redovisa är 20% av angiven avgiften </p>
+
+                                  </td>                            
+                                </tr>
+                              </table>
                               <table class="module" role="module" data-type="text" border="0" cellpadding="0"
                                 cellspacing="0" width="100%" style="table-layout: fixed;">
                                 <tr>
