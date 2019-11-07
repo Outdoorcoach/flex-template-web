@@ -90,11 +90,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     unitPrice.currency
   );
 
-  const totalwithdiscounts = subtotalPrice - hoursDiscount - peopleDiscount;
-  const totalwithdiscountsMoney = new Money(
-    convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
-    unitPrice.currency
-  )
+  
   const totalPrice = new Money(
     convertUnitToSubUnit(subtotalPrice, unitDivisor(unitPrice.currency)),
     unitPrice.currency
@@ -130,6 +126,12 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
   const peopleDiscountLineItemMaybe = participants > 1
     ? [peopleDiscountLineItem]
     : [];
+
+  const totalwithdiscounts = subtotalPrice - (hoursDiscount != 0 ? (hoursDiscount * extraHoursQuantity) : 0) - (peopleDiscount != 0 ? (peopleDiscount * extraPeopleQuantity) : 0);
+  const totalwithdiscountsMoney = new Money(
+    convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
+    unitPrice.currency
+  );
 
   const lineItemsArray = [
     ...hoursDiscountLineItemMaybe,
