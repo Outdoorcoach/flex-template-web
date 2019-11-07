@@ -12,6 +12,15 @@
       margin: 24px 0 24px 0;
     }
   }
+  & ul {
+    padding-left: 20px;
+  }
+  & li {
+    @apply --marketplaceH4FontStyles;
+    font-family: 'Lato', Helvetica, sans-serif;
+    list-style: circle;
+    padding-left: 2px;
+  }
 
   & .lastUpdated {
     @apply --marketplaceBodyFontStyles;

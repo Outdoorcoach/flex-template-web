@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { string, func } from 'prop-types';
+import { string, func, array } from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { lazyLoadWithDimensions } from '../../util/contextHelpers';
@@ -42,8 +42,9 @@ class ListingImage extends Component {
 const LazyImage = lazyLoadWithDimensions(ListingImage, { loadAfterInitialRendering: 3000 });
 
 export const ListingCardComponent = props => {
-  const { className, rootClassName, intl, listing, renderSizes, setActiveListing } = props;
+  const { className, rootClassName, intl, listing, renderSizes, setActiveListing, categoriesConfig } = props;
   const classes = classNames(rootClassName || css.root, className);
+  const publicData = listing.attributes.publicData ? listing.attributes.publicData : false;
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
   const { title = '', price } = currentListing.attributes;
@@ -55,6 +56,11 @@ export const ListingCardComponent = props => {
 
   const { formattedPrice, priceTitle } = priceData(price, intl);
 
+  const categoryLabel = (categories, key) => {
+    const cat = categories.find(c => c.key === key);
+    return cat ? cat.label : key;
+  };
+
   const unitType = config.bookingUnitType;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
@@ -64,7 +70,14 @@ export const ListingCardComponent = props => {
     : isDaily
       ? 'ListingCard.perDay'
       : 'ListingCard.perUnit';
-
+  
+  const category =
+  publicData && publicData.category ? (
+    <span>
+      {categoryLabel(categoriesConfig, publicData.category)}
+      <span className={css.separator}> • </span>
+    </span>
+  ) : null;
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
       <div
@@ -99,6 +112,7 @@ export const ListingCardComponent = props => {
             })}
           </div>
           <div className={css.authorInfo}>
+            {category}
             <FormattedMessage id="ListingCard.hostedBy" values={{ authorName }} />
           </div>
         </div>
@@ -112,6 +126,7 @@ ListingCardComponent.defaultProps = {
   rootClassName: null,
   renderSizes: null,
   setActiveListing: () => null,
+  categoriesConfig: config.custom.categories
 };
 
 ListingCardComponent.propTypes = {
@@ -124,6 +139,7 @@ ListingCardComponent.propTypes = {
   renderSizes: string,
 
   setActiveListing: func,
+  categoriesConfig: array,
 };
 
 export default injectIntl(ListingCardComponent);
