@@ -15,7 +15,7 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Fri 12:00 PM
+              Fri 8:00 AM
             </span>
           </div>
           <div>
@@ -32,7 +32,7 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Sun 12:00 PM
+              Sun 10:00 AM
             </span>
           </div>
           <div>
@@ -48,7 +48,7 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
   <div>
     <span>
       <span>
-        BookingBreakdown.pricePerNight
+        BookingBreakdown.pricePerQuantity
       </span>
     </span>
     <span>
@@ -58,11 +58,31 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
   <div>
     <span>
       <span>
-        BookingBreakdown.baseUnitNight
+        BookingBreakdown.baseUnitQuantity
       </span>
     </span>
     <span>
-      20
+      40
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.peopleDiscountText
+      </span>
+    </span>
+    <span>
+      -10
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.hoursDiscountText
+      </span>
+    </span>
+    <span>
+      -4
     </span>
   </div>
   Array [
@@ -96,7 +116,7 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Fri 12:00 PM
+              Fri 8:00 AM
             </span>
           </div>
           <div>
@@ -113,7 +133,7 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Sun 12:00 PM
+              Sun 10:00 AM
             </span>
           </div>
           <div>
@@ -129,7 +149,7 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
   <div>
     <span>
       <span>
-        BookingBreakdown.pricePerNight
+        BookingBreakdown.pricePerQuantity
       </span>
     </span>
     <span>
@@ -139,11 +159,31 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
   <div>
     <span>
       <span>
-        BookingBreakdown.baseUnitNight
+        BookingBreakdown.baseUnitQuantity
       </span>
     </span>
     <span>
-      20
+      40
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.peopleDiscountText
+      </span>
+    </span>
+    <span>
+      -10
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.hoursDiscountText
+      </span>
+    </span>
+    <span>
+      -4
     </span>
   </div>
   Array [
@@ -155,7 +195,7 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
         </span>
       </div>
       <div>
-        20
+        26
       </div>
     </div>,
   ]
@@ -177,7 +217,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
           </div>
           <div>
             <span>
-              Fri 12:00 PM
+              Fri 8:00 AM
             </span>
           </div>
           <div>
@@ -194,7 +234,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
           </div>
           <div>
             <span>
-              Sun 12:00 PM
+              Sun 10:00 AM
             </span>
           </div>
           <div>
@@ -210,7 +250,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
   <div>
     <span>
       <span>
-        BookingBreakdown.pricePerNight
+        BookingBreakdown.pricePerQuantity
       </span>
     </span>
     <span>
@@ -220,11 +260,31 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
   <div>
     <span>
       <span>
-        BookingBreakdown.baseUnitNight
+        BookingBreakdown.baseUnitQuantity
       </span>
     </span>
     <span>
-      20
+      40
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.peopleDiscountText
+      </span>
+    </span>
+    <span>
+      -10
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.hoursDiscountText
+      </span>
+    </span>
+    <span>
+      -4
     </span>
   </div>
   Array [
@@ -236,7 +296,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
         </span>
       </span>
       <span>
-        20
+        26
       </span>
     </div>,
   ]
@@ -247,7 +307,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
       </span>
     </span>
     <span>
-      -20
+      26
     </span>
   </div>
   <div>
@@ -267,7 +327,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
       </span>
     </span>
     <span>
-      2
+      -2
     </span>
   </div>
   Array [
@@ -275,7 +335,7 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
     <div>
       <div>
         <span>
-          BookingBreakdown.providerTotalDefault
+          BookingBreakdown.providerTotalCanceled
         </span>
       </div>
       <div>
@@ -306,7 +366,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Fri 12:00 PM
+              Fri 8:00 AM
             </span>
           </div>
           <div>
@@ -323,7 +383,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
           </div>
           <div>
             <span>
-              Sun 12:00 PM
+              Sun 10:00 AM
             </span>
           </div>
           <div>
@@ -339,7 +399,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
   <div>
     <span>
       <span>
-        BookingBreakdown.pricePerNight
+        BookingBreakdown.pricePerQuantity
       </span>
     </span>
     <span>
@@ -349,11 +409,31 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
   <div>
     <span>
       <span>
-        BookingBreakdown.baseUnitNight
+        BookingBreakdown.baseUnitQuantity
       </span>
     </span>
     <span>
-      20
+      40
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.peopleDiscountText
+      </span>
+    </span>
+    <span>
+      -10
+    </span>
+  </div>
+  <div>
+    <span>
+      <span>
+        BookingBreakdown.hoursDiscountText
+      </span>
+    </span>
+    <span>
+      -4
     </span>
   </div>
   Array [
@@ -365,7 +445,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
         </span>
       </span>
       <span>
-        20
+        26
       </span>
     </div>,
   ]
@@ -388,7 +468,7 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
         </span>
       </div>
       <div>
-        18
+        24
       </div>
     </div>,
   ]

@@ -23,6 +23,8 @@ exports[`TransactionPage - Order matches snapshot 1`] = `
         <injectIntl(TransactionPanelComponent)
           acceptInProgress={false}
           acceptSaleError={null}
+          cancelBookingError={false}
+          cancelBookingInProgress={false}
           className=""
           currentUser={
             Object {
@@ -54,6 +56,8 @@ exports[`TransactionPage - Order matches snapshot 1`] = `
           monthlyTimeSlots={null}
           oldestMessagePageFetched={0}
           onAcceptSale={[Function]}
+          onCancelByCustomer={[Function]}
+          onCancelByProvider={[Function]}
           onDeclineSale={[Function]}
           onFetchTimeSlots={[Function]}
           onSendMessage={[Function]}

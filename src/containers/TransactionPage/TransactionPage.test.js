@@ -121,6 +121,11 @@ describe('TransactionPage - Order', () => {
       onAcceptSale: noop,
       onDeclineSale: noop,
 
+      cancelBookingInProgress: false,
+      cancelBookingError: false,
+      onCancelByProvider: noop,
+      onCancelByCustomer: noop,
+      
       location: {
         pathname: `/order/${txId}/details`,
         search: '',

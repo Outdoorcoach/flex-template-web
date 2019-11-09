@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { calculateQuantityFromHours } from '../../util/dates';
+import { calculateQuantityFromHours, timestampToDate } from '../../util/dates';
 import { renderShallow, renderDeep } from '../../util/test-helpers';
 import { fakeIntl } from '../../util/test-data';
 import { LINE_ITEM_UNITS, TIME_SLOT_TIME } from '../../util/types';
@@ -116,14 +116,17 @@ describe('EstimatedBreakdownMaybe', () => {
     const unitPrice = new Money(1099, 'USD');
     const startDate = new Date(2017, 3, 16, 12, 0, 0);
     const endDate = new Date(2017, 3, 16, 14, 0, 0);
+    const participants = 1;
     const data = {
       unitType: LINE_ITEM_UNITS,
       unitPrice,
       startDate,
       endDate,
       // Calculate the quantity as hours between the booking start and booking end
-      quantity: calculateQuantityFromHours(startDate, endDate),
+      quantity: calculateQuantityFromHours(startDate, endDate) * participants,
+      extraHours: calculateQuantityFromHours(startDate, endDate) - 1,
       timeZone: 'UTC/Etc',
+      participants,
     };
     const tree = shallow(<EstimatedBreakdownMaybe bookingData={data} />);
     const breakdown = tree.find(BookingBreakdown);

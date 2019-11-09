@@ -11,7 +11,7 @@ import css from './BookingBreakdown.css';
 const { Money } = sdkTypes;
 
 const LineItemPeopleDiscountMaybe = props => {
-  const { transaction, intl } = props;
+  const { transaction, intl, booking } = props;
 
   const peopleDiscountItem = transaction.attributes.lineItems.find(
     item => item.code === LINE_ITEM_PEOPLE_DISCOUNT && !item.reversal
@@ -20,7 +20,8 @@ const LineItemPeopleDiscountMaybe = props => {
   if (!peopleDiscountItem) {
     return null;
   }
-  const attributes = transaction.booking.attributes;
+  
+  const attributes = transaction.booking? transaction.booking.attributes : booking;
   const quantity = peopleDiscountItem.quantity.toNumber() * -1;
   const bookinglength = calculateQuantityFromHours(attributes.start, attributes.end);
   const extraparticipants = (quantity / bookinglength); 

@@ -7,7 +7,7 @@ import { calculateQuantityFromHours } from '../../util/dates';
 import css from './BookingBreakdown.css';
 
 const LineItemBasePriceMaybe = props => {
-  const { transaction, unitType, intl} = props;
+  const { transaction, unitType, intl, booking} = props;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const translationKey = isNightly
@@ -23,7 +23,7 @@ const LineItemBasePriceMaybe = props => {
     item => item.code === LINE_ITEM_HOURS && !item.reversal
   );
 
-  const attributes = transaction.booking.attributes;
+  const attributes = transaction.booking? transaction.booking.attributes : booking;
  
   const bookinglength = calculateQuantityFromHours(attributes.start, attributes.end);
 
