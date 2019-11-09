@@ -13,8 +13,8 @@
       cursor: pointer;
 
       /* Same as active */
-      background-color: var(--marketplaceColor);
-      border-color: var(--marketplaceColor);
+      background-color: var(--marketplaceColorDark);
+      border-color: var(--marketplaceColorDark);
       color: var(--matterColorLight);
       box-shadow: var(--boxShadowPopup);
     }
@@ -38,7 +38,7 @@
 
   /* Borders */
   border-style: solid;
-  border-color: var(--matterColorNegative);
+  border-color: var(--marketplaceColor);
   border-width: 1px;
   border-radius: 8px;
   box-shadow: var(--boxShadowPopupLight);
@@ -58,8 +58,8 @@
 
 .priceLabelActive {
   /* Same as hover */
-  background-color: var(--matterColorLight);
-  border-color: var(--matterColorLight);
+  background-color: var(--marketplaceColorDark);
+  border-color: var(--marketplaceColorDark);
   color: var(--matterColorLight);
   box-shadow: var(--boxShadowPopup);
 }
@@ -102,6 +102,6 @@
 
 .caretActive {
   /* Same as hover */
-  background-color: var(--marketplaceColor);
-  border-color: var(--marketplaceColor);
+  background-color: var(--marketplaceColorDark);
+  border-color: var(--marketplaceColorDark);
 }

@@ -133,7 +133,7 @@ const maps = {
     // Limit location autocomplete to a one or more countries
     // using ISO 3166 alpha 2 country codes separated by commas.
     // If you want to limit the autocomplete, uncomment this value:
-    // countryLimit: ['AU'],
+    countryLimit: ['SE'],
   },
 
   // When fuzzy locations are enabled, coordinates on maps are
@@ -149,7 +149,7 @@ const maps = {
     // the original coordinates. The actual value is random, but the
     // obfuscated coordinates are withing a circle that has the same
     // radius as the offset.
-    offset: 1000,
+    offset: 2000,
 
     // Default zoom level when showing a single circle on a Map. Should
     // be small enough so the whole circle fits in.
