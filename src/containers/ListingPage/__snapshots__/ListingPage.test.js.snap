@@ -131,6 +131,9 @@ exports[`ListingPage matches snapshot 1`] = `
               }
               showContactUser={true}
             />
+            <SectionDescriptionMaybe
+              description="listing1 description"
+            />
             <SectionHostMaybe
               authorDisplayName="user-1 display name"
               currentUser={
@@ -207,9 +210,6 @@ exports[`ListingPage matches snapshot 1`] = `
               sendEnquiryError={null}
               sendEnquiryInProgress={false}
               title="listing1 title"
-            />
-            <SectionDescriptionMaybe
-              description="listing1 description"
             />
             <SectionRulesMaybe
               className={null}

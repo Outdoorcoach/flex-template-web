@@ -69,6 +69,7 @@ describe('CheckoutPage', () => {
         listing: null,
         bookingData: null,
         bookingDates: null,
+        lineItems: null,
         stripeCustomerFetched: false,
         speculateTransactionError: null,
         speculateTransactionInProgress: false,

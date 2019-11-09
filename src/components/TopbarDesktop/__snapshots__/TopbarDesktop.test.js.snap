@@ -104,19 +104,6 @@ exports[`TopbarDesktop data matches snapshot 1`] = `
     </a>
     <a
       className=""
-      href="/enterprise"
-      onClick={[Function]}
-      style={Object {}}
-      title={null}
-    >
-      <span>
-        <span>
-          EnterprisePage.topBarLinkText
-        </span>
-      </span>
-    </a>
-    <a
-      className=""
       href="/inbox/orders"
       onClick={[Function]}
       style={Object {}}

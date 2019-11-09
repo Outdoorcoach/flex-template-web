@@ -3260,7 +3260,7 @@ exports[`TransactionPanel - Order delivered matches snapshot 1`] = `
         listingDeleted={false}
         listingId="listing1"
         listingTitle="listing1 title"
-        panelHeadingState="completed"
+        panelHeadingState="delivered"
         providerName={
           <UserDisplayName
             bannedUserDisplayName={null}
@@ -3312,6 +3312,7 @@ exports[`TransactionPanel - Order delivered matches snapshot 1`] = `
             }
           }
           location={Object {}}
+          showAddress={false}
         />
         <BreakdownMaybe
           transaction={
@@ -3775,6 +3776,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
           }
           listingTitle="listing1 title"
           location={Object {}}
+          showAddress={false}
           showDetailCardHeadings={false}
           subTitle="55 TransactionPanel.perUnit"
         />
@@ -8843,7 +8845,7 @@ exports[`TransactionPanel - Sale delivered matches snapshot 1`] = `
         listingDeleted={false}
         listingId="listing1"
         listingTitle="listing1 title"
-        panelHeadingState="completed"
+        panelHeadingState="delivered"
         providerName={
           <UserDisplayName
             bannedUserDisplayName={null}
@@ -8895,6 +8897,7 @@ exports[`TransactionPanel - Sale delivered matches snapshot 1`] = `
             }
           }
           location={Object {}}
+          showAddress={false}
         />
         <BreakdownMaybe
           transaction={
@@ -9348,6 +9351,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
           }
           listingTitle="listing1 title"
           location={Object {}}
+          showAddress={false}
           showDetailCardHeadings={false}
           subTitle="55 TransactionPanel.perUnit"
         />
