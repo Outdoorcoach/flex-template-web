@@ -1,9 +1,9 @@
 {
-  "name": "Saunatime",
-  "short_name": "Saunatime",
+  "name": "Outdoorcoach",
+  "short_name": "Outdoorcoach",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#C0392B",
+  "theme_color": "#11b9af",
   "background_color": "#FFFFFF",
   "icons": [
     {
