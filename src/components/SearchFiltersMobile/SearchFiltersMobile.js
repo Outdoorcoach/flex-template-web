@@ -204,7 +204,7 @@ class SearchFiltersMobileComponent extends Component {
 
     const initialAmenities = this.initialValues(amenitiesFilter.paramName);
 
-    const amenitiesFilterElement = amenitiesFilter ? (
+    /*const amenitiesFilterElement = amenitiesFilter ? (
       <SelectMultipleFilter
         id="SearchFiltersMobile.amenitiesFilter"
         name="amenities"
@@ -215,7 +215,7 @@ class SearchFiltersMobileComponent extends Component {
         options={amenitiesFilter.options}
         initialValues={initialAmenities}
       />
-    ) : null;
+    ) : null;*/
 
     const initialPriceRange = this.initialPriceRangeValue(priceFilter.paramName);
 
@@ -282,7 +282,6 @@ class SearchFiltersMobileComponent extends Component {
             <div className={css.filtersWrapper}>
               {keywordFilterElement}
               {categoryFilterElement}
-              {amenitiesFilterElement}
               {priceFilterElement}
             </div>
           ) : null}
