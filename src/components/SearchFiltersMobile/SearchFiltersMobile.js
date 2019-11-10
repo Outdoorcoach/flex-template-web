@@ -13,7 +13,6 @@ import {
   KeywordFilter,
   PriceFilter,
   SelectSingleFilter,
-  SelectMultipleFilter,
 } from '../../components';
 import { propTypes } from '../../util/types';
 import css from './SearchFiltersMobile.css';
@@ -159,7 +158,6 @@ class SearchFiltersMobileComponent extends Component {
       onManageDisableScrolling,
       selectedFiltersCount,
       categoryFilter,
-      amenitiesFilter,
       priceFilter,
       keywordFilter,
       intl,
@@ -199,10 +197,6 @@ class SearchFiltersMobileComponent extends Component {
         intl={intl}
       />
     ) : null;
-
-    const amenitiesLabel = intl.formatMessage({ id: 'SearchFiltersMobile.amenitiesLabel' });
-
-    const initialAmenities = this.initialValues(amenitiesFilter.paramName);
 
     /*const amenitiesFilterElement = amenitiesFilter ? (
       <SelectMultipleFilter

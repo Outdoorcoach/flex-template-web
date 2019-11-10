@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
-import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT } from '../../util/types';
+import { propTypes, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT } from '../../util/types';
 import {
   ensureListing,
   ensureCurrentUser,
@@ -18,7 +18,7 @@ import {
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data';
-import { dateFromLocalToAPI, minutesBetween, hoursBetween } from '../../util/dates';
+import { minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
 import {
   isTransactionInitiateAmountTooLowError,
@@ -29,7 +29,7 @@ import {
   isTransactionZeroPaymentError,
   transactionInitiateOrderStripeErrors,
 } from '../../util/errors';
-import { formatMoney, unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
+import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../../util/transaction';
 import {
   AvatarMedium,
@@ -151,7 +151,6 @@ export class CheckoutPageComponent extends Component {
       fetchSpeculatedTransaction,
       fetchStripeCustomer,
       history,
-      lineItems
     } = this.props;
     // Fetch currentUser with stripeCustomer entity
     // Note: since there's need for data loading in "componentWillMount" function,
@@ -423,10 +422,10 @@ export class CheckoutPageComponent extends Component {
     const extraHours = bookingLength > 1 ? (bookingLength-1) : 0;
     const extraPeople = participantsNumber > 1 ? ((participantsNumber-1) * bookingLength) : 0;
 
-    const hoursDiscount = extraHours != 0
+    const hoursDiscount = extraHours !== 0
       ? this.estimatedHoursDiscountMaybe(unitPriceInNumbers * 0.4) 
       : 0;
-    const peopleDiscount = extraPeople != 0
+    const peopleDiscount = extraPeople !== 0
       ? this.estimatedPeopleDiscountMaybe(unitPriceInNumbers * 0.5)
       : 0;
 
@@ -452,7 +451,7 @@ export class CheckoutPageComponent extends Component {
       lineTotal: hoursDiscountTotal,
       reversal: false,
     };
-    const hoursDiscountLineItemMaybe = extraHours != 0
+    const hoursDiscountLineItemMaybe = extraHours !== 0
       ? [hoursDiscountLineItem]
       : [];
 
@@ -464,7 +463,7 @@ export class CheckoutPageComponent extends Component {
       lineTotal: peopleDiscountTotal,
       reversal: false,
     };
-    const peopleDiscountLineItemMaybe = extraPeople != 0
+    const peopleDiscountLineItemMaybe = extraPeople !== 0
     ? [peopleDiscountLineItem]
     : [];
 

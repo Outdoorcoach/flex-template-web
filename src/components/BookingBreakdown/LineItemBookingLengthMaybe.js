@@ -5,7 +5,7 @@ import { LINE_ITEM_HOURS, propTypes } from '../../util/types';
 import css from './BookingBreakdown.css';
 
 const LineItemBookingLengthMaybe = props => {
-  const { transaction, unitType, participants } = props;
+  const { transaction, participants } = props;
 
   
   const hoursPurchase = transaction.attributes.lineItems.find(
@@ -13,8 +13,8 @@ const LineItemBookingLengthMaybe = props => {
   );
 
   if (!hoursPurchase) {
+    //throw new Error(`LineItemBookingLengthMaybe: lineItem (${unitType}) missing`);
     return null;
-    throw new Error(`LineItemBookingLengthMaybe: lineItem (${unitType}) missing`);
   }
 
   const quantity = participants? (hoursPurchase.quantity / parseInt(participants)) : hoursPurchase.quantity;

@@ -28,9 +28,9 @@
 import React from 'react';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { nightsBetween, daysBetween, hoursBetween, calculateQuantityFromHours } from '../../util/dates';
+import { nightsBetween, daysBetween, calculateQuantityFromHours } from '../../util/dates';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
-import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT, LINE_ITEM_CUSTOMER_COMMISSION, LINE_ITEM_HOURS } from '../../util/types';
+import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATETIME, LINE_ITEM_HOURS_DISCOUNT, LINE_ITEM_PEOPLE_DISCOUNT, LINE_ITEM_HOURS } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { BookingBreakdown } from '../../components';
 
@@ -127,7 +127,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
     ? [peopleDiscountLineItem]
     : [];
 
-  const totalwithdiscounts = subtotalPrice - (hoursDiscount != 0 ? (hoursDiscount * extraHoursQuantity) : 0) - (peopleDiscount != 0 ? (peopleDiscount * extraPeopleQuantity) : 0);
+  const totalwithdiscounts = subtotalPrice - (hoursDiscount !== 0 ? (hoursDiscount * extraHoursQuantity) : 0) - (peopleDiscount !== 0 ? (peopleDiscount * extraPeopleQuantity) : 0);
   const totalwithdiscountsMoney = new Money(
     convertUnitToSubUnit(totalwithdiscounts, unitDivisor(unitPrice.currency)),
     unitPrice.currency

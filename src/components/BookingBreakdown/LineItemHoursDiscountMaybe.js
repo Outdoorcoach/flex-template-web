@@ -10,7 +10,7 @@ import css from './BookingBreakdown.css';
 const { Money } = sdkTypes;
 
 const LineItemHoursDiscountMaybe = props => {
-  const { transaction, participants, intl } = props;
+  const { transaction, intl } = props;
 
   const hoursDiscountItem = transaction.attributes.lineItems.find(
     item => item.code === LINE_ITEM_HOURS_DISCOUNT && !item.reversal

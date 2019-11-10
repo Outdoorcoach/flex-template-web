@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { func, object, string } from 'prop-types';
 import classNames from 'classnames';
-import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
+import { intlShape} from '../../util/reactIntl';
 import {
   getStartHours,
   getEndHours,
@@ -26,7 +26,7 @@ import { FieldDateInput, FieldSelect } from '../../components';
 import NextMonthIcon from './NextMonthIcon';
 import PreviousMonthIcon from './PreviousMonthIcon';
 import css from './FieldDateAndTimeInput.css';
-import moment from 'moment';
+//import moment from 'moment';
 
 const MAX_TIME_SLOTS_RANGE = 180;
 const TODAY = new Date();

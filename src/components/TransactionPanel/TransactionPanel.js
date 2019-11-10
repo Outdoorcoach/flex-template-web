@@ -6,7 +6,6 @@ import {
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
   txIsAccepted,
   txIsCanceled,
-  txIsDelivered,
   txIsDeclined,
   txIsEnquired,
   txIsPaymentExpired,

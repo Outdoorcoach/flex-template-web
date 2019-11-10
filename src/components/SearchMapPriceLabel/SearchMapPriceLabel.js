@@ -24,8 +24,7 @@ class SearchMapPriceLabel extends Component {
     const { className, rootClassName, listing, onListingClicked, isActive } = this.props;
     const currentListing = ensureListing(listing);
     //const { price } = currentListing.attributes;
-
-    const { title } = currentListing.attributes;
+    
     // Create formatted price if currency is known or alternatively show just the unknown currency.
 
     

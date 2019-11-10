@@ -235,11 +235,11 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
       return { ...state, cancelBookingInProgress: false };
     case CANCEL_BY_CUSTOMER_ERROR:
       return { ...state, cancelBookingInProgress: false, cancelBookingError: payload };
-    case CANCEL_BY_CUSTOMER_REQUEST:
+    case CANCEL_BY_PROVIDER_REQUEST:
       return { ...state, cancelBookingInProgress: true, cancelBookingError: null};
-    case CANCEL_BY_CUSTOMER_SUCCESS:
+    case CANCEL_BY_PROVIDER_SUCCESS:
       return { ...state, cancelBookingInProgress: false };
-    case CANCEL_BY_CUSTOMER_ERROR:
+    case CANCEL_BY_PROVIDER_ERROR:
       return { ...state, cancelBookingInProgress: false, cancelBookingError: payload };
 
     default:
