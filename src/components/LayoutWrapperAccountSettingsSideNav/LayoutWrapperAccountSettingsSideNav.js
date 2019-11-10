@@ -5,9 +5,12 @@
 import React from 'react';
 import { node, number, string, shape } from 'prop-types';
 import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { FormattedMessage } from '../../util/reactIntl';
 import { withViewport } from '../../util/contextHelpers';
 import { LayoutWrapperSideNav } from '../../components';
+
+import { currentUserHasProviderAccess } from '../../ducks/user.duck';
 
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 
@@ -24,7 +27,7 @@ const scrollToTab = currentTab => {
 };
 
 const LayoutWrapperAccountSettingsSideNavComponent = props => {
-  const { currentTab, viewport } = props;
+  const { currentTab, viewport, hasProviderAccess } = props;
 
   let hasScrolledToTab = false;
 
@@ -41,6 +44,15 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
     scrollToTab(currentTab);
     hasScrolledToTab = true;
   }
+
+  const payoutPreferencesTabMaybe = hasProviderAccess ? [{ 
+    text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentsTabTitle" />,
+    selected: currentTab === 'PayoutPreferencesPage',
+    id: 'PayoutPreferencesPageTab',
+    linkProps: {
+      name: 'PayoutPreferencesPage',
+    },
+  }] : [];
 
   const tabs = [
     {
@@ -59,14 +71,7 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
         name: 'PasswordChangePage',
       },
     },
-    {
-      text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentsTabTitle" />,
-      selected: currentTab === 'PayoutPreferencesPage',
-      id: 'PayoutPreferencesPageTab',
-      linkProps: {
-        name: 'PayoutPreferencesPage',
-      },
-    },
+    ...payoutPreferencesTabMaybe,
     {
       text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentMethodsTabTitle" />,
       selected: currentTab === 'PaymentMethodsPage',
@@ -100,8 +105,15 @@ LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
   }).isRequired,
 };
 
-const LayoutWrapperAccountSettingsSideNav = compose(withViewport)(
-  LayoutWrapperAccountSettingsSideNavComponent
-);
+const mapStateToProps = state => {
+  return {
+    hasProviderAccess: currentUserHasProviderAccess(state),
+  }
+}
+
+const LayoutWrapperAccountSettingsSideNav = compose(
+  connect(mapStateToProps),
+  withViewport
+)(LayoutWrapperAccountSettingsSideNavComponent);
 
 export default LayoutWrapperAccountSettingsSideNav;

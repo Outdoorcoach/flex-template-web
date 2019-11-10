@@ -12,18 +12,17 @@ import { currentUserHasProviderAccess } from '../../ducks/user.duck';
 import css from './UserNav.css';
 
 const UserNavComponent = props => {
-  const { className, rootClassName, selectedPageName } = props;
+  const { className, rootClassName, selectedPageName, hasProviderAccess } = props;
   const classes = classNames(rootClassName || css.root, className);
 
 
   /*TODO: only display add listing if user is authorized to do so (account has type "coach" ) */
-
-  const tabs = [{
-      text: <FormattedMessage id="TopbarDesktop.createListing" />,
-      selected: selectedPageName === "NewListingPage",
-      linkProps: {
-        name: 'NewListingPage',
-      }
+  const listingtabsMaybe = hasProviderAccess ? [{
+    text: <FormattedMessage id="TopbarDesktop.createListing" />,
+    selected: selectedPageName === "NewListingPage",
+    linkProps: {
+      name: 'NewListingPage',
+    }
     },
     {
       text: <FormattedMessage id="ManageListingsPage.yourListings" />,
@@ -31,7 +30,11 @@ const UserNavComponent = props => {
       linkProps: {
         name: 'ManageListingsPage',
       },
-    },
+    }] 
+    :
+    [];
+
+  const tabs = [...listingtabsMaybe,
     {
       text: <FormattedMessage id="ManageListingsPage.profileSettings" />,
       selected: selectedPageName === 'ProfileSettingsPage',
@@ -49,10 +52,6 @@ const UserNavComponent = props => {
       },
     },
   ];
-
-  if(!props.hasProviderAccess) {
-    tabs.shift();
-  }
 
   return (
     <LinkTabNavHorizontal className={classes} tabRootClassName={css.tab} tabs={tabs} skin="dark" />

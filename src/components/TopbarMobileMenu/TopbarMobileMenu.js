@@ -10,10 +10,12 @@ import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
+import { currentUserHasProviderAccess } from '../../ducks/user.duck';
+import { connect } from 'react-redux';
 
 import css from './TopbarMobileMenu.css';
 
-const TopbarMobileMenu = props => {
+const TopbarMobileMenuComponent = props => {
   const {
     isAuthenticated,
     currentPage,
@@ -21,6 +23,7 @@ const TopbarMobileMenu = props => {
     currentUser,
     notificationCount,
     onLogout,
+    hasProviderAccess,
   } = props;
 
   const user = ensureCurrentUser(currentUser);
@@ -93,12 +96,16 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
-        <NamedLink
+        {hasProviderAccess ? (
+          <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
           name="ManageListingsPage"
-        >
-          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
-        </NamedLink>
+          >
+            <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+          </NamedLink>
+          )
+          : ''
+        }
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
           name="ProfileSettingsPage"
@@ -115,20 +122,24 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.logoutLink" />
         </InlineTextButton>
       </div>
-      <div className={css.footer}>
-        <NamedLink className={css.createNewListingLink} name="NewListingPage">
-          <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-        </NamedLink>
-      </div>
+      {hasProviderAccess ? (
+        <div className={css.footer}>
+          <NamedLink className={css.createNewListingLink} name="NewListingPage">
+            <FormattedMessage id="TopbarMobileMenu.newListingLink" />
+          </NamedLink>
+        </div>
+      )
+      : ''
+      }
     </div>
   );
 };
 
-TopbarMobileMenu.defaultProps = { currentUser: null, notificationCount: 0, currentPage: null };
+TopbarMobileMenuComponent.defaultProps = { currentUser: null, notificationCount: 0, currentPage: null };
 
 const { bool, func, number, string } = PropTypes;
 
-TopbarMobileMenu.propTypes = {
+TopbarMobileMenuComponent.propTypes = {
   isAuthenticated: bool.isRequired,
   currentUserHasListings: bool.isRequired,
   currentUser: propTypes.currentUser,
@@ -136,5 +147,12 @@ TopbarMobileMenu.propTypes = {
   notificationCount: number,
   onLogout: func.isRequired,
 };
+
+const mapStateToProps = state => {
+  return {
+    hasProviderAccess: currentUserHasProviderAccess(state),
+  }
+}
+const TopbarMobileMenu = connect(mapStateToProps)(TopbarMobileMenuComponent);
 
 export default TopbarMobileMenu;
