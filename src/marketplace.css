@@ -581,6 +581,17 @@
       margin-top: 32px;
     }
   }
+  /* ================== other ============================ */
+
+  --TopbarDesktop_label: {
+    display: inline-block;
+    margin: 24px 0;
+    text-decoration: inherit;
+
+    @media (--viewportMedium) {
+      margin: 24px 0;
+    }
+  }
 }
 
 /* ================ Custom media queries ================ */
