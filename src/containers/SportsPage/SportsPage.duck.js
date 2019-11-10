@@ -67,8 +67,6 @@ export const fetchSportsPageEntities = typeId => (dispatch, getState) => {
   })
   .then(response => {
     const entryData = response.items;
-    console.log(entryData);
-
     dispatch(fetchSportsPageEntitiesSuccess(entryData));
     return entryData;
   })

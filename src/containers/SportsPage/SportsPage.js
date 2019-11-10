@@ -56,10 +56,7 @@ export class SportsPageComponent extends Component {
   
   render() {
     const pageData = this.props.sportsPageEntities;
-    console.log(pageData);
-    
-    
-    
+
     return (
       <StaticPage
         title="Sports"

@@ -65,8 +65,6 @@ export const fetchEnterprisePageData = entryId => (dispatch, getState) => {
   .getEntry(entryId)
   .then(response => {
     const entryData = response.fields;
-    console.log(entryData);
-
     dispatch(fetchEnterprisePageDataSuccess(entryData));
     return entryData;
   })

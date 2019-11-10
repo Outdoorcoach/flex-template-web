@@ -21,7 +21,7 @@ exports[`ContactDetailsPage matches snapshot 1`] = `
         selectedPageName="ContactDetailsPage"
       />
     </LayoutWrapperTopbar>
-    <withViewport(LayoutWrapperAccountSettingsSideNavComponent)
+    <Connect(withViewport(LayoutWrapperAccountSettingsSideNavComponent))
       currentTab="ContactDetailsPage"
     />
     <LayoutWrapperMain

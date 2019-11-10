@@ -325,7 +325,6 @@ export function requestImageUpload(actionPayload) {
 // display the state.
 export function requestUpdateListing(tab, data) {
   return (dispatch, getState, sdk) => {
-    console.log(data);
     dispatch(updateListing(data));
     const { id } = data;
     let updateResponse;

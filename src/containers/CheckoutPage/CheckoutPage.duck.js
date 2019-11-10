@@ -108,7 +108,6 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
 // ================ Action creators ================ //
 
 export const setInitialValues = (initialValues) => {
-  console.log(initialValues)
   return ({
     type: SET_INITAL_VALUES,
     payload: pick(initialValues, Object.keys(initialState)),
@@ -165,7 +164,6 @@ export const stripeCustomerError = e => ({
 /* ================ Thunks ================ */
 
 export const initiateOrder = (orderParams, transactionId) => (dispatch, getState, sdk) => {
-  console.log(orderParams);
   dispatch(initiateOrderRequest());
   const bodyParams = transactionId
     ? {
@@ -275,7 +273,6 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
     }
 
   };
-  console.log(params);
   const queryParams = {
     include: ['booking', 'provider'],
     expand: true,
