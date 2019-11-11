@@ -46,6 +46,7 @@ export const categories = [
   { key: 'rollerski', label: 'Rullskidor' },
   { key: 'swimrun', label: 'Swimrun'},
   { key: 'openwater', label: 'Open Water' },
+  { key: 'plogging', label: 'Ploggning'},
   { key: 'outdoorfitness', label: 'Utegympa'},
   { key: 'iceskating', label: 'Långfärdsskridskor'},
 ];
