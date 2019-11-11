@@ -11,7 +11,7 @@ const PrivacyPolicy = props => {
   // prettier-ignore
   return (
     <div className={classes}>
-      <p className={css.lastUpdated}>Last updated: October 30, 2017</p>
+      <p className={css.lastUpdated}>Senast uppdaterad: 11 November 2019</p>
 
       <p>
       Denna policy blir gällande i samband med att du registrerar personuppgifter hos oss. 
