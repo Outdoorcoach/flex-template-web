@@ -38,14 +38,16 @@ const MenuContent = props => {
     </div>
   ) : null;
 
-  React.Children.forEach(children, child => {
-    if (child.type !== MenuItem) {
-      throw new Error('All children of MenuContent must be MenuItems.');
-    }
-    if (child.key == null) {
-      throw new Error('All children of MenuContent must have a "key" prop.');
-    }
-  });
+    React.Children.forEach(children, child => {
+      if(child != null) {
+        if (child.type !== MenuItem) {
+          throw new Error('All children of MenuContent must be MenuItems.');
+        }
+        if (child.key == null) {
+          throw new Error('All children of MenuContent must have a "key" prop.');
+        }
+      }
+    });
 
   return (
     <div className={classes} ref={contentRef} style={style}>

@@ -83,8 +83,8 @@ const TopbarDesktopComponent = props => {
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
-        {hasProviderAccess ? (
-          <MenuItem key="ManageListingsPage">
+        {hasProviderAccess ? 
+          (<MenuItem key="ManageListingsPage">
           <NamedLink
             className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
             name="ManageListingsPage"
@@ -92,9 +92,9 @@ const TopbarDesktopComponent = props => {
             <span className={css.menuItemBorder} />
             <FormattedMessage id="TopbarDesktop.yourListingsLink" />
           </NamedLink>
-          </MenuItem>
-        )
-        : <MenuItem key="ManageListingsPage"/>
+          </MenuItem>)
+          :
+          null
         }
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
