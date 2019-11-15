@@ -99,7 +99,7 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
     // Example: Add custom directive override
     // imgSrc: exampleImgSrc,
     connectSrc: [
-      'https://cdn.contentful.com/',
+      'cdn.contentful.com',
     ]
   };
 
