@@ -98,6 +98,9 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
   const customDirectives = {
     // Example: Add custom directive override
     // imgSrc: exampleImgSrc,
+    connectSrc: [
+      'https://cdn.contentful.com/',
+    ]
   };
 
   // ================ END CUSTOM CSP URLs ================ //
