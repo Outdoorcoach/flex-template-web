@@ -93,13 +93,15 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
 
   // Example: extend default img directive with custom domain
   // const { imgSrc = [self] } = defaultDirectives;
-  const { defaultSrc = [self] } = defaultDirectives;
+  const { defaultSrc = [self], connectSrc } = defaultDirectives;
   // const exampleImgSrc = imgSrc.concat('my-custom-domain.example.com');
   const contentfulSrc = defaultSrc.concat('cdn.contentful.com');
+  const contentfulConnectSrc = connectSrc.concat('cdn.contentful.com');
   const customDirectives = {
     // Example: Add custom directive override
     // imgSrc: exampleImgSrc,
     defaultSrc: contentfulSrc,
+    connectSrc: contentfulConnectSrc,
   };
 
   // ================ END CUSTOM CSP URLs ================ //
