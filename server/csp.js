@@ -93,6 +93,7 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
 
   // Example: extend default img directive with custom domain
   // const { imgSrc = [self] } = defaultDirectives;
+  const { defaultSrc = [self] } = defaultDirectives;
   // const exampleImgSrc = imgSrc.concat('my-custom-domain.example.com');
   const contentfulSrc = defaultSrc.concat('cdn.contentful.com');
   const customDirectives = {
