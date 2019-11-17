@@ -54,11 +54,11 @@ const StripePaymentAddress = props => {
     })
   );
 
-  const stateLabel = intl.formatMessage(
+  /*const stateLabel = intl.formatMessage(
     { id: 'StripePaymentAddress.stateLabel' },
     { optionalText: optionalText }
   );
-  const statePlaceholder = intl.formatMessage({ id: 'StripePaymentAddress.statePlaceholder' });
+  const statePlaceholder = intl.formatMessage({ id: 'StripePaymentAddress.statePlaceholder' });*/
 
   const countryLabel = intl.formatMessage({ id: 'StripePaymentAddress.countryLabel' });
   const countryPlaceholder = intl.formatMessage({ id: 'StripePaymentAddress.countryPlaceholder' });
@@ -75,7 +75,7 @@ const StripePaymentAddress = props => {
   };
 
   // Use tha language set in config.locale to get the correct translations of the country names
-  const countryCodes = getCountryCodes(config.locale);
+  const countryCodes = getCountryCodes(config.locale === 'sv' ? 'SE': config.locale);
 
   return (
     <div className={className ? className : css.root}>
@@ -134,18 +134,7 @@ const StripePaymentAddress = props => {
         />
       </div>
       <div className={css.formRow}>
-        <FieldTextInput
-          id={`${fieldId}.state`}
-          name="state"
-          disabled={disabled}
-          className={css.field}
-          type="text"
-          autoComplete="billing address-level1"
-          label={stateLabel}
-          placeholder={statePlaceholder}
-          onUnmount={() => form.change('state', undefined)}
-        />
-
+        
         <FieldSelect
           id={`${fieldId}.country`}
           name="country"
